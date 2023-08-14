@@ -21,6 +21,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@rollup/plugin-terser": "^0.4.3",
     "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
     "concurrently": "8.2.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
