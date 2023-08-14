@@ -1,3 +1,7 @@
+const {
+  createUser,
+  getAllUsers
+} = require("./models/user");
 const client = require("./client");
 
 async function createTables() {
@@ -9,7 +13,7 @@ async function createTables() {
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        "isAdmin" BOOLEAN DEFAULT false
+        "isAdmin" BOOLEAN
       );
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
@@ -55,11 +59,57 @@ async function dropTables() {
   }
 }
 
+async function createInitialUsers() {
+  console.log("Starting to create users...")
+  try {
+    const newUsers = [
+      { email: "sheryl123@gmail.com", username: "sheryl", password: "badgyalsheryl1", isAdmin: false },
+      { email: "lani@gmail.com", username: "lani", password: "banana246", isAdmin: false },
+      { email: "roberto1@gmail.com", username: "roberto", password: "iluvicecream", isAdmin: false }
+    ]
+
+    const users = await Promise.all(newUsers.map(createUser))
+
+    const newAdmin = [
+      { email: "jimmy1@gmail.com", username: "jimmy", password: "jimmyjam", isAdmin: true },
+      { email: "danny234@gmail.com", username: "danny", password: "dan2kool", isAdmin: true },
+      { email: "tony24@gmail.com", username: "tony", password: "tonydaboss", isAdmin: true }
+    ]
+
+    const adminUsers = await Promise.all(newAdmin.map(createUser))
+
+    console.log("Users created:")
+    console.log(users)
+    console.log("Finished creating users!")
+    console.log("Admin users created:")
+    console.log(adminUsers)
+    console.log("Finished creating admin users!")
+  } catch (error) {
+    console.error("Error creating users!")
+    throw error
+  }
+}
+
+async function getInitialUsers() {
+  console.log("Starting to get initial users...")
+  try {
+    const allUsers = await getAllUsers()
+
+    console.log("All users:")
+    console.log(allUsers)
+    console.log("Finished getting all users!")
+  } catch (error) {
+    console.error("Error getting users!")
+  }
+}
+
 async function rebuildDB() {
   try {
     await dropTables();
     await createTables();
-    //add in crate intial stuff for testing when avalible
+    //add in create intial stuff for testing when avalible
+    await createInitialUsers()
+    await getInitialUsers()
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
