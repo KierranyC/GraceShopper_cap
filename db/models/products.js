@@ -1,5 +1,4 @@
 const client = require("../client");
-// const fs = require('fs');
 
 async function createProduct({
   title,
@@ -9,27 +8,7 @@ async function createProduct({
   category,
   photo,
 }) {
-
-
-
   try {
-    // fs.readFile(photo, 'utf-8', (err, data) => {
-    //   if (err) {
-    //     console.error("Error reading file", err)
-    //     return
-    //   } else {
-    //     let binary = '';
-
-    //     for (let i = 0; i < data.length; i++) {
-    //       const byte = data[i];
-    //       const binaryByte = byte.toString(2).padStart(8, '0');
-    //       binary += binaryByte + ' ';
-    //     }
-    //     binary = binary.trim();
-    //     return binary
-    //   }
-    // });
-
     const {
       rows: [product],
     } = await client.query(
@@ -45,47 +24,6 @@ async function createProduct({
     console.error(error)
   }
 }
-
-
-// async function createProduct({
-//   title,
-//   description,
-//   price,
-//   quantity,
-//   category,
-//   photo,
-// }) {
-//   try {
-//     const data = await fs.readFile(photo); // Read the file asynchronously
-
-// let binary = '';
-
-// for (let i = 0; i < data.length; i++) {
-//   const byte = data[i];
-//   const binaryByte = byte.toString(2).padStart(8, '0');
-//   binary += binaryByte + ' ';
-// }
-// const photoBinaryInfo = binary.trim();
-
-//     console.log(photoBinaryInfo);
-
-//     const {
-//       rows: [product],
-//     } = await client.query(
-//       `
-//       INSERT INTO products (title, description, price, quantity, category, photo)
-//       VALUES ($1, $2, $3, $4, $5, $6)
-//       RETURNING *;
-//       `,
-//       [title, description, price, quantity, category, photoBinaryInfo] // Use the binary data here
-//     );
-
-//     return product;
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
 
 async function getAllProducts() {
   try {

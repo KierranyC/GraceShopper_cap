@@ -115,41 +115,25 @@ async function createInitialProducts() {
         description: "Premium moroccan argan oil that brings shine back to dull hair!",
         price: 24,
         quantity: 5000,
-        category: "Argan Oils",
-        photo: 'C:\\Users\\kierr\\OneDrive\\Pictures\\sunset background.jpg'
+        category: "Moisturizing Oils",
+        photo: 'placeholder'
+      },
+      {
+        title: "Coconut and Tea Tree Oil",
+        description: "Premium scalp oil!",
+        price: 24,
+        quantity: 5000,
+        category: "Scalp Oils",
+        photo: 'placeholder'
+      },
+      {
+        title: "Vegan and Non-GMO Oil",
+        description: "Premium vegan and non-GMO oil!",
+        price: 24,
+        quantity: 5000,
+        category: "Vegan Oils",
+        photo: 'placeholder'
       }
-      // {
-      //   title: "Argan Oil",
-      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
-      //   price: "$24.99",
-      //   quantity: 5000,
-      //   category: "Argan Oils",
-      //   photo:
-      // },
-      // {
-      //   title: "Argan Oil",
-      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
-      //   price: "$24.99",
-      //   quantity: 5000,
-      //   category: "Argan Oils",
-      //   photo:
-      // },
-      // {
-      //   title: "Argan Oil",
-      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
-      //   price: "$24.99",
-      //   quantity: 5000,
-      //   category: "Argan Oils",
-      //   photo:
-      // },
-      // {
-      //   title: "Argan Oil",
-      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
-      //   price: "$24.99",
-      //   quantity: 5000,
-      //   category: "Argan Oils",
-      //   photo: 
-      // }
     ]
 
     const products = await Promise.all(newProducts.map(createProduct))
