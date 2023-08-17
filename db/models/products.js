@@ -21,7 +21,7 @@ async function createProduct({
     );
     return product;
   } catch (error) {
-    throw error;
+    console.error(error)
   }
 }
 
