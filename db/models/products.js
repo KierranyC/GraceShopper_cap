@@ -151,10 +151,38 @@ async function getProductsByCategory({ category }) {
   }
 }
 
+async function updateProduct({ id, ...fields }) {
+  try {
+    const string = Object.keys(fields)
+      .map(
+        (key, index) =>
+          `"${key}" = $${index + 1}
+    `
+      )
+      .join(", ");
+
+    const {
+      rows: [product],
+    } = await client.query(
+      `
+    UPDATE products
+    SET ${string} 
+    WHERE id=${id}
+    RETURNING *;
+  `,
+      Object.values(fields)
+    );
+    return product;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   getProductByTitle,
   getProductsByCategory,
+  updateProduct,
 };
