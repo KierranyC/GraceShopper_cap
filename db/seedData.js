@@ -1,7 +1,10 @@
 const {
   createUser,
-  getAllUsers
+  getAllUsers,
 } = require("./models/user");
+const {
+  createProduct
+} = require("./models/products")
 const client = require("./client");
 
 async function createTables() {
@@ -103,6 +106,61 @@ async function getInitialUsers() {
   }
 }
 
+async function createInitialProducts() {
+  console.log("Starting to create products...")
+  try {
+    const newProducts = [
+      {
+        title: "Argan Oil",
+        description: "Premium moroccan argan oil that brings shine back to dull hair!",
+        price: 24,
+        quantity: 5000,
+        category: "Argan Oils",
+        photo: 'C:\\Users\\kierr\\OneDrive\\Pictures\\sunset background.jpg'
+      }
+      // {
+      //   title: "Argan Oil",
+      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
+      //   price: "$24.99",
+      //   quantity: 5000,
+      //   category: "Argan Oils",
+      //   photo:
+      // },
+      // {
+      //   title: "Argan Oil",
+      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
+      //   price: "$24.99",
+      //   quantity: 5000,
+      //   category: "Argan Oils",
+      //   photo:
+      // },
+      // {
+      //   title: "Argan Oil",
+      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
+      //   price: "$24.99",
+      //   quantity: 5000,
+      //   category: "Argan Oils",
+      //   photo:
+      // },
+      // {
+      //   title: "Argan Oil",
+      //   description: "Premium moroccan argan oil that brings shine back to dull hair!",
+      //   price: "$24.99",
+      //   quantity: 5000,
+      //   category: "Argan Oils",
+      //   photo: 
+      // }
+    ]
+
+    const products = await Promise.all(newProducts.map(createProduct))
+    console.log("Products:")
+    console.log(products)
+    console.log("Finished creating products!")
+  } catch (error) {
+    console.error("Error creating products!")
+  }
+}
+
 async function rebuildDB() {
   try {
     await dropTables();
@@ -110,6 +168,7 @@ async function rebuildDB() {
     //add in create intial stuff for testing when avalible
     await createInitialUsers()
     await getInitialUsers()
+    await createInitialProducts()
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
