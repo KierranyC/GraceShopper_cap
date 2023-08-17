@@ -132,7 +132,7 @@ async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Vegan Oils",
-        photo: 'placeholder'
+        photo: 'placeholder!'
       }
     ]
 
