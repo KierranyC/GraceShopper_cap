@@ -9,10 +9,42 @@ const Register = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const registerUser = async (username, password, setToken) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(username);
+    registerUser(username, password, setToken, setSuccess, setError);
+    setAndStoreUsername(username);
+    setUsername("");
+    setPassword("");
+    setPassConfirm("");
+    console.log(password);
+  };
+
   return (
     <Container>
       <h1>Create an Account</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
