@@ -112,3 +112,5 @@ router.get("/products/:categories", async (req, res, next) => {
       next(error);
     }
   });
+
+  module.exports = router;

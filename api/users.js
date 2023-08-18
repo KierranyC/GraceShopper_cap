@@ -129,3 +129,5 @@ router.get("/users", async (req, res, next) => {
       next({ name, message });
     }
   });
+
+  module.exports = router;
