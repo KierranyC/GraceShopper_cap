@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
-router.get("/health", (req, res, next) => {
+const router = require('express').Router();
+
+router.get('/health', (req, res, next) => {
   res.send({
     healthy: true,
   });

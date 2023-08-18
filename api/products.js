@@ -104,13 +104,13 @@ router.patch("/products/:productId", async (req, res, next) => {
 });
 
 router.get("/products/:categories", async (req, res, next) => {
-    const category = req.params;
-    try {
-        const product = getProductsByCategory(category);
-        res.send(product);
-    } catch (error) {
-      next(error);
-    }
-  });
+  const category = req.params;
+  try {
+    const product = getProductsByCategory(category);
+    res.send(product);
+  } catch (error) {
+    next(error);
+  }
+});
 
-  module.exports = router;
+module.exports = router;
