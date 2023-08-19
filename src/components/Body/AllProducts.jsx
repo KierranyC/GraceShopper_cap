@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
+// This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
 const Products = () => {
   return (
     <div>
