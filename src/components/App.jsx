@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Header/Header";
@@ -49,52 +49,48 @@ const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
+      <Header token={token} setToken={setToken}/>
+      <Routes>
+        <Route exact path="/" element={<Home />}></Route>
 
-        <Route exact path="/product/:productId">
-          <Product />
-        </Route>
+        <Route exact path="/product/:productId" element={<Product />}></Route>
 
-        <Route exact path="/cart">
-          <Cart />
-        </Route>
+        <Route exact path="/cart" element={<Cart />}></Route>
 
-        <Route exact path="/orders">
-          <Orders />
-        </Route>
+        <Route exact path="/orders" element={<Orders />}></Route>
 
-        <Route exact path="/account">
-          <Account />
-        </Route>
+        <Route exact path="/account" element={<Account />}></Route>
 
-        <Route exact path="/wishlist">
-          <Wishlist />
-        </Route>
+        <Route exact path="/wishlist" element={<Wishlist />}></Route>
 
-        <Route exact path="/Register">
-          <Register
-            token={token}
-            setToken={setAndStoreToken}
-            username={username}
-            setUsername={setUsername}
-            setAndStoreUsername={setAndStoreUsername}
-          />
-        </Route>
+        <Route
+          exact
+          path="/Register"
+          element={
+            <Register
+              token={token}
+              setToken={setAndStoreToken}
+              username={username}
+              setUsername={setUsername}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
+        ></Route>
 
-        <Route exact path="/Login">
-          <Login
-            token={token}
-            setToken={setAndStoreToken}
-            username={username}
-            setUsername={setUsername}
-            setAndStoreUsername={setAndStoreUsername}
-          />
-        </Route>
-      </Switch>
+        <Route
+          exact
+          path="/Login"
+          element={
+            <Login
+              token={token}
+              setToken={setAndStoreToken}
+              username={username}
+              setUsername={setUsername}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
+        ></Route>
+      </Routes>
       <footer>
         <p>This is the footer!</p>
         <Contacts />

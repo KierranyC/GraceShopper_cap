@@ -1,6 +1,7 @@
 const { useState } = require("react");
-const { Alert } = require("react-bootstrap");
-const { Form, Link } = require("react-bootstrap/lib/Navbar");
+const { Alert, Button, Form } = require("react-bootstrap");
+import { Link } from "react-router-dom";
+// const { Form, Link } = require("react-bootstrap/lib/Navbar");
 
 // This component logs in users
 const Login = ({ setToken, username, setUsername, setAndStoreUsername }) => {
@@ -19,9 +20,12 @@ const Login = ({ setToken, username, setUsername, setAndStoreUsername }) => {
     history.push("/");
   };
 
+  const DB_URL =
+  process.env.DATABASE_URL
+
   const login = async (username, password, setToken) => {
     try {
-      const response = await fetch(`${BASE_URL}/users/login`, {
+      const response = await fetch(`${DB_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

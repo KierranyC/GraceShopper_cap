@@ -8,9 +8,11 @@ const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const DB_URL = process.env.DATABASE_URL;
+
   const registerUser = async (username, password, setToken) => {
     try {
-      const response = await fetch(`${BASE_URL}/users/register`, {
+      const response = await fetch(`${DB_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
