@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, Button, Form } from "react-bootstrap";
 
+// This is the search bar component. It should have a field for users to search for products, categories to click on to further filter searches, and a voice search button for customers who may have a hard time typing.
 const Search = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

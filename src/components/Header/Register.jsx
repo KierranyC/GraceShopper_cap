@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { Container } from "react-bootstrap/lib/Tab";
 
+// This component registers new users and adds them to the database.
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +42,7 @@ const Register = () => {
   };
 
   return (
-    <Container>
+    <div>
       <h1>Create an Account</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
@@ -91,7 +91,7 @@ const Register = () => {
       </Form>
       {error && <Alert variant="danger">Error: {error}</Alert>}
       {success && <Alert variant="success">Account Created</Alert>}
-    </Container>
+    </div>
   );
 };
 
