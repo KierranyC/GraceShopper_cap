@@ -1,8 +1,8 @@
 const { useState } = require("react");
 const { Alert } = require("react-bootstrap");
 const { Form, Link } = require("react-bootstrap/lib/Navbar");
-const { Container } = require("react-bootstrap/lib/Tab");
 
+// This component logs in users
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   return (
-    <Container>
+    <div>
       <h1>Login</h1>
       <Form>
         <Form.Group className="mb-3">
@@ -46,7 +46,7 @@ const Login = () => {
       </Form>
       {error && <Alert variant="danger">Error: {error}</Alert>}
       {success && <Alert variant="success">Successfully Logged in!</Alert>}
-    </Container>
+    </div>
   );
 };
 
