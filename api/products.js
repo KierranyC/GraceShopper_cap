@@ -9,12 +9,6 @@ const {
 } = require("../db/models");
 const router = express.Router();
 
-router.get("/products", async (req, res, next) => {
-  try {
-  } catch (error) {
-    next(error);
-  }
-});
 
 router.post("/products", async (req, res, next) => {
   if (!req.headers.authorization) {
@@ -38,7 +32,7 @@ router.post("/products", async (req, res, next) => {
   }
 });
 
-router.get("/products", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const products = await getAllProducts();
     res.send(products);
