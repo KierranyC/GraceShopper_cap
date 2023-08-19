@@ -2,6 +2,7 @@ import React from "react";
 import Search from "./Search";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 
+// This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
 const Header = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
