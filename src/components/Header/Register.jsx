@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 
 // This component registers new users and adds them to the database.
-const Register = () => {
-  const [username, setUsername] = useState("");
+const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
@@ -28,7 +27,6 @@ const Register = () => {
       console.error(err);
     }
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();

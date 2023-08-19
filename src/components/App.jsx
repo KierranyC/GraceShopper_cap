@@ -10,11 +10,43 @@ import Cart from "./Header/Cart";
 import Account from "./Header/Account";
 import Wishlist from "./Header/Wishlist";
 import Orders from "./Header/Orders";
-
+import Register from "./Header/Register";
+import Login from "./Header/Login";
 // Ignore the endless amount of imports, I will clean that up after I reexport files from the components index.js
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 const App = () => {
+  const [token, setToken] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
+  const setAndStoreToken = (token) => {
+    localStorage.setItem("token", token);
+    setToken(token);
+  };
+
+  const setAndStoreUsername = (username) => {
+    localStorage.setItem("username", username);
+    setUsername(username);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setToken("");
+    localStorage.removeItem("token");
+  };
+
   return (
     <BrowserRouter className="app-container">
       <Header />
@@ -41,6 +73,26 @@ const App = () => {
 
         <Route exact path="/wishlist">
           <Wishlist />
+        </Route>
+
+        <Route exact path="/Register">
+          <Register
+            token={token}
+            setToken={setAndStoreToken}
+            username={username}
+            setUsername={setUsername}
+            setAndStoreUsername={setAndStoreUsername}
+          />
+        </Route>
+
+        <Route exact path="/Login">
+          <Login
+            token={token}
+            setToken={setAndStoreToken}
+            username={username}
+            setUsername={setUsername}
+            setAndStoreUsername={setAndStoreUsername}
+          />
         </Route>
       </Switch>
       <footer>
