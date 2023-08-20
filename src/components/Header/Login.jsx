@@ -1,18 +1,53 @@
 const { useState } = require("react");
-const { Alert } = require("react-bootstrap");
-const { Form, Link } = require("react-bootstrap/lib/Navbar");
+const { Alert, Button, Form } = require("react-bootstrap");
+import { Link } from "react-router-dom";
+// const { Form, Link } = require("react-bootstrap/lib/Navbar");
 
 // This component logs in users
-const Login = () => {
-  const [username, setUsername] = useState("");
+const Login = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(username);
+    console.log(password);
+    login(username, password, setToken, setSuccess, setError);
+    setAndStoreUsername(username);
+    setUsername("");
+    setPassword("");
+    history.push("/");
+  };
+
+  const DB_URL =
+  process.env.DATABASE_URL
+
+  const login = async (username, password, setToken) => {
+    try {
+      const response = await fetch(`${DB_URL}/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      setToken(result.token);
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <h1>Login</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
