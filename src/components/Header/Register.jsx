@@ -2,17 +2,49 @@ import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 
 // This component registers new users and adds them to the database.
-const Register = () => {
-  const [username, setUsername] = useState("");
+const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const DB_URL = process.env.DATABASE_URL;
+
+  const registerUser = async (username, password, setToken) => {
+    try {
+      const response = await fetch(`${DB_URL}/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(username);
+    registerUser(username, password, setToken, setSuccess, setError);
+    setAndStoreUsername(username);
+    setUsername("");
+    setPassword("");
+    setPassConfirm("");
+    console.log(password);
+  };
+
   return (
     <div>
       <h1>Create an Account</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
