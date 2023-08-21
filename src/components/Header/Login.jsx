@@ -21,7 +21,7 @@ const Login = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   };
 
   const DB_URL =
-  process.env.DATABASE_URL
+    process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
 
   const login = async (username, password, setToken) => {
     try {

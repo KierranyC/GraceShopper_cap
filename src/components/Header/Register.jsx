@@ -8,7 +8,8 @@ const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const DB_URL = process.env.DATABASE_URL;
+  const DB_URL =
+    process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
 
   const registerUser = async (username, password, setToken) => {
     try {

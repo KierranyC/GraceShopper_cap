@@ -8,14 +8,7 @@ const {
 } = require("../db/models");
 const router = express.Router();
 
-router.get("/users", async (req, res, next) => {
-  try {
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/users", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const users = getAllUsers();
     res.send(users);
@@ -24,21 +17,21 @@ router.get("/users", async (req, res, next) => {
   }
 });
 
-router.post("/users", async (req, res, next) => {
-  if (!req.headers.authorization) {
-    next();
-  }
+// router.post("/register", async (req, res, next) => {
+//   if (!req.headers.authorization) {
+//     next();
+//   }
 
-  const { email, username, password, isAdmin } = req.body;
-  try {
-    const user = createUser({ email, username, password, isAdmin });
-    res.send(user);
-  } catch (error) {
-    next(error);
-  }
-});
+//   const { email, username, password, isAdmin } = req.body;
+//   try {
+//     const user = createUser({ email, username, password, isAdmin });
+//     res.send(user);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
-router.get("/users/:userId", async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
   try {
     const user = await getUserById(userId);
@@ -57,7 +50,7 @@ router.get("/users/:userId", async (req, res, next) => {
   }
 });
 
-router.post("/user/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -85,7 +78,7 @@ router.post("/user/login", async (req, res, next) => {
   }
 });
 
-router.post("/users/register", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
