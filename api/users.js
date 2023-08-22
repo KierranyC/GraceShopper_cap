@@ -79,7 +79,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.post("/register", async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, username, password } = req.body;
 
   try {
     const _user = await getUserByUsername(username);
@@ -97,7 +97,7 @@ router.post("/register", async (req, res, next) => {
         name: "PasswordTooShortError",
       });
     } else {
-      const user = await createUser({ username, password });
+      const user = await createUser({ email, username, password });
       const token = jwt.sign(
         {
           id: user.id,

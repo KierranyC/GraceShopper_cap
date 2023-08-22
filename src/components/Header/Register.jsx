@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
+import { signUp } from "../../api";
 
 // This component registers new users and adds them to the database.
 const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
@@ -7,34 +8,38 @@ const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
 
-  const DB_URL =
-    process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
 
-  const registerUser = async (username, password, setToken) => {
-    try {
-      const response = await fetch(`${DB_URL}/users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-      const result = await response.json();
-      console.log(result);
-      return result;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
+  // const DB_URL =
+  //   process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
+
+  // const registerUser = async (username, password, setToken) => {
+  //   try {
+  //     const response = await fetch(`${DB_URL}/users/register`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         username,
+  //         password,
+  //       }),
+  //     });
+  //     const result = await response.json();
+  //     console.log(result);
+  //     return result;
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(username);
-    registerUser(username, password, setToken, setSuccess, setError);
+    // registerUser(username, password, setToken, setSuccess, setError);
+    signUp(email, username, password);
     setAndStoreUsername(username);
     setUsername("");
     setPassword("");
@@ -56,6 +61,19 @@ const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
             minLength="8"
             maxLength="20"
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            required
+            value={email}
+            placeholder="Enter a Email Adress"
+            minLength="10"
+            maxLength="255"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
 
