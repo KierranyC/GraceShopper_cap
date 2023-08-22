@@ -71,10 +71,45 @@ async function getOrderByUserId({ userId }) {
     }
 };
 
+async function updateOrder(userId, productId, productQuantity, orderStatus) {
+    try {
+        const { rows: [updatedOrder] } = await client.query(`
+            UPDATE orders
+            SET "productQuantity"=$1, "orderStatus"=$2
+            WHERE "userId"=$3 AND "productId"=$4
+            RETURNING *;
+        `, [userId, productId, productQuantity, orderStatus]);
+        return updatedOrder;
+    }   catch (error) {
+        console.error(error);
+    }
+}
+
+async function updateQuantity(productId, quantity, ...fields) {
+    try {
+        const string = fields.map(
+            (key, index) => `"${key}" = $${index + 1}`
+        ).join(", ");
+        
+        const { rows: [quantity] } = await client.query(`
+            UPDATE quantity
+            SET ${string}
+            WHERE "productId=$${fields.length + 1}
+            RETURNING *;
+        `, Object.values(fields));
+
+        return quantity;
+    }   catch(error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     createOrder,
     getOrderById,
     getAllOrders,
     getOrderByProductId,
-    getOrderByUserId
+    getOrderByUserId,
+    updateOrder,
+    updateQuantity
 };
