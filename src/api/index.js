@@ -107,7 +107,7 @@ export const fetchProductsCategory = async (category) => {
 
 // POST - register user
 
-export const signUp = async (username, password) => {
+export const signUp = async (email, username, password) => {
   const maxLength = 8;
   const minLength = 7;
   if (username.length < maxLength) {
@@ -123,6 +123,7 @@ export const signUp = async (username, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        email,
         username,
         password,
       }),
