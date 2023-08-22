@@ -8,11 +8,19 @@ const Products = () => {
 
   useEffect(() => {
     async function getProducts() {
-      const data = await fetchAllProducts()
-      console.log(data)
-      setAllProducts(data)
+      try{
+        const data = await fetchAllProducts();
+        if (Array.isArray(data)){
+          setAllProducts(data);
+        } else {
+          console.error("Invalid API response format"); 
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+
     }
-    getProducts()
+    getProducts();
   }, [])
 
   return (
@@ -22,13 +30,13 @@ const Products = () => {
         {allProducts.map(product => (
           <Card key={product.id} value={product} className="mb-3">
             <Card.Body>
-              {/* <Card.Img>{product.photo}</Card.Img> */}
+              {/*<Card.Img>{product.photo}</Card.Img>*/}
               <Card.Title>{product.title}</Card.Title>
               <Card.Subtitle>{product.price}</Card.Subtitle>
               <Form>
                 <Form.Group>
                   <Button>-</Button>
-                  {/* <Form.Control type="text"></Form.Control> */}
+                  {/* <Form.Control type="text"></Form.Control>*/}
                   <Button>+</Button>
                 </Form.Group>
                 <Button>Add to Cart</Button>
