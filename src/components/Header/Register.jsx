@@ -1,50 +1,34 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { signUp } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 // This component registers new users and adds them to the database.
-const Register = ({ setToken, username, setUsername, setAndStoreUsername }) => {
+const Register = ({
+  token,
+  setToken,
+  username,
+  setUsername,
+  setAndStoreUsername,
+}) => {
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
-
-
-
-  // const DB_URL =
-  //   process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
-
-  // const registerUser = async (username, password, setToken) => {
-  //   try {
-  //     const response = await fetch(`${DB_URL}/users/register`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         password,
-  //       }),
-  //     });
-  //     const result = await response.json();
-  //     console.log(result);
-  //     return result;
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(username);
-    // registerUser(username, password, setToken, setSuccess, setError);
-    signUp(email, username, password);
+    await signUp(email, username, password);
     setAndStoreUsername(username);
     setUsername("");
+    setEmail("");
     setPassword("");
     setPassConfirm("");
     console.log(password);
+    navigate("/");
   };
 
   return (

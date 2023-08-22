@@ -1,47 +1,31 @@
 const { useState } = require("react");
 const { Alert, Button, Form } = require("react-bootstrap");
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { userLogin } from "../../api";
 // const { Form, Link } = require("react-bootstrap/lib/Navbar");
 
 // This component logs in users
-const Login = ({ setToken, username, setUsername, setAndStoreUsername }) => {
+const Login = ({
+  token,
+  setToken,
+  username,
+  setUsername,
+  setAndStoreUsername,
+}) => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(username);
     console.log(password);
-    login(username, password, setToken, setSuccess, setError);
+    await userLogin(username, password);
     setAndStoreUsername(username);
     setUsername("");
     setPassword("");
-    history.push("/");
-  };
-
-  const DB_URL =
-    process.env.DATABASE_URL || `http://localhost:5432/grace_shopper_db/api`;
-
-  const login = async (username, password, setToken) => {
-    try {
-      const response = await fetch(`${DB_URL}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-      const result = await response.json();
-      console.log(result);
-      setToken(result.token);
-      return result;
-    } catch (err) {
-      console.error(err);
-    }
+    navigate("/");
   };
 
   return (

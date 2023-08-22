@@ -17,20 +17,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.post("/register", async (req, res, next) => {
-//   if (!req.headers.authorization) {
-//     next();
-//   }
-
-//   const { email, username, password, isAdmin } = req.body;
-//   try {
-//     const user = createUser({ email, username, password, isAdmin });
-//     res.send(user);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
   try {
