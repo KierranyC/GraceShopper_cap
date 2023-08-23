@@ -22,20 +22,20 @@ const Login = ({
 
     const login = async () => {
       try {
-        const result = await userLogin(username, password)
-        localStorage.setItem("token", result.token)
-        setToken(result.token)
-        setAndStoreUsername(username)
+        const result = await userLogin(username, password);
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+        setAndStoreUsername(username);
         setUsername("");
         setPassword("");
         if (result.token) {
-          navigate("/")
+          navigate("/");
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    login()
+    };
+    login();
   };
 
   return (

@@ -23,23 +23,23 @@ const Register = ({
 
     const registerUser = async () => {
       try {
-        const result = await signUp(email, username, password)
-        console.log("NEW USER:", result)
-        localStorage.setItem("token", result.token)
-        setToken(result.token)
-        setAndStoreUsername(username)
-        setUsername('')
-        setEmail('')
-        setPassword('')
-        setPassConfirm('')
+        const result = await signUp(email, username, password);
+        console.log("NEW USER:", result);
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+        setAndStoreUsername(username);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setPassConfirm("");
         if (result.token) {
-          navigate('/')
+          navigate("/");
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    registerUser()
+    };
+    registerUser();
   };
 
   return (
