@@ -20,15 +20,26 @@ const Register = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(username);
-    await signUp(email, username, password);
-    setAndStoreUsername(username);
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setPassConfirm("");
-    console.log(password);
-    navigate("/");
+
+    const registerUser = async () => {
+      try {
+        const result = await signUp(email, username, password);
+        console.log("NEW USER:", result);
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+        setAndStoreUsername(username);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setPassConfirm("");
+        if (result.token) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    registerUser();
   };
 
   return (
