@@ -25,6 +25,7 @@ const Login = ({
         const result = await userLogin(username, password)
         localStorage.setItem("token", result.token)
         setToken(result.token)
+        setAndStoreUsername(username)
         setUsername("");
         setPassword("");
         if (result.token) {

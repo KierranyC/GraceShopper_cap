@@ -27,7 +27,9 @@ const Register = ({
         console.log("NEW USER:", result)
         localStorage.setItem("token", result.token)
         setToken(result.token)
+        setAndStoreUsername(username)
         setUsername('')
+        setEmail('')
         setPassword('')
         setPassConfirm('')
         if (result.token) {
