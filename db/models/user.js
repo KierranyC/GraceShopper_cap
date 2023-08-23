@@ -65,10 +65,11 @@ async function getUser({ username, password }) {
   // matches the password that is already saved with the
   // username in the db
   const user = await getUserByUsername(username);
+  console.log(user)
   const hashedPassword = user.password;
 
   const isValid = await bcrypt.compare(password, hashedPassword);
-  if (isValid) {
+  if (!isValid) {
     return false;
   } else {
     delete user.password;

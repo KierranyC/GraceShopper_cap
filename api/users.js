@@ -7,6 +7,7 @@ const {
   getUserByUsername,
 } = require("../db/models");
 const router = express.Router();
+const jwt = require('jsonwebtoken')
 
 router.get("/", async (req, res, next) => {
   try {
@@ -41,6 +42,7 @@ router.post("/login", async (req, res, next) => {
 
   try {
     const user = await getUser({ username, password });
+    console.log(user)
     if (user) {
       const token = jwt.sign(
         {
@@ -58,6 +60,10 @@ router.post("/login", async (req, res, next) => {
         message: "you're logged in!",
         token,
       });
+    } else {
+      res.send({
+        message: 'INCORRECT LOGIN DETAILS!'
+      })
     }
   } catch (error) {
     next(error);
