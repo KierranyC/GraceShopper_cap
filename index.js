@@ -1,26 +1,26 @@
 // This is the Web Server
-require("dotenv").config();
-const express = require("express");
+import dotenv from "dotenv";
+import express, { Router } from "express";
 const server = express();
 
 // enable cross-origin resource sharing to proxy api requests
 // from localhost:3000 to localhost:4000 in local dev env
-const cors = require("cors");
+import cors from "cors";
 server.use(cors());
 
 // create logs for everything
-const morgan = require("morgan");
+import morgan from "morgan";
 server.use(morgan("dev"));
 
 // handle application/json requests
 server.use(express.json());
 
 // here's our static files
-const path = require("path");
+import path from "path";
 server.use(express.static(path.join(__dirname, "build")));
 
 // here's our API
-server.use("/api", require("./api"));
+server.use("/api", Router);
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
@@ -28,7 +28,7 @@ server.use((req, res, next) => {
 });
 
 // bring in the DB connection
-const { client } = require("./db");
+import { client } from "./db/client"; // Assuming "./db" is the correct path to your DB client
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
@@ -46,4 +46,4 @@ const handle = server.listen(PORT, async () => {
 });
 
 // export server and handle for routes/*.test.js
-module.exports = { server, handle };
+export { server, handle };

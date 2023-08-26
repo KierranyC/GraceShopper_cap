@@ -41,5 +41,3 @@ const Account = ({ username, setUsername, token }) => {
     </div>
   );
 };
-
-export default Account;

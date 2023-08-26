@@ -4,7 +4,7 @@ import { signUp } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 // This component registers new users and adds them to the database.
-const Register = ({
+export const Register = ({
   token,
   setToken,
   username,
@@ -43,8 +43,8 @@ const Register = ({
   };
 
   return (
-    <div>
-      <h1>Create an Account</h1>
+    <div className="text-center form">
+      <h1 className="form-header">Create an Account</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -108,5 +108,3 @@ const Register = ({
     </div>
   );
 };
-
-export default Register;

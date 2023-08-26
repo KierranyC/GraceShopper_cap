@@ -102,16 +102,22 @@ export const updateProduct = async (
   }
 };
 
-// GET - get all products in a certain category
+// GET - get all products in a certain category and search term
 
-export const fetchProductsCategory = async (category) => {
+export const getProductsByCategoryAndSearch = async ({
+  category,
+  searchTerm,
+}) => {
   try {
-    const response = await fetch(`${BASE_URL}/products/${category}`, {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${BASE_URL}/products?category=${category}&search=${searchTerm}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },,
       },
-    });
-    const result = await response.json();
+    );
+    const result = await response.json();;
     console.log(result);
     return result;
   } catch (err) {
@@ -121,7 +127,13 @@ export const fetchProductsCategory = async (category) => {
 
 // POST - register user
 
-export const signUp = async (email, username, password) => {
+export const signUp = async (
+  email,
+  username,
+  password,
+  setToken,
+  setIsLoggedIn
+) => {
   const maxLength = 8;
   const minLength = 7;
   if (username.length < maxLength) {
@@ -144,6 +156,7 @@ export const signUp = async (email, username, password) => {
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
+    setToken(result.data.token);
     console.log(result);
     return result;
   } catch (error) {
@@ -180,7 +193,7 @@ export const fetchAllUsers = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users`, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json",,
       },
     });
     const result = await response.json();
@@ -188,7 +201,7 @@ export const fetchAllUsers = async () => {
     return result;
   } catch (err) {
     console.error(err);
-  }
+  },
 };
 
 // GET - getting a user
@@ -200,14 +213,32 @@ export const fetchUser = async (username) => {
         "Content-Type": "application/json",
       },
     });
-    const result = await response.json();
+    const result = await response.json();;
     delete result.password;
-    console.log(result);
-    return result;
+    console.log(result);;
+    return result;;
   } catch (err) {
     console.error(err);
   }
 };
+
+// DELETE - delete a product
+
+const deleteProduct = async (id, setDeleted, deleted, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    result.success ? setDeleted(deleted + 1) : null;
+    return result;
+  } catch (error) {
+    console.error(error);
+  };
 
 // GET - getting all user's orders
 export const fetchOrders = async (username, token) => {
@@ -224,6 +255,7 @@ export const fetchOrders = async (username, token) => {
   } catch (err) {
     console.error(err);
   }
+};
 };
 
 //PATCH - Updating Users
