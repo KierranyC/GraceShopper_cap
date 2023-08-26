@@ -21,7 +21,6 @@ export const Home = () => {
 
   return (
     <div className="home">
-      <h1>Hello World! I am crazy</h1>
       <Featured />
       <Products filteredProducts={filteredProducts} />
     </div>

@@ -14,6 +14,8 @@ import {
   Orders,
   Register,
   Login,
+  Search,
+  Categories,
 } from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
@@ -96,7 +98,7 @@ export const App = () => {
           }
         ></Route>
       </Routes>
-      <footer>
+      <footer className="footer">
         <Contacts />
       </footer>
     </BrowserRouter>
