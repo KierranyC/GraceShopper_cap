@@ -53,8 +53,8 @@ const Register = ({
             required
             value={username}
             placeholder="Enter a username"
-            minLength="3"
-            maxLength="20"
+            minLength={3}
+            maxLength={20}
             onChange={(e) => setUsername(e.target.value)}
           />
         </Form.Group>
@@ -66,8 +66,8 @@ const Register = ({
             required
             value={email}
             placeholder="Enter a Email Adress"
-            minLength="10"
-            maxLength="255"
+            minLength={10}
+            maxLength={255}
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
@@ -79,8 +79,8 @@ const Register = ({
             required
             value={password}
             placeholder="Enter a password"
-            minLength="8"
-            maxLength="20"
+            minLength={8}
+            maxLength={20}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
@@ -92,8 +92,8 @@ const Register = ({
             required
             value={passConfirm}
             placeholder="Re-enter your password"
-            minLength="8"
-            maxLength="20"
+            minLength={8}
+            maxLength={20}
             onChange={(e) => setPassConfirm(e.target.value)}
           />
         </Form.Group>
