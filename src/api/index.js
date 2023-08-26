@@ -1,5 +1,4 @@
-export const BASE_URL = 'http://localhost:4000/api';
-
+export const BASE_URL = "http://localhost:4000/api";
 
 // GET - get all products
 
@@ -12,20 +11,27 @@ export const fetchAllProducts = async () => {
     });
     const result = await response.json();
     console.log(result);
-    return result
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
 
 // POST - create new product
 
-export const createProduct = async (title, description, price, quantity, category, photo) => {
+export const createProduct = async (
+  title,
+  description,
+  price,
+  quantity,
+  category,
+  photo
+) => {
   try {
     const response = await fetch(`${BASE_URL}/products`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,
@@ -33,14 +39,14 @@ export const createProduct = async (title, description, price, quantity, categor
         price,
         quantity,
         category,
-        photo
+        photo,
       }),
     });
-    const result = await response.json()
+    const result = await response.json();
     console.log(result);
-    return result
+    return result;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 };
 
@@ -50,26 +56,34 @@ export const fetchProduct = async (productId) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${productId}`, {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
-    const result = await response.json()
+    const result = await response.json();
     console.log(result);
-    return result
+    return result;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 // PATCH - update a product
 
-export const updateProduct = async (productId, title, descripton, price, quantity, category, photo) => {
+export const updateProduct = async (
+  productId,
+  title,
+  descripton,
+  price,
+  quantity,
+  category,
+  photo
+) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${productId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,
@@ -77,37 +91,49 @@ export const updateProduct = async (productId, title, descripton, price, quantit
         price,
         quantity,
         category,
-        photo
-      })
+        photo,
+      }),
     });
-    const result = await response.json()
-    console.log(result)
-    return result
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-// GET - get all products in a certain category
-
-export const fetchProductsCategory = async (category) => {
-  try {
-    const response = await fetch(`${BASE_URL}/products/${category}`, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const result = await response.json()
+    const result = await response.json();
     console.log(result);
-    return result
+    return result;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
+
+// GET - get all products in a certain category and search term
+
+export const getProductsByCategoryAndSearch = async ({
+  category,
+  searchTerm,
+}) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/products?category=${category}&search=${searchTerm}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // POST - register user
 
-export const signUp = async (username, password) => {
+export const signUp = async (
+  email,
+  username,
+  password,
+  setToken,
+  setIsLoggedIn
+) => {
   const maxLength = 8;
   const minLength = 7;
   if (username.length < maxLength) {
@@ -123,18 +149,20 @@ export const signUp = async (username, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        email,
         username,
         password,
       }),
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
+    setToken(result.data.token);
     console.log(result);
-    return result
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 // POST - user login
 
@@ -147,17 +175,17 @@ export const userLogin = async (username, password) => {
       },
       body: JSON.stringify({
         username,
-        password
+        password,
       }),
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
     console.log(result);
-    return result
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 // GET - getting all users
 
@@ -165,15 +193,32 @@ export const fetchAllUsers = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users`, {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
-    const result = await response.json()
-    console.log(result)
-    return result
+    const result = await response.json();
+    console.log(result);
+    return result;
   } catch (err) {
     console.error(err);
   }
-}
+};
 
-// 
+// DELETE - delete a product
+
+const deleteProduct = async (id, setDeleted, deleted, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    result.success ? setDeleted(deleted + 1) : null;
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};

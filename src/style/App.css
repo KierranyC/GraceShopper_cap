@@ -27,12 +27,46 @@ nav.navbar {
   flex: 1 1 50%;
 }
 
-footer {
-  position: fixed;
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+  padding: 50px;
+  border: 2px solid grey;
+  border-radius: 20px;
+}
+
+.form-header {
+  background-color: darkblue;
+  color: lightgrey;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.footer {
+  position: absolute;
   bottom: 0;
   width: 100%;
   background-color: rgb(40, 40, 40);
   color: lightgrey;
   text-align: center;
   padding: 20px 0;
+}
+
+.contacts-form {
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid grey;
+  border-radius: 15px;
 }

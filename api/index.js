@@ -1,6 +1,8 @@
-const router = require('express').Router();
+import express from "express";
 
-router.get('/health', (req, res, next) => {
+const router = express.Router();
+
+router.get("/health", (req, res, next) => {
   res.send({
     healthy: true,
   });
@@ -14,10 +16,10 @@ router.use("/users", usersRouter);
 const productsRouter = require("./products");
 router.use("/products", productsRouter);
 
-// const ordersRouter = require("./orders");
-// router.use("/orders", ordersRouter);
+const ordersRouter = require("./orders");
+router.use("/orders", ordersRouter);
 
-// const reviewsRouter = require("./reviews");
-// router.use("/reviews", reviewsRouter);
+const reviewsRouter = require("./reviews");
+router.use("/reviews", reviewsRouter);
 
 module.exports = router;

@@ -1,45 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { fetchAllProducts } from "../../api";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
-const Products = () => {
-  const [allProducts, setAllProducts] = useState([]);
+export const Products = ({ setId, loggedIn }) => {
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    async function getProducts() {
-      const data = await fetchAllProducts()
-      console.log(data)
-      setAllProducts(data)
-    }
-    getProducts()
-  }, [])
+    fetchAllProducts(setProducts);
+  }, []);
+
+  const handleClick = (productId) => {
+    setId(productId);
+  };
+
+  const filterProducts = () => {
+    const filtered = products.filter((product) => {
+      const lowerCaseQuery = searchTerm.toLowerCase();
+      return (
+        product.title.toLowerCase().includes(lowerCaseQuery) ||
+        product.description.toLowerCase().includes(lowerCaseQuery)
+      );
+    });
+    setFilteredProducts(filtered);
+  };
+
+  const productsToDisplay = searchTerm.length ? filteredProducts : products;
 
   return (
-    <div>
+    <div className="container-fluid">
       <h1 className="text-center">Products</h1>
-      <div className="products">
-        {allProducts.map(product => (
-          <Card key={product.id} value={product} className="mb-3">
+      <Row className="products">
+        {productsToDisplay.map((product) => (
+          <Col
+            key={product.id}
+            value={product}
+            md={4}
+            className="product-card mb-3"
+          >
             <Card.Body>
-              {/* <Card.Img>{product.photo}</Card.Img> */}
+              {/*<Card.Img variant="top">{product.image}</Card.Img>*/}
               <Card.Title>{product.title}</Card.Title>
               <Card.Subtitle>{product.price}</Card.Subtitle>
-              <Form>
-                <Form.Group>
-                  <Button>-</Button>
-                  {/* <Form.Control type="text"></Form.Control> */}
-                  <Button>+</Button>
-                </Form.Group>
-                <Button>Add to Cart</Button>
-                <Button>Add to Wishlist</Button>
-              </Form>
+              <Button>Add to Cart</Button>
+              <Button>Add to Wishlist</Button>
             </Card.Body>
-          </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
     </div>
   );
 };
-
-export default Products;
