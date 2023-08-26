@@ -77,11 +77,14 @@ const App = () => {
         <Route
           exact
           path="/User/Edit"
-          setUsername={setUsername}
-          username={username}
-          token={token}
-          setAndStoreUsername={setAndStoreUsername}
-          element={<AccountForm />}
+          element={
+            <AccountForm
+              setUsername={setUsername}
+              username={username}
+              token={token}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
         ></Route>
 
         <Route

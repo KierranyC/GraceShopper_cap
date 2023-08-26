@@ -6,7 +6,6 @@ import { userLogin } from "../../api";
 
 // This component logs in users
 const Login = ({
-  token,
   setToken,
   username,
   setUsername,

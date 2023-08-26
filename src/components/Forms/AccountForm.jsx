@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { editUser, fetchUser } from "../../api";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +22,6 @@ export const AccountForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const user = fetchUser(username);
-    setUserId(user.id);
     editUser(username, password, email, userId, token);
     setAndStoreUsername(username);
     setUsername("");
@@ -33,6 +31,12 @@ export const AccountForm = ({
     setUserId("");
     navigate("/account");
   };
+
+  useEffect(() => {
+    const user = fetchUser(username);
+    setUserId(user.id);
+    setUsername("");
+  }, []);
 
   return (
     <div>
