@@ -2,10 +2,9 @@ const { useState } = require("react");
 const { Alert, Button, Form } = require("react-bootstrap");
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../../api";
-// const { Form, Link } = require("react-bootstrap/lib/Navbar");
 
 // This component logs in users
-const Login = ({
+export const Login = ({
   token,
   setToken,
   username,
@@ -39,8 +38,8 @@ const Login = ({
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="text-center form">
+      <h1 className="form-header">Login</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -78,5 +77,3 @@ const Login = ({
     </div>
   );
 };
-
-export default Login;
