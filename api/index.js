@@ -1,6 +1,8 @@
-const router = require('express').Router();
+import express from "express";
 
-router.get('/health', (req, res, next) => {
+const router = express.Router();
+
+router.get("/health", (req, res, next) => {
   res.send({
     healthy: true,
   });

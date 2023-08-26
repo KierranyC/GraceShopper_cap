@@ -1,3 +1,4 @@
+const { async } = require("q");
 const client = require("../client");
 
 async function createProduct({
@@ -21,7 +22,7 @@ async function createProduct({
     );
     return product;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -87,6 +88,18 @@ async function getProductsByCategory({ category }) {
   } catch (error) {
     throw error;
   }
+}
+
+async function getProductsBySearch({ searchTerm }) {
+  try {
+    const { rows: products } = await client.query(
+      `
+      SELECT products.*
+      FROM products
+      WHERE title 
+      `
+    );
+  } catch (error) {}
 }
 
 async function updateProduct({ id, ...fields }) {

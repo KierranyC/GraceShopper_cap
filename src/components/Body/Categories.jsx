@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar } from "react-bootstrap";
 
 // This component acts as a subnav for the AllProducts page. It should display a list of clickable cateogries to filter the products displayed.
-const Categories = () => {
+export const Categories = () => {
   return (
     <div>
       <Navbar>
@@ -11,5 +11,3 @@ const Categories = () => {
     </div>
   );
 };
-
-export default Categories;

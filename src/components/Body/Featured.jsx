@@ -2,7 +2,7 @@ import React from "react";
 import { Carousel } from "react-bootstrap/esm";
 
 // This component is a slideshow of featured products. This could be directly tied to sales, ratings, customer view history, or even manually added to an arrary of featured products by an admin. Have not decided best approach yet.
-const Featured = () => {
+export const Featured = () => {
   return (
     <div>
       <Carousel>
@@ -32,5 +32,3 @@ const Featured = () => {
     </div>
   );
 };
-
-export default Featured;

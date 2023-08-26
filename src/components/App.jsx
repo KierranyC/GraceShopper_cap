@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "../style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "./Header/Header";
-import Home from "./Body/Home";
-import Contacts from "./Body/Contacts";
-import Product from "./Body/Product";
-import Cart from "./Header/Cart";
-import Account from "./Header/Account";
-import Wishlist from "./Header/Wishlist";
-import Orders from "./Header/Orders";
-import Register from "./Header/Register";
-import Login from "./Header/Login";
-// Ignore the endless amount of imports, I will clean that up after I reexport files from the components index.js
+import "../style/App.css";
+
+import {
+  Header,
+  Home,
+  Contacts,
+  Product,
+  Cart,
+  Account,
+  Wishlist,
+  Orders,
+  Register,
+  Login,
+} from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
-const App = () => {
+export const App = () => {
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+      setIsLoggedIn(true);
     }
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
@@ -49,7 +54,7 @@ const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken}/>
+      <Header token={token} setToken={setToken} />
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
 
@@ -92,11 +97,8 @@ const App = () => {
         ></Route>
       </Routes>
       <footer>
-        <p>This is the footer!</p>
         <Contacts />
       </footer>
     </BrowserRouter>
   );
 };
-
-export default App;

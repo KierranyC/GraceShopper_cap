@@ -1,11 +1,11 @@
-import React from "react";
-import Search from "./Search";
+import React, { useState, useEffect } from "react";
+import { Search } from "./Search.jsx";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { getProductsByCategoryAndSearch } from "../../api";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-const Header = ({ token, setToken }) => {
+export const Header = ({ token, setToken }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
@@ -77,5 +77,3 @@ const Header = ({ token, setToken }) => {
     </Navbar>
   );
 };
-
-export default Header;
