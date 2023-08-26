@@ -114,7 +114,7 @@ const App = () => {
       </Routes>
       <footer>
         <p>This is the footer!</p>
-        <Contacts />
+        {/* <Contacts /> */}
       </footer>
     </BrowserRouter>
   );

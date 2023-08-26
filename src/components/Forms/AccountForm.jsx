@@ -6,7 +6,12 @@ import { useNavigate } from "react-router-dom";
 // This component is a form for account information. This component should render a form for customers to modify their username, password, customer name (if thats something we want to include), and optionally profile pic. Not sure yet if I want to include payment information directly onto this form, or have it be somewhere else.
 
 // This component COULD become a Modal but not sure how to get them working yet :(
-export const AccountForm = ({ username, setUsername, setAndStoreUsername }) => {
+export const AccountForm = ({
+  setUsername,
+  username,
+  token,
+  setAndStoreUsername,
+}) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
@@ -21,6 +26,7 @@ export const AccountForm = ({ username, setUsername, setAndStoreUsername }) => {
     setUserId(user.id);
     editUser(username, password, email, userId, token);
     setAndStoreUsername(username);
+    setUsername("");
     setPassword("");
     setPassConfirm("");
     setEmail("");
