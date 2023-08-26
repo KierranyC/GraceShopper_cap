@@ -12,6 +12,7 @@ import Wishlist from "./Header/Wishlist";
 import Orders from "./Header/Orders";
 import Register from "./Header/Register";
 import Login from "./Header/Login";
+import { AccountForm } from "./Forms/AccountForm";
 // Ignore the endless amount of imports, I will clean that up after I reexport files from the components index.js
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
@@ -73,7 +74,15 @@ const App = () => {
 
         <Route exact path="/wishlist" element={<Wishlist />}></Route>
 
-        <Route exact path="/User/Edit" setUsername={setUsername}></Route>
+        <Route
+          exact
+          path="/User/Edit"
+          setUsername={setUsername}
+          username={username}
+          token={token}
+          setAndStoreUsername={setAndStoreUsername}
+          element={<AccountForm />}
+        ></Route>
 
         <Route
           exact

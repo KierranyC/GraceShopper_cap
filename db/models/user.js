@@ -65,7 +65,7 @@ async function getUser({ username, password }) {
   // matches the password that is already saved with the
   // username in the db
   const user = await getUserByUsername(username);
-  console.log(user)
+  console.log(user);
   const hashedPassword = user.password;
 
   const isValid = await bcrypt.compare(password, hashedPassword);
@@ -98,6 +98,33 @@ async function getUserByUsername(username) {
   }
 }
 
+async function updateUser({ id, ...fields }) {
+  try {
+    const string = Object.keys(fields)
+      .map(
+        (key, index) =>
+          `"${key}" = $${index + 1}
+  `
+      )
+      .join(", ");
+
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+    UPDATE users
+    SET ${string} 
+    WHERE id=${id}
+    RETURNING *;
+  `,
+      Object.values(fields)
+    );
+    return user;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   // add your database adapter fns here
   createUser,
@@ -105,4 +132,5 @@ module.exports = {
   getUserById,
   getUser,
   getUserByUsername,
+  updateUser,
 };

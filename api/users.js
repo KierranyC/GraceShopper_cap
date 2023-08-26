@@ -5,9 +5,11 @@ const {
   getUserById,
   getUser,
   getUserByUsername,
+  updateUser,
 } = require("../db/models");
 const router = express.Router();
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { requireAuthentication } = require("./utils");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -112,6 +114,37 @@ router.post("/register", async (req, res, next) => {
     }
   } catch ({ name, message }) {
     next({ name, message });
+  }
+});
+
+router.patch("/:userId", requireAuthentication, async (req, res, next) => {
+  const { userId } = req.params;
+  const { username, password, email } = req.body;
+
+  try {
+    const bearerHeader = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET);
+
+    const user = await getUserById(userId);
+
+    if (user.id === decoded.id) {
+      const updatedUser = await updateUser({
+        id: userId,
+        username: username,
+        password: password,
+        email: email,
+      });
+
+      res.send(updatedUser);
+    } else {
+      res.status(403).send({
+        error: "ERROR",
+        message: `User ${decoded.username} is not allowed to update ${user.username}`,
+        name: "UNAUTHORIZED USER",
+      });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 

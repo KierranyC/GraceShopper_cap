@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
+import { editUser, fetchUser } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 // This component is a form for account information. This component should render a form for customers to modify their username, password, customer name (if thats something we want to include), and optionally profile pic. Not sure yet if I want to include payment information directly onto this form, or have it be somewhere else.
 
 // This component COULD become a Modal but not sure how to get them working yet :(
-export const AccountForm = () => {
+export const AccountForm = ({ username, setUsername, setAndStoreUsername }) => {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const [passConfirm, setPassConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const user = fetchUser(username);
+    setUserId(user.id);
+    editUser(username, password, email, userId, token);
+    setAndStoreUsername(username);
+    setPassword("");
+    setPassConfirm("");
+    setEmail("");
+    setUserId("");
+    navigate("/account");
+  };
+
   return (
     <div>
       <h1>Account Form</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Edit Username:</Form.Label>
           <Form.Control
@@ -18,7 +41,9 @@ export const AccountForm = () => {
             placeholder="Enter a new username"
             minLength={3}
             maxLength={20}
-            onChange={e}
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
           />
         </Form.Group>
 
@@ -30,7 +55,9 @@ export const AccountForm = () => {
             placeholder="Enter a new email address"
             minLength={10}
             maxLength={255}
-            onChange={e}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
           />
         </Form.Group>
 
@@ -43,7 +70,9 @@ export const AccountForm = () => {
             placeholder="Enter a new password"
             minLength={8}
             maxLength={20}
-            onChange={e}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
           />
         </Form.Group>
 
@@ -56,7 +85,9 @@ export const AccountForm = () => {
             placeholder="Re-enter your new password"
             minLength={8}
             maxLength={20}
-            onChange={e}
+            onChange={(event) => {
+              setPassConfirm(event.target.value);
+            }}
           />
         </Form.Group>
 

@@ -37,7 +37,7 @@ const Account = ({ username, setUsername, token }) => {
         </Card>
       ))} */}
       <h3>Account Settings</h3>
-      <Button onClick={handleEdit}>Edit Username and Password</Button>
+      <Button onClick={handleEdit}>Edit Account Information</Button>
     </div>
   );
 };
