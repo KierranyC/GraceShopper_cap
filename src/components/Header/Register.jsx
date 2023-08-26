@@ -53,7 +53,7 @@ const Register = ({
             required
             value={username}
             placeholder="Enter a username"
-            minLength="8"
+            minLength="3"
             maxLength="20"
             onChange={(e) => setUsername(e.target.value)}
           />

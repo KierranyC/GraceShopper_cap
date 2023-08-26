@@ -49,7 +49,7 @@ const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken}/>
+      <Header token={token} setToken={setToken} username={username} />
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
 
@@ -59,9 +59,21 @@ const App = () => {
 
         <Route exact path="/orders" element={<Orders />}></Route>
 
-        <Route exact path="/account" element={<Account />}></Route>
+        <Route
+          exact
+          path="/account"
+          element={
+            <Account
+              setUsername={setUsername}
+              username={username}
+              token={token}
+            />
+          }
+        ></Route>
 
         <Route exact path="/wishlist" element={<Wishlist />}></Route>
+
+        <Route exact path="/User/Edit" setUsername={setUsername}></Route>
 
         <Route
           exact

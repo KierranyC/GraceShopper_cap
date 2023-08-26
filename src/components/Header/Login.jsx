@@ -49,7 +49,7 @@ const Login = ({
             required
             value={username}
             placeholder="Enter your username"
-            minLength="8"
+            minLength="3"
             maxLength="20"
             onChange={(e) => setUsername(e.target.value)}
           />

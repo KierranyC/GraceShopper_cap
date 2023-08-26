@@ -2,10 +2,10 @@ import React from "react";
 import Search from "./Search";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-const Header = ({ token, setToken }) => {
+const Header = ({ token, setToken, username }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
@@ -48,32 +48,33 @@ const Header = ({ token, setToken }) => {
         Company Name
       </Navbar.Brand>
       <Search />
-      <Nav>
-        <NavDropdown title="Account Name" id="basic-nav-dropdown">
-          <NavDropdown.Item href="/account">Account</NavDropdown.Item>
-          <NavDropdown.Item href="/wishlist">Wishlist</NavDropdown.Item>
-          <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-          <NavDropdown.Item href="/orders">Orders</NavDropdown.Item>
-          <NavDropdown.Divider />
-          {newUser === true && (
-            <>
-              <NavDropdown.Item href="/" onClick={handleLogin}>
-                Login
-              </NavDropdown.Item>
-              <NavDropdown.Item href="/" onClick={handleRegister}>
-                Register
-              </NavDropdown.Item>
-            </>
-          )}
-          {newUser === false && (
-            <>
-              <NavDropdown.Item href="/" onClick={handleLogout}>
-                Logout
-              </NavDropdown.Item>
-            </>
-          )}
-        </NavDropdown>
-      </Nav>
+      {newUser === false && (
+        <Nav>
+          <NavDropdown title={username} id="basic-nav-dropdown">
+            <NavDropdown.Item href="/account">Account</NavDropdown.Item>
+            <NavDropdown.Item href="/wishlist">Wishlist</NavDropdown.Item>
+            <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+            <NavDropdown.Item href="/orders">Orders</NavDropdown.Item>
+            <NavDropdown.Divider />
+
+            <NavDropdown.Item href="/" onClick={handleLogout}>
+              Logout
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      )}
+      {newUser === true && (
+        <Nav>
+          <NavDropdown title="Sign Up Here!" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/" onClick={handleLogin}>
+              Login
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/" onClick={handleRegister}>
+              Register
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      )}
     </Navbar>
   );
 };
