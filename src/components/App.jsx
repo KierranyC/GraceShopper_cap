@@ -16,7 +16,7 @@ import {
   Login,
   Search,
   Categories,
-} from "../components/index";
+} from "../components/index.js";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
@@ -72,7 +72,7 @@ export const App = () => {
 
         <Route
           exact
-          path="/Register"
+          path="/register"
           element={
             <Register
               token={token}
@@ -86,7 +86,7 @@ export const App = () => {
 
         <Route
           exact
-          path="/Login"
+          path="/login"
           element={
             <Login
               token={token}
