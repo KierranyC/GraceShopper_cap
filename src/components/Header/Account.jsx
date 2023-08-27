@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const { Button } = require("react-bootstrap");
 
 // This component renders all relevant information to a specific user. This should display their username, password(hidden) with the ability to change their password, past orders, wishlist(s), and their cart. I am unsure if I want payment methods to be on account or something else more secure
-const Account = ({ username, setUsername, token }) => {
+export const Account = ({ username, setUsername, token }) => {
   const [orders, setOrders] = useState("");
   const [products, setProducts] = useState("");
   const navigate = useNavigate();

@@ -114,7 +114,7 @@ export const getProductsByCategoryAndSearch = async ({
       {
         headers: {
           "Content-Type": "application/json",
-        },,
+        },
       },
     );
     const result = await response.json();;
@@ -193,7 +193,7 @@ export const fetchAllUsers = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users`, {
       headers: {
-        "Content-Type": "application/json",,
+        "Content-Type": "application/json",
       },
     });
     const result = await response.json();
@@ -201,7 +201,7 @@ export const fetchAllUsers = async () => {
     return result;
   } catch (err) {
     console.error(err);
-  },
+  }
 };
 
 // GET - getting a user
@@ -238,7 +238,7 @@ const deleteProduct = async (id, setDeleted, deleted, token) => {
     return result;
   } catch (error) {
     console.error(error);
-  };
+  };};
 
 // GET - getting all user's orders
 export const fetchOrders = async (username, token) => {
@@ -256,7 +256,7 @@ export const fetchOrders = async (username, token) => {
     console.error(err);
   }
 };
-};
+
 
 //PATCH - Updating Users
 export const editUser = async (username, password, email, userId, token) => {
