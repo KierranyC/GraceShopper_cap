@@ -96,6 +96,19 @@ export const App = () => {
 
         <Route
           exact
+          path="/User/Edit"
+          element={
+            <AccountForm
+              setUsername={setUsername}
+              username={username}
+              token={token}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
+        ></Route>
+
+        <Route
+          exact
           path="/Register"
           element={
             <Register
@@ -110,7 +123,7 @@ export const App = () => {
 
         <Route
           exact
-          path="/Login"
+          path="/login"
           element={
             <Login
               token={token}

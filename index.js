@@ -1,6 +1,6 @@
 // This is the Web Server
 import dotenv from "dotenv";
-import express, { Router } from "express";
+import express from "express";
 const server = express();
 
 // enable cross-origin resource sharing to proxy api requests
@@ -20,7 +20,8 @@ import path from "path";
 server.use(express.static(path.join(__dirname, "build")));
 
 // here's our API
-server.use("/api", Router);
+import { Router } from "express";
+server.use("/api", Router());
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
@@ -28,7 +29,7 @@ server.use((req, res, next) => {
 });
 
 // bring in the DB connection
-import { client } from "./db/client"; // Assuming "./db" is the correct path to your DB client
+import { client } from "./db/client.js";
 
 // connect to the server
 const PORT = process.env.PORT || 4000;

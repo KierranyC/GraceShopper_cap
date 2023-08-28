@@ -72,7 +72,7 @@ export const fetchProduct = async (productId) => {
 export const updateProduct = async (
   productId,
   title,
-  descripton,
+  description,
   price,
   quantity,
   category,
@@ -87,7 +87,7 @@ export const updateProduct = async (
       },
       body: JSON.stringify({
         title,
-        descripton,
+        description,
         price,
         quantity,
         category,
@@ -224,8 +224,9 @@ export const fetchUser = async (username) => {
 
 // DELETE - delete a product
 
-const deleteProduct = async (id, setDeleted, deleted, token) => {
+const deleteProduct = async (id, setDeleted, deleted) => {
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/products/${id}`, {
       method: "DELETE",
       headers: {
