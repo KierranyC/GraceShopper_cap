@@ -16,11 +16,15 @@ server.use(morgan("dev"));
 server.use(express.json());
 
 // here's our static files
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 import path from "path";
 server.use(express.static(path.join(__dirname, "build")));
 
 // here's our API
 import { Router } from "express";
+const router = Router();
+import apiRouter from "./api/index.js";
+router.use("/products", apiRouter.products);
 server.use("/api", Router());
 
 // by default serve up the react app if we don't recognize the route
@@ -29,7 +33,7 @@ server.use((req, res, next) => {
 });
 
 // bring in the DB connection
-import { client } from "./db/client.js";
+import client from "./db/client.js";
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
