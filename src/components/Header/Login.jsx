@@ -1,8 +1,7 @@
-const { useState } = require("react");
-const { Alert, Button, Form } = require("react-bootstrap");
+import React, { useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../../api";
-
 // This component logs in users
 export const Login = ({
   token,
@@ -77,3 +76,4 @@ export const Login = ({
     </div>
   );
 };
+export default Login;

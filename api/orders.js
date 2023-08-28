@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get("/orders", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
   } catch (error) {
     next(error);
@@ -26,7 +26,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/orders", async (req, res, send) => {
+router.post("/", async (req, res, send) => {
   const newOrder = req.body;
 
   try {
@@ -37,7 +37,7 @@ router.post("/orders", async (req, res, send) => {
   }
 });
 
-router.get("/orders/:orderId", async (req, res, next) => {
+router.get("/:orderId", async (req, res, next) => {
   const { orderId } = req.params;
 
   try {
@@ -56,7 +56,7 @@ router.get("/orders/:orderId", async (req, res, next) => {
   }
 });
 
-router.get("/order/:userId", async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -75,7 +75,7 @@ router.get("/order/:userId", async (req, res, next) => {
   }
 });
 
-router.patch("/orders/:orderId", async (req, res, next) => {
+router.patch("/:orderId", async (req, res, next) => {
   const { orderId } = req.params;
   const { orderStatus, quantity } = req.body;
 
@@ -91,7 +91,7 @@ router.patch("/orders/:orderId", async (req, res, next) => {
   }
 });
 
-router.patch("/orders/:productId", async (req, res, next) => {
+router.patch("/:productId", async (req, res, next) => {
   const { productId } = req.params;
   const { quantity } = req.body;
   try {

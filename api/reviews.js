@@ -1,9 +1,9 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createReview,
   getReviewByUserId,
-  getReviewByProductId
-} = require("../db/models");
+  getReviewByProductId,
+} from "../db/models/reviews.js";
 const router = express.Router();
 
 router.get("/reviews", async (req, res, next) => {
@@ -43,4 +43,4 @@ router.get("/reviews/:productId", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

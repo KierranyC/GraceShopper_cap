@@ -1,5 +1,4 @@
-const client = require("../client");
-
+import client from "../client.js";
 async function createOrder({ userId, productId }) {
     try {
         const { rows: [order] } = await client.query(`
@@ -104,7 +103,7 @@ async function updateQuantity(productId, quantity, ...fields) {
     }
 }
 
-module.exports = {
+export {
     createOrder,
     getOrderById,
     getAllOrders,
@@ -112,4 +111,4 @@ module.exports = {
     getOrderByUserId,
     updateOrder,
     updateQuantity
-};
+  };
