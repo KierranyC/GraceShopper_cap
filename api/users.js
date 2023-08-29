@@ -20,17 +20,17 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:username", async (req, res, next) => {
-  const { username } = req.params;
+router.get("/:userId", async (req, res, next) => {
+  const { userId } = req.params;
   try {
-    const user = await getUserByUsername(username);
+    const user = await getUserById(userId);
 
     if (user) {
       res.send(user);
     } else {
       res.send({
         error: "ERROR",
-        message: `user ${username} not found`,
+        message: `user ${userId} not found`,
         title: "userNotFound",
       });
     }

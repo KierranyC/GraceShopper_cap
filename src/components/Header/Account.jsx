@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchOrders } from "../../api";
+import { fetchOrders, fetchUser } from "../../api";
 import { useNavigate } from "react-router-dom";
 const { Button } = require("react-bootstrap");
 
 // This component renders all relevant information to a specific user. This should display their username, password(hidden) with the ability to change their password, past orders, wishlist(s), and their cart. I am unsure if I want payment methods to be on account or something else more secure
-export const Account = ({ username, setUsername, token }) => {
+export const Account = ({ username, setUsername, token, id, setId }) => {
   const [orders, setOrders] = useState("");
   const [products, setProducts] = useState("");
   const navigate = useNavigate();
@@ -17,6 +17,8 @@ export const Account = ({ username, setUsername, token }) => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
+      const user = fetchUser(storedUsername);
+      setId(user.id)
     }
     setOrders(fetchOrders(username, token));
     console.log("my orders:", orders);

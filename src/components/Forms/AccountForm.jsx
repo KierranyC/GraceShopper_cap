@@ -11,10 +11,11 @@ export const AccountForm = ({
   username,
   token,
   setAndStoreUsername,
+  id,
+  setId,
 }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -22,21 +23,20 @@ export const AccountForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    editUser(username, password, email, userId, token);
+    editUser(username, password, email, id, token);
     setAndStoreUsername(username);
     setUsername("");
     setPassword("");
     setPassConfirm("");
     setEmail("");
-    setUserId("");
     navigate("/account");
   };
 
-  useEffect(() => {
-    const user = fetchUser(username);
-    setUserId(user.id);
-    setUsername("");
-  }, []);
+  // useEffect(() => {
+  //   const user = fetchUser(username);
+  //   setUserId(user.id);
+  //   setUsername("");
+  // }, []);
 
   return (
     <div>
