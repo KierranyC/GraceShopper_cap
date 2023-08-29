@@ -137,4 +137,5 @@ export {
   getProductByTitle,
   getProductsByCategory,
   updateProduct,
+  getProductsBySearch,
 };
