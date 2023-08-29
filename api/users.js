@@ -6,13 +6,14 @@ import {
   getUser,
   getUserByUsername,
   updateUser,
-}from "../db/models/user.js";
-import jwt from 'jsonwebtoken';
+} from "../db/models/user.js";
+import requireAuthentication from "./utils.js";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const users = getAllUsers();
+    const users = await getAllUsers();
     res.send(users);
   } catch (error) {
     next(error);
@@ -43,7 +44,7 @@ router.post("/login", async (req, res, next) => {
 
   try {
     const user = await getUser({ username, password });
-    console.log(user)
+    console.log(user);
     if (user) {
       const token = jwt.sign(
         {
@@ -63,8 +64,8 @@ router.post("/login", async (req, res, next) => {
       });
     } else {
       res.send({
-        message: 'INCORRECT LOGIN DETAILS!'
-      })
+        message: "INCORRECT LOGIN DETAILS!",
+      });
     }
   } catch (error) {
     next(error);
@@ -146,6 +147,5 @@ router.patch("/:userId", requireAuthentication, async (req, res, next) => {
     next(error);
   }
 });
-
 
 export default router;

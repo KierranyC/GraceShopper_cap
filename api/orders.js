@@ -3,7 +3,7 @@ import {
   createOrder,
   getOrderById,
   getAllOrders,
-  getOrderByUserId,
+  getOrderByUsername,
   updateOrder,
   updateQuantity,
 } from "../db/models/orders.js";
@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
-    const orders = getAllOrders();
+    const orders = await getAllOrders();
     res.send(orders);
   } catch (error) {
     next(error);
@@ -60,7 +60,7 @@ router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const order = await getOrderByUserId(userId);
+    const order = await getOrderByUsername(userId);
     if (order) {
       res.send(order);
     } else {

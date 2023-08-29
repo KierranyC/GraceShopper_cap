@@ -100,7 +100,7 @@ router.patch("/:productId", async (req, res, next) => {
 router.get("/:categories", async (req, res, next) => {
   const category = req.params;
   try {
-    const product = getProductsByCategory(category);
+    const product = await getProductsByCategory(category);
     res.send(product);
   } catch (error) {
     next(error);

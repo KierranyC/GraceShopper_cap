@@ -97,6 +97,7 @@ async function getUserByUsername(username) {
     return user;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
@@ -127,4 +128,11 @@ async function updateUser({ id, ...fields }) {
   }
 }
 
-export { createUser, getAllUsers, getUserById, getUser, getUserByUsername };
+export {
+  createUser,
+  getAllUsers,
+  getUserById,
+  getUser,
+  getUserByUsername,
+  updateUser,
+};

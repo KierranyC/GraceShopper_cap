@@ -141,7 +141,7 @@ export {
     getOrderById,
     getAllOrders,
     getOrderByProductId,
-    getOrderByUserId,
+    getOrderByUsername,
     updateOrder,
     updateQuantity
   };
