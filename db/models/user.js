@@ -1,6 +1,8 @@
 // grab our db client connection to use with our adapters
-const client = require("../client");
-const bcrypt = require("bcrypt");
+import client from "../client.js";
+import bcrypt from "bcrypt";
+
+const SALT_COUNT = 10;
 
 async function createUser({ email, username, password, isAdmin }) {
   // create new user, stores their hashed password in the db,
@@ -125,12 +127,4 @@ async function updateUser({ id, ...fields }) {
   }
 }
 
-module.exports = {
-  // add your database adapter fns here
-  createUser,
-  getAllUsers,
-  getUserById,
-  getUser,
-  getUserByUsername,
-  updateUser,
-};
+export { createUser, getAllUsers, getUserById, getUser, getUserByUsername };

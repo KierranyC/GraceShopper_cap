@@ -15,13 +15,21 @@ server.use(morgan("dev"));
 // handle application/json requests
 server.use(express.json());
 
+server.get("/favicon.ico", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "favicon.ico"));
+});
+
 // here's our static files
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 import path from "path";
-server.use(express.static(path.join(__dirname, "build")));
+server.use("/static", express.static(path.join(__dirname, "build")));
 
 // here's our API
 import { Router } from "express";
-server.use("/api", Router());
+const router = Router();
+import apiRouter from "./api/index.js";
+router.use("/products", apiRouter);
+server.use("/api", apiRouter);
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
@@ -29,7 +37,7 @@ server.use((req, res, next) => {
 });
 
 // bring in the DB connection
-import { client } from "./db/client.js";
+import client from "./db/client.js";
 
 // connect to the server
 const PORT = process.env.PORT || 4000;

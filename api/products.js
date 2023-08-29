@@ -1,16 +1,16 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createProduct,
   getAllProducts,
   getProductById,
   getProductByTitle,
   getProductsByCategory,
   updateProduct,
-} = require("../db/models");
+} from "../db/models/products.js";
 const router = express.Router();
 
 
-router.post("/products", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   if (!req.headers.authorization) {
     next();
   }
@@ -41,7 +41,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/products/:productId", async (req, res, next) => {
+router.get("/:productId", async (req, res, next) => {
   const { productId } = req.params;
   try {
     const product = await getProductById(productId);
@@ -60,7 +60,7 @@ router.get("/products/:productId", async (req, res, next) => {
   }
 });
 
-router.patch("/products/:productId", async (req, res, next) => {
+router.patch("/:productId", async (req, res, next) => {
   if (!req.headers.authorization) {
     next();
   }
@@ -97,7 +97,7 @@ router.patch("/products/:productId", async (req, res, next) => {
   }
 });
 
-router.get("/products/:categories", async (req, res, next) => {
+router.get("/:categories", async (req, res, next) => {
   const category = req.params;
   try {
     const product = getProductsByCategory(category);
@@ -107,4 +107,4 @@ router.get("/products/:categories", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

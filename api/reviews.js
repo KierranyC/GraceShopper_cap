@@ -1,19 +1,19 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createReview,
   getReviewByUserId,
-  getReviewByProductId
-} = require("../db/models");
+  getReviewByProductId,
+} from "../db/models/reviews.js";
 const router = express.Router();
 
-router.get("/reviews", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/reviews", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   const { userId, productId, body } = req.body;
   try {
     const review = createReview({ userId, productId, body });
@@ -23,7 +23,7 @@ router.post("/reviews", async (req, res, next) => {
   }
 });
 
-router.get("/reviews/userId", async (req, res, next) => {
+router.get("/userId", async (req, res, next) => {
   const { userId } = req.body;
   try {
     const reviews = getReviewByUserId(userId);
@@ -33,7 +33,7 @@ router.get("/reviews/userId", async (req, res, next) => {
   }
 });
 
-router.get("/reviews/:productId", async (req, res, next) => {
+router.get("/:productId", async (req, res, next) => {
   const { productId } = req.body;
   try {
     const reviews = getReviewByProductId(productId);
@@ -43,4 +43,4 @@ router.get("/reviews/:productId", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

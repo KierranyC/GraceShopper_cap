@@ -1,7 +1,6 @@
-const { createUser, getAllUsers } = require("./models/user");
-const { createProduct } = require("./models/products");
-const client = require("./client");
-const { getAllOrders, createOrder } = require("./models");
+import client from "./client.js";
+import { createUser } from './models/user.js';
+import { createProduct } from './models/products.js';
 
 async function createTables() {
   console.log("Starting to build tables...");
@@ -240,8 +239,8 @@ async function rebuildDB() {
   }
 }
 
-module.exports = {
+export {
   rebuildDB,
   dropTables,
-  createTables,
+  createTables
 };

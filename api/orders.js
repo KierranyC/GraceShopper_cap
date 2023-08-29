@@ -1,15 +1,16 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createOrder,
   getOrderById,
   getAllOrders,
+  getOrderByUserId,
   updateOrder,
   updateQuantity,
-  getOrderByUsername,
-} = require("../db/models");
+} from "../db/models/orders.js";
+
 const router = express.Router();
 
-router.get("/orders", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
   } catch (error) {
     next(error);
@@ -25,7 +26,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/orders", async (req, res, send) => {
+router.post("/", async (req, res, send) => {
   const newOrder = req.body;
 
   try {
@@ -36,14 +37,14 @@ router.post("/orders", async (req, res, send) => {
   }
 });
 
-router.get("/orders/:orderId", async (req, res, next) => {
+router.get("/:orderId", async (req, res, next) => {
   const { orderId } = req.params;
 
   try {
     const order = await getOrderById(orderId);
     if (order) {
       res.send(order);
-    } else if (!order || order === null) {
+    } else {
       res.send({
         error: "ERROR",
         title: "OrderNotFound",
@@ -55,18 +56,18 @@ router.get("/orders/:orderId", async (req, res, next) => {
   }
 });
 
-router.get("/order/:username", async (req, res, next) => {
-  const { username } = req.params;
+router.get("/:userId", async (req, res, next) => {
+  const { userId } = req.params;
 
   try {
-    const order = await getOrderByUsername(username);
+    const order = await getOrderByUserId(userId);
     if (order) {
       res.send(order);
     } else {
       res.send({
         error: "ERROR",
-        title: "OrderNotFoundWithUsername",
-        message: `${username}'s order not found.`,
+        title: "OrderNotFoundWithUserId",
+        message: `${userId}'s order not found.`,
       });
     }
   } catch (error) {
@@ -74,7 +75,7 @@ router.get("/order/:username", async (req, res, next) => {
   }
 });
 
-router.patch("/orders/:orderId", async (req, res, next) => {
+router.patch("/:orderId", async (req, res, next) => {
   const { orderId } = req.params;
   const { orderStatus, quantity } = req.body;
 
@@ -90,7 +91,7 @@ router.patch("/orders/:orderId", async (req, res, next) => {
   }
 });
 
-router.patch("/orders/:productId", async (req, res, next) => {
+router.patch("/:productId", async (req, res, next) => {
   const { productId } = req.params;
   const { quantity } = req.body;
   try {
@@ -101,4 +102,4 @@ router.patch("/orders/:productId", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

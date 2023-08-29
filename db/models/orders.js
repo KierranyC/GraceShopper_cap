@@ -1,5 +1,4 @@
-const client = require("../client");
-
+import client from "../client.js";
 async function createOrder({ userId, productId }) {
   try {
     const {
@@ -137,12 +136,12 @@ async function updateQuantity(productId, quantity, ...fields) {
   }
 }
 
-module.exports = {
-  createOrder,
-  getOrderById,
-  getAllOrders,
-  getOrderByProductId,
-  getOrderByUsername,
-  updateOrder,
-  updateQuantity,
-};
+export {
+    createOrder,
+    getOrderById,
+    getAllOrders,
+    getOrderByProductId,
+    getOrderByUserId,
+    updateOrder,
+    updateQuantity
+  };
