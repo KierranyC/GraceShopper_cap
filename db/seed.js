@@ -1,5 +1,5 @@
-import client from './client';
-import { rebuildDB } from './seedData';
+import client from "./client.js";
+import { rebuildDB } from './seedData.js';
 
 client
   .connect()

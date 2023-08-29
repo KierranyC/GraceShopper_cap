@@ -1,6 +1,6 @@
-import client from './client';
-import { createUser } from './models/user';
-import { createProduct } from './models/products';
+import client from "./client.js";
+import { createUser } from './models/user.js';
+import { createProduct } from './models/products.js';
 
 async function createTables() {
   console.log("Starting to build tables...");
