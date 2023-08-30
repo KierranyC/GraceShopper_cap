@@ -1,8 +1,8 @@
 import express from "express";
 
-const router = express.Router();
+const apiRouter = express.Router();
 
-router.get("/health", (req, res, next) => {
+apiRouter.get("/health", (req, res, next) => {
   res.send({
     healthy: true,
   });
@@ -10,16 +10,16 @@ router.get("/health", (req, res, next) => {
 
 // place your routers here
 
-const usersRouter = require("./users");
-router.use("/users", usersRouter);
+import usersRouter from "./users.js";
+apiRouter.use("/users", usersRouter);
 
-const productsRouter = require("./products");
-router.use("/products", productsRouter);
+import productsRouter from "./products.js";
+apiRouter.use("/products", productsRouter);
 
-const ordersRouter = require("./orders");
-router.use("/orders", ordersRouter);
+import ordersRouter from "./orders.js";
+apiRouter.use("/orders", ordersRouter);
 
-const reviewsRouter = require("./reviews");
-router.use("/reviews", reviewsRouter);
+import reviewsRouter from "./reviews.js";
+apiRouter.use("/reviews", reviewsRouter);
 
-module.exports = router;
+export default apiRouter;

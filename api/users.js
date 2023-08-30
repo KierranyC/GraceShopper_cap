@@ -1,34 +1,36 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createUser,
   getAllUsers,
   getUserById,
   getUser,
   getUserByUsername,
-} = require("../db/models");
+  updateUser,
+} from "../db/models/user.js";
+import requireAuthentication from "./utils.js";
+import jwt from "jsonwebtoken";
 const router = express.Router();
-const jwt = require('jsonwebtoken')
 
 router.get("/", async (req, res, next) => {
   try {
-    const users = getAllUsers();
+    const users = await getAllUsers();
     res.send(users);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:userId", async (req, res, next) => {
-  const { userId } = req.params;
+router.get("/:username", async (req, res, next) => {
+  const { username } = req.params;
   try {
-    const user = await getUserById(userId);
+    const user = await getUserByUsername(username);
 
     if (user) {
       res.send(user);
     } else {
       res.send({
         error: "ERROR",
-        message: `user ${userId} not found`,
+        message: `user ${username} not found`,
         title: "userNotFound",
       });
     }
@@ -42,7 +44,7 @@ router.post("/login", async (req, res, next) => {
 
   try {
     const user = await getUser({ username, password });
-    console.log(user)
+    console.log(user);
     if (user) {
       const token = jwt.sign(
         {
@@ -62,8 +64,8 @@ router.post("/login", async (req, res, next) => {
       });
     } else {
       res.send({
-        message: 'INCORRECT LOGIN DETAILS!'
-      })
+        message: "INCORRECT LOGIN DETAILS!",
+      });
     }
   } catch (error) {
     next(error);
@@ -115,4 +117,35 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+router.patch("/:userId", requireAuthentication, async (req, res, next) => {
+  const { userId } = req.params;
+  const { username, password, email } = req.body;
+
+  try {
+    const bearerHeader = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET);
+
+    const user = await getUserById(userId);
+
+    if (user.id === decoded.id) {
+      const updatedUser = await updateUser({
+        id: userId,
+        username: username,
+        password: password,
+        email: email,
+      });
+
+      res.send(updatedUser);
+    } else {
+      res.status(403).send({
+        error: "ERROR",
+        message: `User ${decoded.username} is not allowed to update ${user.username}`,
+        name: "UNAUTHORIZED USER",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+export default router;

@@ -16,7 +16,8 @@ import {
   Login,
   Search,
   Categories,
-} from "../components/index.js";
+  AccountForm,
+} from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
@@ -56,7 +57,7 @@ export const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken} />
+      <Header token={token} setToken={setToken} username={username} />
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
 
@@ -66,13 +67,49 @@ export const App = () => {
 
         <Route exact path="/orders" element={<Orders />}></Route>
 
-        <Route exact path="/account" element={<Account />}></Route>
+        <Route
+          exact
+          path="/account"
+          element={
+            <Account
+              setUsername={setUsername}
+              username={username}
+              token={token}
+            />
+          }
+        ></Route>
 
         <Route exact path="/wishlist" element={<Wishlist />}></Route>
 
         <Route
           exact
-          path="/register"
+          path="/User/Edit"
+          element={
+            <AccountForm
+              setUsername={setUsername}
+              username={username}
+              token={token}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
+        ></Route>
+
+        <Route
+          exact
+          path="/User/Edit"
+          element={
+            <AccountForm
+              setUsername={setUsername}
+              username={username}
+              token={token}
+              setAndStoreUsername={setAndStoreUsername}
+            />
+          }
+        ></Route>
+
+        <Route
+          exact
+          path="/Register"
           element={
             <Register
               token={token}
