@@ -9,14 +9,26 @@ export const Products = ({ setId, loggedIn }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    fetchAllProducts(setProducts);
+    async function getProducts() {
+      try {
+        const data = await fetchAllProducts();
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error("Invalid API response format");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    }
+    getProducts();
   }, []);
 
   const handleClick = (productId) => {
     setId(productId);
   };
 
-  const filterProducts = () => {
+  const filter = () => {
     const filtered = products.filter((product) => {
       const lowerCaseQuery = searchTerm.toLowerCase();
       return (
@@ -25,6 +37,7 @@ export const Products = ({ setId, loggedIn }) => {
       );
     });
     setFilteredProducts(filtered);
+    console.log(filtered);
   };
 
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
@@ -33,7 +46,7 @@ export const Products = ({ setId, loggedIn }) => {
     <div className="container-fluid">
       <h1 className="text-center">Products</h1>
       <Row className="products">
-        {productsToDisplay.map((product) => (
+        {products.map((product) => (
           <Col
             key={product.id}
             value={product}

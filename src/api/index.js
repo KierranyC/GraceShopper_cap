@@ -115,9 +115,9 @@ export const getProductsByCategoryAndSearch = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
-    const result = await response.json();
+    const result = await response.json();;
     console.log(result);
     return result;
   } catch (err) {
@@ -204,6 +204,24 @@ export const fetchAllUsers = async () => {
   }
 };
 
+// GET - getting a user
+
+export const fetchUser = async (username) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${username}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();;
+    delete result.password;
+    console.log(result);;
+    return result;;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // DELETE - delete a product
 
 const deleteProduct = async (id, setDeleted, deleted) => {
@@ -221,5 +239,44 @@ const deleteProduct = async (id, setDeleted, deleted) => {
     return result;
   } catch (error) {
     console.error(error);
+  };};
+
+// GET - getting all user's orders
+export const fetchOrders = async (username, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/orders/${username}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+//PATCH - Updating Users
+export const editUser = async (username, password, email, userId, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        email,
+      }),
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error(err);
   }
 };

@@ -4,7 +4,7 @@ export { App } from "./App.jsx";
 // Export Header componenents
 export { Dashboard } from "./Header/Admin/Dashboard.jsx";
 export { KPI } from "./Header/Admin/KPI.jsx";
-export { Account } from "./Header/Account.jsx";
+export {Account } from "./Header/Account.jsx";
 export { Cart } from "./Header/Cart.jsx";
 export { Header } from "./Header/Header.jsx";
 export { Login } from "./Header/Login.jsx";

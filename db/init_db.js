@@ -1,8 +1,5 @@
-const {
-  client,
-  // declare your model imports here
-  // for example, User
-} = require('./');
+import { client, /* Import your model modules here */ } from './';
+
 
 async function buildTables() {
   try {
