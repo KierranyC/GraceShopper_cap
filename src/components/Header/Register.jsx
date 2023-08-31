@@ -32,7 +32,7 @@ export const Register = ({
         setEmail("");
         setPassword("");
         setPassConfirm("");
-        if (result.token) {
+        if (token) {
           navigate("/");
         }
       } catch (error) {

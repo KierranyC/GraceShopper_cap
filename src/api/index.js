@@ -160,7 +160,6 @@ export const signUp = async (
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
-    setToken(result.data.token);
     console.log(result);
     return result;
   } catch (error) {
@@ -210,11 +209,12 @@ export const fetchAllUsers = async () => {
 
 // GET - getting a user
 
-export const fetchUser = async (username) => {
+export const fetchUserData = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/${username}`, {
+    const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     });
     const result = await response.json();
@@ -235,7 +235,7 @@ const deleteProduct = async (id, setDeleted, deleted) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
     const result = await response.json();
@@ -243,20 +243,19 @@ const deleteProduct = async (id, setDeleted, deleted) => {
     return result;
   } catch (error) {
     console.error(error);
-  }
+  };
 };
 
 // GET - getting all user's orders
-export const fetchOrders = async (username, token) => {
+export const fetchUserOrders = async (username, token) => {
   try {
-    const response = await fetch(`${BASE_URL}/orders/${username}`, {
+    const response = await fetch(`${BASE_URL}/users/${username}/orders`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -270,7 +269,7 @@ export const editUser = async (username, password, email, userId, token) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
         username,

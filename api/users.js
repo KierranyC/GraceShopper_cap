@@ -1,15 +1,20 @@
 import express from "express";
 import {
   createUser,
+  createGuest,
   getAllUsers,
   getUserById,
   getUser,
   getUserByUsername,
   updateUser,
 } from "../db/models/user.js";
+import {
+  getOrdersByUsername
+} from "../db/models/orders.js";
 import requireAuthentication from "./utils.js";
 import jwt from "jsonwebtoken";
 const router = express.Router();
+import { v4 as uuidv4 } from 'uuid';
 
 router.get("/", async (req, res, next) => {
   try {
@@ -20,17 +25,54 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:username", async (req, res, next) => {
-  const { username } = req.params;
+router.get('/me', requireAuthentication, async (req, res, next) => {
+
   try {
-    const user = await getUserByUsername(username);
+    const bearerHeader = req.headers.authorization.split(' ')[1]
+    const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET)
+    console.log("DECODED USER DATA:", decoded)
+    res.send({
+      id: decoded.id,
+      username: decoded.username
+    })
+  } catch (error) {
+    next()
+  }
+})
+
+router.get("/:username/orders", async (req, res, next) => {
+  const { username } = req.params;
+
+  try {
+    const bearerHeader = req.headers.authorization.split(' ')[1]
+    const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET)
+
+    const orders = await getOrdersByUsername(decoded.username);
+    if (orders) {
+      res.send(orders);
+    } else {
+      res.send({
+        error: "ERROR",
+        title: "OrdersNotFoundWithUsername",
+        message: `${username}'s orders is NOT found.`,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/:userId", async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await getUserById(userId);
 
     if (user) {
       res.send(user);
     } else {
       res.send({
         error: "ERROR",
-        message: `user ${username} not found`,
+        message: `user ${userId} not found`,
         title: "userNotFound",
       });
     }
@@ -41,10 +83,10 @@ router.get("/:username", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
-
+  console.log(password)
   try {
     const user = await getUser({ username, password });
-    console.log(user);
+    // console.log(user);
     if (user) {
       const token = jwt.sign(
         {
@@ -121,6 +163,19 @@ router.patch("/:userId", requireAuthentication, async (req, res, next) => {
   const { userId } = req.params;
   const { username, password, email } = req.body;
 
+  const updatedFields = {}
+
+  if (username.length > 0) {
+    updatedFields.username = username
+  }
+
+  if (password.length > 0) {
+    updatedFields.password = password
+  }
+
+  if (email.length > 0) {
+    updatedFields.email = email
+  }
   try {
     const bearerHeader = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET);
@@ -128,13 +183,12 @@ router.patch("/:userId", requireAuthentication, async (req, res, next) => {
     const user = await getUserById(userId);
 
     if (user.id === decoded.id) {
-      const updatedUser = await updateUser({
-        id: userId,
-        username: username,
-        password: password,
-        email: email,
-      });
+      const updatedUser = await updateUser(
+        decoded.id,
+        updatedFields
+      );
 
+      console.log("NEW USER:", updatedUser)
       res.send(updatedUser);
     } else {
       res.status(403).send({

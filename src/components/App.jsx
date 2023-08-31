@@ -86,6 +86,8 @@ export const App = () => {
               setUsername={setUsername}
               username={username}
               token={token}
+              id={id}
+              setId={setId}
             />
           }
         ></Route>
@@ -101,6 +103,8 @@ export const App = () => {
               username={username}
               token={token}
               setAndStoreUsername={setAndStoreUsername}
+              id={id}
+              setId={setId}
             />
           }
         ></Route>

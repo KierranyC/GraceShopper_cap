@@ -3,19 +3,13 @@ import {
   createOrder,
   getOrderById,
   getAllOrders,
-  getOrderByUsername,
   updateOrder,
   updateQuantity,
 } from "../db/models/orders.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 router.get("/", async (req, res, next) => {
   try {
@@ -56,25 +50,6 @@ router.get("/:orderId", async (req, res, next) => {
   }
 });
 
-router.get("/:userId", async (req, res, next) => {
-  const { userId } = req.params;
-
-  try {
-    const order = await getOrderByUsername(userId);
-    if (order) {
-      res.send(order);
-    } else {
-      res.send({
-        error: "ERROR",
-        title: "OrderNotFoundWithUserId",
-        message: `${userId}'s order not found.`,
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.patch("/:orderId", async (req, res, next) => {
   const { orderId } = req.params;
   const { orderStatus, quantity } = req.body;
@@ -101,5 +76,7 @@ router.patch("/:productId", async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 export default router;
