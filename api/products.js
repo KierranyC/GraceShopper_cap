@@ -6,9 +6,9 @@ import {
   getProductByTitle,
   getProductsByCategory,
   updateProduct,
+  getProductsBySearch,
 } from "../db/models/products.js";
 const router = express.Router();
-
 
 router.post("/", async (req, res, next) => {
   if (!req.headers.authorization) {

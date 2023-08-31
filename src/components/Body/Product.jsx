@@ -31,7 +31,7 @@ export const Product = ({ productId }) => {
       <Card>
         <Card.Title>{product.title}</Card.Title>
         {/* <Card.Subtitle>Rating</Card.Subtitle> */}
-        {/* <Card.Img variant="top" src="/images/img-not-found.png" /> */}
+        <Card.Img src="../../images/img-not-found.png"></Card.Img>
         <Card.Text>{product.price}</Card.Text>
         <Card.Text>{product.quantity}</Card.Text>
         <Card.Text>{product.category}</Card.Text>
