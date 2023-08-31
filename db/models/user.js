@@ -1,6 +1,8 @@
 // grab our db client connection to use with our adapters
-const client = require("../client");
-const bcrypt = require("bcrypt");
+import client from "../client.js";
+import bcrypt from "bcrypt";
+
+const SALT_COUNT = 10;
 
 async function createUser({ email, username, password, isAdmin }) {
   // create new user, stores their hashed password in the db,
@@ -23,6 +25,20 @@ async function createUser({ email, username, password, isAdmin }) {
     delete user.password;
 
     return user;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function createGuest({ email, sessionId }) {
+  try {
+    const { rows: [guest] } = await client.query(`
+    INSERT INTO guests(email, "sessionId")
+    VALUES ($1, $2)
+    RETURNING *;
+    `);
+
+    return guest;
   } catch (error) {
     console.error(error);
   }
@@ -65,7 +81,7 @@ async function getUser({ username, password }) {
   // matches the password that is already saved with the
   // username in the db
   const user = await getUserByUsername(username);
-  console.log(user)
+  // console.log(user);
   const hashedPassword = user.password;
 
   const isValid = await bcrypt.compare(password, hashedPassword);
@@ -95,14 +111,43 @@ async function getUserByUsername(username) {
     return user;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
-module.exports = {
-  // add your database adapter fns here
+async function updateUser(id, fields = {}) {
+  try {
+    const string = Object.keys(fields)
+      .map(
+        (key, index) =>
+          `"${key}" = $${index + 1}
+  `
+      )
+      .join(", ");
+
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+    UPDATE users
+    SET ${string} 
+    WHERE id=${id}
+    RETURNING *;
+  `,
+      Object.values(fields)
+    );
+    return user;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export {
   createUser,
+  createGuest,
   getAllUsers,
   getUserById,
   getUser,
   getUserByUsername,
+  updateUser,
 };

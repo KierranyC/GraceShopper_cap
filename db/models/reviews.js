@@ -1,4 +1,4 @@
-const client = require("../client");
+import client from "../client.js";
 
 async function createReview({ userId, productId, body }) {
     try {
@@ -42,8 +42,8 @@ async function getReviewByProductId({ productId }) {
     }
 };
 
-module.exports = {
+export {
     createReview,
     getReviewByUserId,
     getReviewByProductId
-};
+  };

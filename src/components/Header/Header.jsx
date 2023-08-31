@@ -6,7 +6,7 @@ import { getProductsByCategoryAndSearch } from "../../api";
 import { Categories } from "../Body/Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-export const Header = ({ token, setToken }) => {
+export const Header = ({ token, setToken, username }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
@@ -44,38 +44,38 @@ export const Header = ({ token, setToken }) => {
   }, [token]);
 
   return (
-    <div>
-      <Navbar className="navbar-expand-lg navbar-dark bg-dark">
-        <Navbar.Brand href="/">Company Name</Navbar.Brand>
+    <Navbar className="navbar-expand-lg navbar-dark bg-dark">
+      <Navbar.Brand href="/" className="d-none d-md-block">
+        Company Name
+      </Navbar.Brand>
+      <Search />
+      {newUser === false && (
         <Nav>
-          <NavDropdown title="Account Name" id="basic-nav-dropdown">
+          <NavDropdown title={username} id="basic-nav-dropdown">
             <NavDropdown.Item href="/account">Account</NavDropdown.Item>
             <NavDropdown.Item href="/wishlist">Wishlist</NavDropdown.Item>
             <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
             <NavDropdown.Item href="/orders">Orders</NavDropdown.Item>
             <NavDropdown.Divider />
-            {newUser === true && (
-              <>
-                <NavDropdown.Item href="/" onClick={handleLogin}>
-                  Login
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/" onClick={handleRegister}>
-                  Register
-                </NavDropdown.Item>
-              </>
-            )}
-            {newUser === false && (
-              <>
-                <NavDropdown.Item href="/" onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </>
-            )}
+
+            <NavDropdown.Item href="/" onClick={handleLogout}>
+              Logout
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
-      </Navbar>
-      <Search />
-      <Categories />
-    </div>
+      )}
+      {newUser === true && (
+        <Nav>
+          <NavDropdown title="Sign Up Here!" id="basic-nav-dropdown">
+            <NavDropdown.Item href="/" onClick={handleLogin}>
+              Login
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/" onClick={handleRegister}>
+              Register
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      )}
+    </Navbar>
   );
 };

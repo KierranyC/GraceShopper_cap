@@ -1,7 +1,9 @@
 // Connect to DB
-require("dotenv").config();
+import { config as dotenvConfig } from "dotenv";
+import pg from "pg";
 
-const { Client } = require("pg");
+dotenvConfig();
+const { Client } = pg;
 
 // change the DB_NAME string to whatever your group decides on
 const DB_NAME = "grace_shopper_db";
@@ -25,4 +27,4 @@ if (process.env.CI) {
   client = new Client(DB_URL);
 }
 
-module.exports = client;
+export default client;

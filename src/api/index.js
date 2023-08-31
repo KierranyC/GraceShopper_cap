@@ -115,7 +115,7 @@ export const getProductsByCategoryAndSearch = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const result = await response.json();
     console.log(result);
@@ -156,7 +156,6 @@ export const signUp = async (
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
-    setToken(result.data.token);
     console.log(result);
     return result;
   } catch (error) {
@@ -204,6 +203,24 @@ export const fetchAllUsers = async () => {
   }
 };
 
+// GET - getting a user
+
+export const fetchUserData = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // DELETE - delete a product
 
 const deleteProduct = async (id, setDeleted, deleted) => {
@@ -213,7 +230,7 @@ const deleteProduct = async (id, setDeleted, deleted) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
     const result = await response.json();
@@ -221,5 +238,44 @@ const deleteProduct = async (id, setDeleted, deleted) => {
     return result;
   } catch (error) {
     console.error(error);
+  };
+};
+
+// GET - getting all user's orders
+export const fetchUserOrders = async (username, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${username}/orders`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+//PATCH - Updating Users
+export const editUser = async (username, password, email, userId, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        email,
+      }),
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error(err);
   }
 };
