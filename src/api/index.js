@@ -102,6 +102,10 @@ export const updateProduct = async (
   }
 };
 
+export const fetchAllCategories = console.log("Fetching Categories");
+
+// export const fetchQueryResults = console.log("Fetching Results");
+
 // GET - get all products in a certain category and search term
 
 export const getProductsByCategoryAndSearch = async ({
@@ -115,9 +119,9 @@ export const getProductsByCategoryAndSearch = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
-    const result = await response.json();;
+    const result = await response.json();
     console.log(result);
     return result;
   } catch (err) {
@@ -213,10 +217,10 @@ export const fetchUser = async (username) => {
         "Content-Type": "application/json",
       },
     });
-    const result = await response.json();;
+    const result = await response.json();
     delete result.password;
-    console.log(result);;
-    return result;;
+    console.log(result);
+    return result;
   } catch (err) {
     console.error(err);
   }
@@ -239,7 +243,8 @@ const deleteProduct = async (id, setDeleted, deleted) => {
     return result;
   } catch (error) {
     console.error(error);
-  };};
+  }
+};
 
 // GET - getting all user's orders
 export const fetchOrders = async (username, token) => {
@@ -257,7 +262,6 @@ export const fetchOrders = async (username, token) => {
     console.error(err);
   }
 };
-
 
 //PATCH - Updating Users
 export const editUser = async (username, password, email, userId, token) => {
