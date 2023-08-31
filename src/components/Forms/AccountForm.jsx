@@ -86,6 +86,7 @@ export const AccountForm = ({
       }
 
       setSuccess(true);
+      navigate("/account")
     } catch (error) {
       setError("Error updating account: " + error.message);
     }
