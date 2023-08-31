@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchAllProducts } from "../../api";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
-export const Products = ({ setId, loggedIn }) => {
+export const Products = ({ setProductId, productId, loggedIn }) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getProducts() {
@@ -24,8 +26,10 @@ export const Products = ({ setId, loggedIn }) => {
     getProducts();
   }, []);
 
-  const handleClick = (productId) => {
-    setId(productId);
+  const handleClick = (e) => {
+    setProductId(e.target.value);
+    console.log(productId);
+    navigate(`/products/${productId}`);
   };
 
   const filter = () => {
@@ -53,13 +57,15 @@ export const Products = ({ setId, loggedIn }) => {
             md={4}
             className="product-card mb-3"
           >
-            <Card.Body>
-              {/*<Card.Img variant="top">{product.image}</Card.Img>*/}
-              <Card.Title>{product.title}</Card.Title>
-              <Card.Subtitle>{product.price}</Card.Subtitle>
-              <Button>Add to Cart</Button>
-              <Button>Add to Wishlist</Button>
-            </Card.Body>
+            <Link onClick={handleClick}>
+              <Card.Body>
+                <Card.Img variant="top" src="../../images/img-not-found.png" />
+                <Card.Title>{product.title}</Card.Title>
+                <Card.Subtitle>{product.price}</Card.Subtitle>
+                <Button>Add to Cart</Button>
+                <Button>Add to Wishlist</Button>
+              </Card.Body>
+            </Link>
           </Col>
         ))}
       </Row>
