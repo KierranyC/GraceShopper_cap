@@ -57,7 +57,7 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
             md={4}
             className="product-card mb-3"
           >
-            <Link onClick={handleClick}>
+            <Link to={`/products/${product.id}`}>
               <Card.Body>
                 <Card.Img variant="top" src="/images/img-not-found.png" />
                 <Card.Title>{product.title}</Card.Title>

@@ -68,7 +68,7 @@ export const App = () => {
 
         <Route
           exact
-          path={`/products/${productId}`}
+          path={`/products/:productId`}
           element={
             <Product productId={productId} setProductId={setProductId} />
           }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
@@ -14,6 +14,8 @@ export const Product = ({ productId }) => {
         const data = await fetchProduct(productId);
         if (Array.isArray(data)) {
           setProduct(data);
+          console.log("data:", data);
+          console.log("product:", product);
         } else {
           console.error("Invalid API response format");
         }
@@ -29,7 +31,7 @@ export const Product = ({ productId }) => {
       <Card>
         <Card.Title>{product.title}</Card.Title>
         {/* <Card.Subtitle>Rating</Card.Subtitle> */}
-        <Card.Img>Product Image</Card.Img>
+        {/* <Card.Img variant="top" src="/images/img-not-found.png" /> */}
         <Card.Text>{product.price}</Card.Text>
         <Card.Text>{product.quantity}</Card.Text>
         <Card.Text>{product.category}</Card.Text>

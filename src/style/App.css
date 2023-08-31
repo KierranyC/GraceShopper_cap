@@ -22,6 +22,11 @@ nav.navbar {
   padding: 1rem;
 }
 
+.company-name {
+  font-size: xx-large;
+  font-family: "Dancing Script", cursive;
+}
+
 .search-bar-container {
   display: flex;
   flex-direction: row;
