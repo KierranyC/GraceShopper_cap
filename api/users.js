@@ -54,7 +54,7 @@ router.get("/:username/orders", async (req, res, next) => {
       res.send({
         error: "ERROR",
         title: "OrdersNotFoundWithUsername",
-        message: `${username}'s orders is NOT NOT found.`,
+        message: `${username}'s orders is NOT found.`,
       });
     }
   } catch (error) {
@@ -62,24 +62,24 @@ router.get("/:username/orders", async (req, res, next) => {
   }
 });
 
-// router.get("/:userId", async (req, res, next) => {
-//   const { userId } = req.params;
-//   try {
-//     const user = await getUserById(userId);
+router.get("/:userId", async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await getUserById(userId);
 
-//     if (user) {
-//       res.send(user);
-//     } else {
-//       res.send({
-//         error: "ERROR",
-//         message: `user ${userId} not found`,
-//         title: "userNotFound",
-//       });
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    if (user) {
+      res.send(user);
+    } else {
+      res.send({
+        error: "ERROR",
+        message: `user ${userId} not found`,
+        title: "userNotFound",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
