@@ -1,5 +1,6 @@
-const { async } = require("q");
-const client = require("../client");
+import pkg from "q";
+const { query } = pkg;
+import client from "../client.js";
 
 async function createProduct({
   title,
@@ -129,11 +130,12 @@ async function updateProduct({ id, ...fields }) {
   }
 }
 
-module.exports = {
+export {
   createProduct,
   getAllProducts,
   getProductById,
   getProductByTitle,
   getProductsByCategory,
   updateProduct,
+  getProductsBySearch,
 };

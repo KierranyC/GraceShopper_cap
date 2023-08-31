@@ -1,11 +1,9 @@
-const { useState } = require("react");
-const { Alert, Button, Form } = require("react-bootstrap");
+import React, { useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../../api";
-
 // This component logs in users
 export const Login = ({
-  token,
   setToken,
   username,
   setUsername,
@@ -48,7 +46,7 @@ export const Login = ({
             required
             value={username}
             placeholder="Enter your username"
-            minLength="8"
+            minLength="3"
             maxLength="20"
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -77,3 +75,4 @@ export const Login = ({
     </div>
   );
 };
+export default Login;
