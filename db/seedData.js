@@ -25,7 +25,8 @@ async function createTables() {
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR(255) NOT NULL,
-        photo BYTEA
+        photo BYTEA,
+        stripe_id VARCHAR(255)
       );
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
@@ -118,7 +119,8 @@ async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Moisturizing Oils",
-        photo: 'placeholder'
+        photo: 'placeholder',
+        stripe_id: 'prod_OXKv7hjNtNC4ka'
       },
       {
         title: "Coconut and Tea Tree Oil",
@@ -126,7 +128,8 @@ async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Scalp Oils",
-        photo: 'placeholder'
+        photo: 'placeholder',
+        stripe_id: 'prod_OXL1j7T4DhRqy0'
       },
       {
         title: "Vegan and Non-GMO Oil",
@@ -134,7 +137,8 @@ async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Vegan Oils",
-        photo: 'placeholder!'
+        photo: 'placeholder!',
+        stripe_id: 'prod_OXL3pGIPAv6ozY'
       }
     ]
 

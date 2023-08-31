@@ -37,7 +37,8 @@
     "react-icons": "^4.10.1",
     "react-router-dom": "6.15.0",
     "react-scripts": "^5.0.1",
-    "react-speech-recognition": "^3.10.0"
+    "react-speech-recognition": "^3.10.0",
+    "react-stripe-checkout": "^2.6.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
