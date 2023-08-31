@@ -25,7 +25,8 @@ export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [id, setId] = useState("");
+  const [productId, setProductId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -59,9 +60,19 @@ export const App = () => {
     <BrowserRouter className="app-container">
       <Header token={token} setToken={setToken} username={username} />
       <Routes>
-        <Route exact path="/" element={<Home />}></Route>
+        <Route
+          exact
+          path="/"
+          element={<Home productId={productId} setProductId={setProductId} />}
+        ></Route>
 
-        <Route exact path="/product/:productId" element={<Product />}></Route>
+        <Route
+          exact
+          path={`/products/:productId`}
+          element={
+            <Product productId={productId} setProductId={setProductId} />
+          }
+        ></Route>
 
         <Route exact path="/cart" element={<Cart />}></Route>
 

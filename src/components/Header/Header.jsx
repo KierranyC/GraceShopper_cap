@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Search } from "./Search.jsx";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getProductsByCategoryAndSearch } from "../../api";
-import { Categories } from "../Body/Categories.jsx";
+import { Categories } from "./Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
 export const Header = ({ token, setToken, username }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
 
@@ -39,16 +37,21 @@ export const Header = ({ token, setToken, username }) => {
     }
   };
 
+  const handleSetIsListening = (isListening) => {
+    setIsListening(isListening);
+  };
+
   useEffect(() => {
     checkToken();
   }, [token]);
 
   return (
     <Navbar className="navbar-expand-lg navbar-dark bg-dark">
-      <Navbar.Brand href="/" className="d-none d-md-block">
-        Company Name
+      <Navbar.Brand href="/" className="company-name d-none d-md-block">
+        Oilay
       </Navbar.Brand>
-      <Search />
+      <Categories />
+      {/* <Search /> */}
       {newUser === false && (
         <Nav>
           <NavDropdown title={username} id="basic-nav-dropdown">
