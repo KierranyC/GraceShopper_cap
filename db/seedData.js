@@ -13,6 +13,11 @@ async function createTables() {
         email VARCHAR(255) UNIQUE NOT NULL,
         "isAdmin" BOOLEAN
       );
+      CREATE TABLE guests (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        "sessionId" UUID NOT NULL
+      )
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -22,16 +27,25 @@ async function createTables() {
         category VARCHAR(255) NOT NULL,
         photo BYTEA
       );
+      CREATE TABLE "orderItems" (
+        id SERIAL PRIMARY KEY,
+        "orderId" INTEGER REFERENCES orders(id),
+        "productId" INTEGER REFERENCES products(id),
+        "quantity" INTEGER,
+        price INTEGER
+      );
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
-        "userId" INTEGER REFERENCES users(id),        
-        "productId" INTEGER REFERENCES products(id),
-        "productQuantity" INTEGER,
+        "userId" INTEGER REFERENCES users(id),  
+        "guestId" INTEGER REFERENCES guests(id),      
+        date ?
+        "totalAmount" INTEGER,
         "orderStatus" VARCHAR(50)
       );
       CREATE TABLE reviews (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),
+        "guestId" INTEGER REFERENCES guests(id),
         "productId" INTEGER REFERENCES products(id),
         body TEXT NOT NULL
       );
