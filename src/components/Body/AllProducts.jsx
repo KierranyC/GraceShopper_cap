@@ -49,21 +49,40 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
   return (
     <div className="container-fluid">
       <h1 className="text-center">Products</h1>
-      <Row className="products">
+      <Row className="products mb-3">
         {products.map((product) => (
           <Col
             key={product.id}
             value={product}
+            xs={12}
+            sm={6}
             md={4}
-            className="product-card mb-3"
+            lg={3}
+            xl={2}
           >
-            <Link to={`/products/${product.id}`}>
-              <Card.Body>
-                <Card.Img variant="top" src="/images/img-not-found.png" />
-                <Card.Title>{product.title}</Card.Title>
-                <Card.Subtitle>{product.price}</Card.Subtitle>
-                <Button>Add to Cart</Button>
-                <Button>Add to Wishlist</Button>
+            <Link
+              to={`/products/${product.id}`}
+              className="text-decoration-none"
+            >
+              <Card.Body className="product-card">
+                <Card.Img
+                  className="product-image"
+                  variant="top"
+                  src="/images/img-not-found.png"
+                />
+                <div className="card-info">
+                  <Card.Title className="product-title">
+                    {product.title}
+                  </Card.Title>
+                  <Card.Subtitle className="price">
+                    ${product.price}
+                  </Card.Subtitle>
+                </div>
+
+                <div className="card-buttons">
+                  <Button className="m-2">Add to Cart</Button>
+                  <Button className="m-2">Add to Wishlist</Button>
+                </div>
               </Card.Body>
             </Link>
           </Col>

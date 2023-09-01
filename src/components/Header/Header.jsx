@@ -50,11 +50,18 @@ export const Header = ({ token, setToken, username }) => {
       <Navbar.Brand href="/" className="company-name d-none d-md-block">
         Oilay
       </Navbar.Brand>
-      <Categories />
-      {/* <Search /> */}
+      <div className="d-flex align-items-center justify-content-center">
+        <Categories />
+        {/* <Search /> */}
+      </div>
       {newUser === false && (
-        <Nav>
-          <NavDropdown title={username} id="basic-nav-dropdown">
+        <Nav className="ms-auto">
+          <NavDropdown
+            align="flex-end"
+            title={username}
+            id="basic-nav-dropdown"
+            className="account-dropdown dropdown-menu-end"
+          >
             <NavDropdown.Item href="/account">Account</NavDropdown.Item>
             <NavDropdown.Item href="/wishlist">Wishlist</NavDropdown.Item>
             <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
@@ -68,8 +75,13 @@ export const Header = ({ token, setToken, username }) => {
         </Nav>
       )}
       {newUser === true && (
-        <Nav>
-          <NavDropdown title="Sign Up Here!" id="basic-nav-dropdown">
+        <Nav className="ms-auto">
+          <NavDropdown
+            align="flex-end"
+            title="Sign Up Here!"
+            id="basic-nav-dropdown"
+            className="account-dropdown dropdown-menu-end"
+          >
             <NavDropdown.Item href="/" onClick={handleLogin}>
               Login
             </NavDropdown.Item>

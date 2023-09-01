@@ -26,15 +26,15 @@ export const Categories = () => {
   }, []);
 
   return (
-    <Navbar variant="dark" bg="dark">
+    <Navbar variant="dark" bg="dark" className="navbar-expand-xxl">
       <Nav variant="pills" className="flex-row">
-        <Nav.Item>
-          <Nav.Link>All Products</Nav.Link>
+        <Nav.Item className="me-2">
+          <Link to="/">All Products</Link>
         </Nav.Item>
         {products.map((product) => (
-          <span key={product.id} value={product} md={4}>
-            <Nav.Link>{product.category}</Nav.Link>
-          </span>
+          <Nav.Item key={product.id} className="me-2">
+            <Link to={`/products/${product.category}`}>{product.category}</Link>
+          </Nav.Item>
         ))}
       </Nav>
     </Navbar>
