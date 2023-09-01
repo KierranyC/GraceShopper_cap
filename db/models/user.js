@@ -30,6 +30,20 @@ async function createUser({ email, username, password, isAdmin }) {
   }
 }
 
+async function createGuest({ email, sessionId }) {
+  try {
+    const { rows: [guest] } = await client.query(`
+    INSERT INTO guests(email, "sessionId")
+    VALUES ($1, $2)
+    RETURNING *;
+    `);
+
+    return guest;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
   try {
@@ -67,7 +81,7 @@ async function getUser({ username, password }) {
   // matches the password that is already saved with the
   // username in the db
   const user = await getUserByUsername(username);
-  console.log(user);
+  // console.log(user);
   const hashedPassword = user.password;
 
   const isValid = await bcrypt.compare(password, hashedPassword);
@@ -101,7 +115,7 @@ async function getUserByUsername(username) {
   }
 }
 
-async function updateUser({ id, ...fields }) {
+async function updateUser(id, fields = {}) {
   try {
     const string = Object.keys(fields)
       .map(
@@ -130,6 +144,7 @@ async function updateUser({ id, ...fields }) {
 
 export {
   createUser,
+  createGuest,
   getAllUsers,
   getUserById,
   getUser,
