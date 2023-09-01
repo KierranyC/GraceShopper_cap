@@ -49,13 +49,16 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
   return (
     <div className="container-fluid">
       <h1 className="text-center">Products</h1>
-      <Row className="products">
+      <Row className="products mb-3">
         {products.map((product) => (
           <Col
             key={product.id}
             value={product}
+            xs={12}
+            sm={6}
             md={4}
-            className="product-card mb-3"
+            lg={3}
+            xl={2}
           >
             <Card.Body>
               <Card.Img variant="top" src="/images/img-not-found.png" />

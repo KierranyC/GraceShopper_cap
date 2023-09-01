@@ -78,8 +78,10 @@ export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
       >
         Oilay
       </Navbar.Brand>
-      <Categories />
-      {/* <Search /> */}
+      <div className="d-flex align-items-center justify-content-center">
+        <Categories />
+        {/* <Search /> */}
+      </div>
       {newUser === false && (
         <Nav>
           <NavDropdown title={username} id="basic-nav-dropdown">
@@ -98,8 +100,13 @@ export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
         </Nav>
       )}
       {newUser === true && (
-        <Nav>
-          <NavDropdown title="Sign Up Here!" id="basic-nav-dropdown">
+        <Nav className="ms-auto">
+          <NavDropdown
+            align="flex-end"
+            title="Sign Up Here!"
+            id="basic-nav-dropdown"
+            className="account-dropdown dropdown-menu-end"
+          >
             <NavDropdown.Item href="/" onClick={handleLogin}>
               Login
             </NavDropdown.Item>

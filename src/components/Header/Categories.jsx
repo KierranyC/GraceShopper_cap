@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
-import { Products } from "../Body/AllProducts";
+import { Button, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchAllProducts } from "../../api";
 
@@ -26,15 +25,18 @@ export const Categories = () => {
   }, []);
 
   return (
-    <Navbar variant="dark" bg="dark">
-      <Nav variant="pills" className="flex-row">
-        <Nav.Item>
-          <Nav.Link>All Products</Nav.Link>
+    <Navbar variant="dark" bg="dark" className="navbar-expand-xxl">
+      <Nav className="flex-row">
+        <NavDropdown>
+          <NavDropdown.Item></NavDropdown.Item>
+        </NavDropdown>
+        <Nav.Item className="me-2">
+          <Link to="/">All Products</Link>
         </Nav.Item>
         {products.map((product) => (
-          <span key={product.id} value={product} md={4}>
-            <Nav.Link>{product.category}</Nav.Link>
-          </span>
+          <Nav.Item key={product.id} className="me-2">
+            <Link to={`/products/${product.category}`}>{product.category}</Link>
+          </Nav.Item>
         ))}
       </Nav>
     </Navbar>
