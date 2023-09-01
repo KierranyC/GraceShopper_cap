@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
-import { Products } from "../Body/AllProducts";
+import { Button, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchAllProducts } from "../../api";
 
@@ -27,7 +26,10 @@ export const Categories = () => {
 
   return (
     <Navbar variant="dark" bg="dark" className="navbar-expand-xxl">
-      <Nav variant="pills" className="flex-row">
+      <Nav className="flex-row">
+        <NavDropdown>
+          <NavDropdown.Item></NavDropdown.Item>
+        </NavDropdown>
         <Nav.Item className="me-2">
           <Link to="/">All Products</Link>
         </Nav.Item>

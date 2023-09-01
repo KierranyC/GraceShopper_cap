@@ -1,6 +1,6 @@
 import client from "./client.js";
-import { createUser } from './models/user.js';
-import { createProduct } from './models/products.js';
+import { createUser } from "./models/user.js";
+import { createProduct } from "./models/products.js";
 
 async function createTables() {
   console.log("Starting to build tables...");
@@ -162,6 +162,60 @@ async function createInitialProducts() {
         category: "Vegan Oils",
         photo: "placeholder!",
       },
+      {
+        title: "Silky Smooth Shampoo",
+        description:
+          "Revitalize and strengthen your hair with our silky smooth shampoo.",
+        price: 12,
+        quantity: 2500,
+        category: "Shampoo",
+        photo: "placeholder",
+      },
+      {
+        title: "Hydrating Conditioner",
+        description:
+          "Deeply hydrate and nourish your hair with our premium conditioner.",
+        price: 14,
+        quantity: 2000,
+        category: "Conditioner",
+        photo: "placeholder",
+      },
+      {
+        title: "Curl Enhancing Cream",
+        description:
+          "Define and enhance your natural curls with our specialized cream.",
+        price: 18,
+        quantity: 1800,
+        category: "Styling Products",
+        photo: "placeholder",
+      },
+      {
+        title: "Heat Protectant Spray",
+        description:
+          "Shield your hair from heat damage with our effective heat protectant spray.",
+        price: 16,
+        quantity: 2200,
+        category: "Styling Products",
+        photo: "placeholder",
+      },
+      {
+        title: "Color Care Shampoo",
+        description:
+          "Extend the life of your hair color with our color care shampoo.",
+        price: 13,
+        quantity: 2100,
+        category: "Shampoo",
+        photo: "placeholder",
+      },
+      {
+        title: "Repairing Hair Mask",
+        description:
+          "Repair and restore damaged hair with our rejuvenating hair mask.",
+        price: 20,
+        quantity: 1700,
+        category: "Hair Masks",
+        photo: "placeholder",
+      },
     ];
 
     const products = await Promise.all(newProducts.map(createProduct));
@@ -239,8 +293,4 @@ async function rebuildDB() {
   }
 }
 
-export {
-  rebuildDB,
-  dropTables,
-  createTables
-};
+export { rebuildDB, dropTables, createTables };

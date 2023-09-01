@@ -64,7 +64,7 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
               to={`/products/${product.id}`}
               className="text-decoration-none"
             >
-              <Card.Body className="product-card">
+              <Card.Body className="product-card mb-4">
                 <Card.Img
                   className="product-image"
                   variant="top"
