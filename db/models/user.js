@@ -116,6 +116,10 @@ async function getUserByUsername(username) {
 }
 
 async function updateUser(id, fields = {}) {
+
+  const hashedPassword = await bcrypt.hash(fields.password, SALT_COUNT);
+  fields.password = hashedPassword
+
   try {
     const string = Object.keys(fields)
       .map(

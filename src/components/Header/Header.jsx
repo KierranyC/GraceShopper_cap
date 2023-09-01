@@ -18,6 +18,7 @@ export const Header = ({ token, setToken, username }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     setNewUser(true);
+    navigate('/login')
   };
 
   const handleLogin = (event) => {
@@ -73,6 +74,7 @@ export const Header = ({ token, setToken, username }) => {
             <NavDropdown.Item href="/" onClick={handleRegister}>
               Register
             </NavDropdown.Item>
+            <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       )}

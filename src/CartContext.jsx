@@ -1,7 +1,12 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { fetchAllProducts } from './api';
 
 export const products = await fetchAllProducts()
+
+// async function setupCartContext() {
+//   const fetchedProducts = await fetchAllProducts();
+//   return fetchedProducts;
+// }
 
 export function getProductData(id) {
   let productData = products.find(product => product.id === id);
@@ -23,9 +28,30 @@ export const CartContext = createContext({
   getTotalCost: () => { }
 });
 
-export function CartProvider({ children }) {
-  const [cartProducts, setCartProducts] = useState([]);
+export function CartProvider({ children, setCartProducts, cartProducts }) {
+  // const [cartProducts, setCartProducts] = useState([]);
 
+  // useEffect(() => {
+  //   // Load cart data from localStorage on component mount
+  // const storedCartData = localStorage.getItem('cartData');
+  // if (storedCartData) {
+  //   setCartProducts(JSON.parse(storedCartData));
+  // }
+  // }, []);
+
+  // useEffect(() => {
+  //   // Save cart data to localStorage whenever it changes
+  //   localStorage.setItem('cartData', JSON.stringify(cartProducts));
+  // }, [cartProducts]);
+
+  // let localCart = localStorage.getItem("cart");
+
+  // useEffect(() => {
+  //   localCart = JSON.parse(localCart)
+  //   if (localCart) {
+  //     setCartProducts(localCart)
+  //   }
+  // }, [])
 
   function getProductQuantity(id) {
     const quantity = cartProducts.find(product => product.id === id)?.quantity;
@@ -106,11 +132,13 @@ export function CartProvider({ children }) {
     getTotalCost
   }
 
+
   return (
     <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   )
 }
+
 
 export default CartProvider;

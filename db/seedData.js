@@ -38,7 +38,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),  
         "guestId" INTEGER REFERENCES guests(id),      
-        date ?
+        date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         "totalAmount" INTEGER,
         "orderStatus" VARCHAR(50)
       );
@@ -49,7 +49,15 @@ async function createTables() {
         "productId" INTEGER REFERENCES products(id),
         body TEXT NOT NULL
       );
-      `);
+      CREATE TABLE carts (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        product_id INTEGER REFERENCES products(id),
+        quantity INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
     console.log("Tables Created!");
   } catch (error) {
     console.log("Error creating tables");

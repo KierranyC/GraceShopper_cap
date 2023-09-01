@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../style/App.css";
-import CartProvider from "../CartContext";
+import { CartProvider } from "../CartContext";
 
 import {
   Header,
@@ -27,6 +27,7 @@ export const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [id, setId] = useState("");
+  const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -57,7 +58,7 @@ export const App = () => {
   };
 
   return (
-    <CartProvider>
+    <CartProvider cartProducts={cartProducts} setCartProducts={setCartProducts}>
       <BrowserRouter className="app-container">
         <Header token={token} setToken={setToken} username={username} />
         <Routes>
@@ -65,7 +66,7 @@ export const App = () => {
 
           <Route exact path="/product/:productId" element={<Product />}></Route>
 
-          <Route exact path="/cart" element={<Cart />}></Route>
+          <Route exact path="/cart" element={<Cart token={token} />}></Route>
 
           <Route exact path="/orders" element={<Orders />}></Route>
 

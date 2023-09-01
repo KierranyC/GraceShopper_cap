@@ -22,4 +22,7 @@ apiRouter.use("/orders", ordersRouter);
 import reviewsRouter from "./reviews.js";
 apiRouter.use("/reviews", reviewsRouter);
 
+import cartRouter from "./cart.js";
+apiRouter.use('/cart', cartRouter);
+
 export default apiRouter;

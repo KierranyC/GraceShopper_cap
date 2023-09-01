@@ -11,6 +11,8 @@ export const Products = ({ setId, loggedIn }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const cart = useContext(CartContext)
 
+  console.log(cart.items)
+
   useEffect(() => {
     async function getProducts() {
       try {
@@ -51,7 +53,6 @@ export const Products = ({ setId, loggedIn }) => {
       <Row className="products">
         {products.map((product) => {
           const productQuantity = cart.getProductQuantity(product.id);
-
           return (
             <Col
               key={product.id}

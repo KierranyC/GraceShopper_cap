@@ -279,3 +279,21 @@ export const editUser = async (username, password, email, userId, token) => {
     console.error(err);
   }
 };
+
+// GET - returning a user's cart
+
+export const fetchUserCart = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/cart`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    })
+    const result = await response.json()
+    return result;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
