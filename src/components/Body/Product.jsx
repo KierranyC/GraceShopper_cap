@@ -12,26 +12,25 @@ export const Product = ({ productId }) => {
     async function getProduct() {
       try {
         const data = await fetchProduct(productId);
-        if (Array.isArray(data)) {
+
+        if (data && typeof data === "object") {
           setProduct(data);
-          console.log("data:", data);
-          console.log("product:", product);
         } else {
           console.error("Invalid API response format");
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching product:", error);
       }
     }
     getProduct();
-  }, []);
+  }, [productId]);
 
   return (
     <div>
       <Card>
         <Card.Title>{product.title}</Card.Title>
         {/* <Card.Subtitle>Rating</Card.Subtitle> */}
-        <Card.Img src="../../images/img-not-found.png"></Card.Img>
+        <Card.Img src="../../images/img-not-found.png" style={{width: 30 + "rem"}}></Card.Img>
         <Card.Text>{product.price}</Card.Text>
         <Card.Text>{product.quantity}</Card.Text>
         <Card.Text>{product.category}</Card.Text>

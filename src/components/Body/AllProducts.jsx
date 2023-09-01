@@ -26,10 +26,9 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
     getProducts();
   }, []);
 
-  const handleClick = (e) => {
-    setProductId(e.target.value);
+  const handleClick = (proId) => {
+    setProductId(proId);
     console.log(productId);
-    navigate(`/products/${productId}`);
   };
 
   const filter = () => {
@@ -62,7 +61,7 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
           >
             <Card.Body>
               <Card.Img variant="top" src="/images/img-not-found.png" />
-              <Link to={`/products/${product.id}`}>
+              <Link to={`/products/${product.id}`} onClick={() => handleClick(product.id)}>
                 <Card.Title>{product.title}</Card.Title>
               </Link>
               <Card.Subtitle>{product.price}</Card.Subtitle>
