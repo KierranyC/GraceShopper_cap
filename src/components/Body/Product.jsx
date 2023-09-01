@@ -6,12 +6,14 @@ import { fetchProduct } from "../../api/index.js";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
 export const Product = ({ productId }) => {
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
     async function getProduct() {
       try {
+        console.log(productId)
         const data = await fetchProduct(productId);
+        console.log(data);
 
         if (data && typeof data === "object") {
           setProduct(data);

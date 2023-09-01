@@ -49,7 +49,7 @@ router.get("/:productId", async (req, res, next) => {
     if (product) {
       res.send(product);
     } else {
-      res.send({
+      res.status(404).send({
         error: "ERROR",
         message: `product ${productId} not found`,
         title: "productNotFound",
@@ -98,9 +98,9 @@ router.patch("/:productId", async (req, res, next) => {
 });
 
 router.get("/:categories", async (req, res, next) => {
-  const category = req.params;
+const { categories } = req.params;
   try {
-    const product = await getProductsByCategory(category);
+    const product = await getProductsByCategory(categories);
     res.send(product);
   } catch (error) {
     next(error);

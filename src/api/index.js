@@ -62,8 +62,8 @@ export const fetchProduct = async (productId) => {
     const result = await response.json();
     console.log(result);
     return result;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
 };
 
