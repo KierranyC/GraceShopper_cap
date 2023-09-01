@@ -57,15 +57,15 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
             md={4}
             className="product-card mb-3"
           >
-            <Link to={`/products/${product.id}`}>
-              <Card.Body>
-                <Card.Img variant="top" src="/images/img-not-found.png" />
+            <Card.Body>
+              <Card.Img variant="top" src="/images/img-not-found.png" />
+              <Link to={`/products/${product.id}`}>
                 <Card.Title>{product.title}</Card.Title>
-                <Card.Subtitle>{product.price}</Card.Subtitle>
-                <Button>Add to Cart</Button>
-                <Button>Add to Wishlist</Button>
-              </Card.Body>
-            </Link>
+              </Link>
+              <Card.Subtitle>{product.price}</Card.Subtitle>
+              <Button>Add to Cart</Button>
+              <Button>Add to Wishlist</Button>
+            </Card.Body>
           </Col>
         ))}
       </Row>
