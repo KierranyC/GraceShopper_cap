@@ -26,6 +26,7 @@ export const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [productId, setProductId] = useState("");
+  const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -50,15 +51,9 @@ export const App = () => {
     setUsername(username);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setToken("");
-    localStorage.removeItem("token");
-  };
-
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken} username={username} />
+      <Header token={token} setToken={setToken} username={username} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
         <Route
           exact
@@ -68,46 +63,31 @@ export const App = () => {
 
         <Route
           exact
-          path={`/products/:productId`}
+          path={`/Products/:productId`}
           element={
             <Product productId={productId} setProductId={setProductId} />
           }
         ></Route>
 
-        <Route exact path="/cart" element={<Cart />}></Route>
+        <Route exact path="/Cart" element={<Cart />}></Route>
 
-        <Route exact path="/orders" element={<Orders />}></Route>
+        <Route exact path="/Orders" element={<Orders />}></Route>
 
         <Route
           exact
-          path="/account"
+          path="/Account"
           element={
             <Account
               setUsername={setUsername}
               username={username}
               token={token}
-              id={id}
-              setId={setId}
+              userId={userId}
+              setUserId={setUserId}
             />
           }
         ></Route>
 
-        <Route exact path="/wishlist" element={<Wishlist />}></Route>
-
-        <Route
-          exact
-          path="/User/Edit"
-          element={
-            <AccountForm
-              setUsername={setUsername}
-              username={username}
-              token={token}
-              setAndStoreUsername={setAndStoreUsername}
-              id={id}
-              setId={setId}
-            />
-          }
-        ></Route>
+        <Route exact path="/Wishlist" element={<Wishlist />}></Route>
 
         <Route
           exact
@@ -138,7 +118,7 @@ export const App = () => {
 
         <Route
           exact
-          path="/login"
+          path="/Login"
           element={
             <Login
               token={token}

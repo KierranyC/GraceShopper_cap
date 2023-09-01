@@ -1,6 +1,7 @@
 import client from "./client.js";
-import { createUser } from './models/user.js';
-import { createProduct } from './models/products.js';
+import { createUser, getAllUsers } from "./models/user.js";
+import { createProduct } from "./models/products.js";
+import { createOrder } from "./models/orders.js";
 
 async function createTables() {
   console.log("Starting to build tables...");
@@ -17,7 +18,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         email VARCHAR(255) UNIQUE NOT NULL,
         "sessionId" UUID NOT NULL
-      )
+      );
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -26,6 +27,14 @@ async function createTables() {
         quantity INTEGER NOT NULL,
         category VARCHAR(255) NOT NULL,
         photo BYTEA
+      ); 
+      CREATE TABLE orders (
+        id SERIAL PRIMARY KEY,
+        "userId" INTEGER REFERENCES users(id),  
+        "guestId" INTEGER REFERENCES guests(id),      
+        date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        "totalAmount" INTEGER,
+        "orderStatus" VARCHAR(50)
       );
       CREATE TABLE "orderItems" (
         id SERIAL PRIMARY KEY,
@@ -33,14 +42,6 @@ async function createTables() {
         "productId" INTEGER REFERENCES products(id),
         "quantity" INTEGER,
         price INTEGER
-      );
-      CREATE TABLE orders (
-        id SERIAL PRIMARY KEY,
-        "userId" INTEGER REFERENCES users(id),  
-        "guestId" INTEGER REFERENCES guests(id),      
-        date ?
-        "totalAmount" INTEGER,
-        "orderStatus" VARCHAR(50)
       );
       CREATE TABLE reviews (
         id SERIAL PRIMARY KEY,
@@ -62,8 +63,10 @@ async function dropTables() {
   try {
     await client.query(`
     DROP TABLE IF EXISTS reviews CASCADE;
+    DROP TABLE IF EXISTS "orderItems" CASCADE;
     DROP TABLE IF EXISTS orders CASCADE;
     DROP TABLE IF EXISTS products CASCADE;
+    DROP TABLE IF EXISTS guests CASCADE;
     DROP TABLE IF EXISTS users CASCADE;
     `);
     console.log("Tables Dropped!");
@@ -194,37 +197,37 @@ async function createInitialOrders() {
       {
         userId: 1,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
       {
         userId: 2,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
       {
         userId: 3,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
       {
         userId: 4,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
       {
         userId: 5,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
       {
         userId: 6,
         productId: 3,
-        productQuantity: 2,
+        totalAmount: 2,
         orderStatus: "In Transit",
       },
     ];
@@ -253,8 +256,4 @@ async function rebuildDB() {
   }
 }
 
-export {
-  rebuildDB,
-  dropTables,
-  createTables
-};
+export { rebuildDB, dropTables, createTables };
