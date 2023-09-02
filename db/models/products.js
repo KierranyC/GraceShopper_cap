@@ -52,13 +52,10 @@ async function getProductById({ id }) {
       [id]
     );
 
-    if (!product) {
-      return null; 
-    }
-
-    return product;
+    return product || null; 
   } catch (error) {
-    throw error;
+    console.error("Error fetching product by ID:", error);
+    throw new Error("Unable to fetch product by ID");
   }
 }
 

@@ -51,12 +51,17 @@ router.get("/:productId", async (req, res, next) => {
     } else {
       res.status(404).send({
         error: "ERROR",
-        message: `product ${productId} not found`,
+        message: `Product ${productId} not found`,
         title: "productNotFound",
       });
     }
   } catch (error) {
-    next(error);
+    console.error("Error fetching product:", error);
+    res.status(500).send({
+      error: "ERROR",
+      message: "Internal server error while fetching product",
+      title: "internalServerError",
+    });
   }
 });
 
@@ -97,10 +102,10 @@ router.patch("/:productId", async (req, res, next) => {
   }
 });
 
-router.get("/:categories", async (req, res, next) => {
-const { categories } = req.params;
+router.get("categories/:category", async (req, res, next) => {
+  const { category } = req.params;
   try {
-    const product = await getProductsByCategory(categories);
+    const product = await getProductsByCategory(category);
     res.send(product);
   } catch (error) {
     next(error);

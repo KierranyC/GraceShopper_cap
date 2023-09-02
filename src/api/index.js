@@ -59,11 +59,23 @@ export const fetchProduct = async (productId) => {
         "Content-Type": "application/json",
       },
     });
+
+    if (response.status === 404) {
+      return {
+        error: "Product not found",
+        message: `Product with ID ${productId} does not exist`,
+      };
+    }
+
     const result = await response.json();
     console.log(result);
     return result;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching product:", error);
+    return {
+      error: "Internal server error",
+      message: "An error occurred while fetching the product",
+    };
   }
 };
 

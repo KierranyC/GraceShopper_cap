@@ -1,6 +1,6 @@
 import client from "./client.js";
 import { createUser, getAllUsers } from "./models/user.js";
-import { createProduct } from "./models/products.js";
+import { createProduct, getAllProducts } from "./models/products.js";
 import { createOrder } from "./models/orders.js";
 
 async function createTables() {
@@ -244,6 +244,18 @@ async function createInitialProducts() {
   }
 }
 
+async function getInitialProducts() {
+  console.log("Starting to get initial products...");
+  try {
+    const allProducts = await getAllProducts();
+
+    console.log("All products:", allProducts);
+    console.log("Finished getting all products!");
+  } catch (error) {
+    console.error("Error getting products!");
+  }
+}
+
 async function createInitialOrders() {
   console.log("Starting to create orders...");
   try {
@@ -303,6 +315,7 @@ async function rebuildDB() {
     await createInitialUsers();
     await getInitialUsers();
     await createInitialProducts();
+    await getInitialProducts();
     await createInitialOrders();
   } catch (error) {
     console.log("Error during rebuildDB");
