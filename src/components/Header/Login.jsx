@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { userLogin } from "../../api";
+import { fetchUserCart, userLogin } from "../../api";
 // This component logs in users
 export const Login = ({
   setToken,
   username,
   setUsername,
   setAndStoreUsername,
+  cart,
+  setCart
 }) => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);

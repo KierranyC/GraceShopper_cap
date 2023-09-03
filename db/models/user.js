@@ -30,17 +30,31 @@ async function createUser({ email, username, password, isAdmin }) {
   }
 }
 
-async function createGuest({ email, sessionId }) {
+async function createGuest({ sessionId }) {
   try {
     const { rows: [guest] } = await client.query(`
-    INSERT INTO guests(email, "sessionId")
-    VALUES ($1, $2)
+    INSERT INTO guests("sessionId")
+    VALUES ($1)
     RETURNING *;
-    `);
+    `, [sessionId]);
 
     return guest;
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function findGuestBySessionId(guestSessionId) {
+  try {
+    const { rows: [guest] } = await client.query(`
+    SELECT * 
+    FROM guests
+    WHERE "sessionId" = $1; 
+    `, [guestSessionId]);
+
+    return guest
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -149,6 +163,7 @@ async function updateUser(id, fields = {}) {
 export {
   createUser,
   createGuest,
+  findGuestBySessionId,
   getAllUsers,
   getUserById,
   getUser,

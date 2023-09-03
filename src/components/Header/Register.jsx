@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { signUp } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { createUserCart } from "../../api";
 
 // This component registers new users and adds them to the database.
 export const Register = ({
@@ -10,6 +11,8 @@ export const Register = ({
   username,
   setUsername,
   setAndStoreUsername,
+  cart,
+  setCart
 }) => {
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
@@ -32,7 +35,7 @@ export const Register = ({
         setEmail("");
         setPassword("");
         setPassConfirm("");
-        if (token) {
+        if (result.token) {
           navigate("/");
         }
       } catch (error) {

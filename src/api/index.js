@@ -10,7 +10,6 @@ export const fetchAllProducts = async () => {
       },
     });
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     console.error(error);
@@ -280,20 +279,222 @@ export const editUser = async (username, password, email, userId, token) => {
   }
 };
 
-// GET - returning a user's cart
+// POST - creating cart for user upon registering or logging in
 
-export const fetchUserCart = async (token) => {
+export const createUserCart = async (token, productId, quantity) => {
   try {
-    const response = await fetch(`${BASE_URL}/cart`, {
+    const response = await fetch(`${BASE_URL}/cart/create`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
+      body: JSON.stringify({
+        productId,
+        quantity
+      })
     })
     const result = await response.json()
-    return result;
+    return result
   } catch (error) {
     console.error(error)
   }
 }
 
+// GET - returning a user's cart
+
+// export const fetchUserCart = async (token) => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/cart`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`
+//       },
+//     })
+//     const result = await response.json()
+//     return result;
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+// export const addItemToCart = async (token, productId, quantity) => {
+
+//   try {
+//     const response = await fetch(`${BASE_URL}/cart/add`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`
+//       },
+//       body: JSON.stringify({
+//         productId,
+//         quantity
+//       })
+//     })
+//     const result = await response.json()
+//     // console.log(result)
+//     return result
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+// export const updateCartItem = async (token, productId, quantity) => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/cart/update`, {
+//       method: "PATCH",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`
+//       },
+//       body: JSON.stringify({
+//         productId,
+//         quantity,
+//       })
+//     })
+//     const result = await response.json()
+//     return result
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+// export const removeItemFromCart = async (token, productId) => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/cart/remove`, {
+//       method: 'DELETE',
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`
+//       },
+//       body: JSON.stringify({
+//         productId
+//       })
+//     })
+//     const result = await response.json()
+//     return result
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+// GET - returning a user's cart
+export const fetchUserCart = async (authToken) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    if (authToken) {
+      headers["Authorization"] = `Bearer ${authToken}`;
+    } else {
+      // Handle guest session ID here, if applicable
+      const guestSessionId = localStorage.getItem("guestSessionId");
+      if (guestSessionId) {
+        headers["x-guest-session-id"] = guestSessionId;
+      }
+    }
+
+    const response = await fetch(`${BASE_URL}/cart`, {
+      headers
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const addItemToCart = async (authToken, productId, quantity) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    if (authToken) {
+      headers["Authorization"] = `Bearer ${authToken}`;
+    } else {
+      // Handle guest session ID here, if applicable
+      const guestSessionId = localStorage.getItem("guestSessionId");
+      if (guestSessionId) {
+        headers["x-guest-session-id"] = guestSessionId;
+      }
+    }
+
+    const response = await fetch(`${BASE_URL}/cart/add`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        productId,
+        quantity
+      })
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateCartItem = async (tokenOrSessionId, productId, quantity) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (tokenOrSessionId) {
+      // If tokenOrSessionId is provided, it could be either a token or session ID.
+      // Check if it looks like a token (assuming token format starts with 'Bearer')
+      if (tokenOrSessionId.startsWith("Bearer")) {
+        headers["Authorization"] = tokenOrSessionId;
+      } else {
+        // Otherwise, treat it as a session ID and set the 'x-guest-session-id' header
+        headers["x-guest-session-id"] = tokenOrSessionId;
+      }
+    }
+
+    const response = await fetch(`${BASE_URL}/cart/update`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({
+        productId,
+        quantity,
+      }),
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const removeItemFromCart = async (tokenOrSessionId, productId) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (tokenOrSessionId) {
+      if (tokenOrSessionId.startsWith("Bearer")) {
+        headers["Authorization"] = tokenOrSessionId;
+      } else {
+        headers["x-guest-session-id"] = tokenOrSessionId;
+      }
+    }
+
+    const response = await fetch(`${BASE_URL}/cart/remove`, {
+      method: "DELETE",
+      headers,
+      body: JSON.stringify({
+        productId,
+      }),
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};

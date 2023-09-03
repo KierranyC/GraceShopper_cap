@@ -15,9 +15,8 @@ async function createTables() {
       );
       CREATE TABLE guests (
         id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        "sessionId" UUID NOT NULL
-      )
+        "sessionId" UUID
+      );
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -27,20 +26,20 @@ async function createTables() {
         category VARCHAR(255) NOT NULL,
         photo BYTEA
       );
-      CREATE TABLE "orderItems" (
-        id SERIAL PRIMARY KEY,
-        "orderId" INTEGER REFERENCES orders(id),
-        "productId" INTEGER REFERENCES products(id),
-        "quantity" INTEGER,
-        price INTEGER
-      );
-      CREATE TABLE orders (
+       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),  
         "guestId" INTEGER REFERENCES guests(id),      
         date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         "totalAmount" INTEGER,
         "orderStatus" VARCHAR(50)
+      );
+      CREATE TABLE "orderItems" (
+        id SERIAL PRIMARY KEY,
+        "orderId" INTEGER REFERENCES orders(id),
+        "productId" INTEGER REFERENCES products(id),
+        quantity INTEGER,
+        price INTEGER
       );
       CREATE TABLE reviews (
         id SERIAL PRIMARY KEY,
@@ -49,13 +48,12 @@ async function createTables() {
         "productId" INTEGER REFERENCES products(id),
         body TEXT NOT NULL
       );
-      CREATE TABLE carts (
+      CREATE TABLE "cartItems" (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        product_id INTEGER REFERENCES products(id),
-        quantity INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        "userId" INTEGER REFERENCES users(id),
+        "guestId" INTEGER REFERENCES guests(id),
+        "productId" INTEGER REFERENCES products(id),
+        quantity INTEGER DEFAULT 0 
       );
     `);
     console.log("Tables Created!");
