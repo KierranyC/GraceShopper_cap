@@ -55,6 +55,7 @@ export const createProduct = async (
 export const fetchProduct = async (productId) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${productId}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },

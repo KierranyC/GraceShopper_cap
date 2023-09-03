@@ -102,7 +102,7 @@ router.patch("/:productId", async (req, res, next) => {
   }
 });
 
-router.get("categories/:category", async (req, res, next) => {
+router.get("/categories/:category", async (req, res, next) => {
   const { category } = req.params;
   try {
     const product = await getProductsByCategory(category);

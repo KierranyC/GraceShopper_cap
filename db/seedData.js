@@ -3,7 +3,7 @@ import { createUser, getAllUsers } from "./models/user.js";
 import { createProduct, getAllProducts } from "./models/products.js";
 import { createOrder } from "./models/orders.js";
 
-async function createTables() {
+export async function createTables() {
   console.log("Starting to build tables...");
   try {
     await client.query(`
@@ -58,7 +58,7 @@ async function createTables() {
   }
 }
 
-async function dropTables() {
+export async function dropTables() {
   console.log("Dropping All Tables...");
   try {
     await client.query(`
@@ -76,7 +76,7 @@ async function dropTables() {
   }
 }
 
-async function createInitialUsers() {
+export async function createInitialUsers() {
   console.log("Starting to create users...");
   try {
     const newUsers = [
@@ -137,7 +137,7 @@ async function createInitialUsers() {
   }
 }
 
-async function getInitialUsers() {
+export async function getInitialUsers() {
   console.log("Starting to get initial users...");
   try {
     const allUsers = await getAllUsers();
@@ -150,7 +150,7 @@ async function getInitialUsers() {
   }
 }
 
-async function createInitialProducts() {
+export async function createInitialProducts() {
   console.log("Starting to create products...");
   try {
     const newProducts = [
@@ -244,7 +244,7 @@ async function createInitialProducts() {
   }
 }
 
-async function getInitialProducts() {
+export async function getInitialProducts() {
   console.log("Starting to get initial products...");
   try {
     const allProducts = await getAllProducts();
@@ -256,7 +256,7 @@ async function getInitialProducts() {
   }
 }
 
-async function createInitialOrders() {
+export async function createInitialOrders() {
   console.log("Starting to create orders...");
   try {
     const newOrders = [
@@ -307,7 +307,7 @@ async function createInitialOrders() {
   }
 }
 
-async function rebuildDB() {
+export async function rebuildDB() {
   try {
     await dropTables();
     await createTables();
@@ -322,5 +322,3 @@ async function rebuildDB() {
     throw error;
   }
 }
-
-export { rebuildDB, dropTables, createTables };

@@ -31,7 +31,6 @@ export const Product = ({ productId }) => {
     <div>
       <Card>
         <Card.Title>{product.title}</Card.Title>
-        {/* <Card.Subtitle>Rating</Card.Subtitle> */}
         <Card.Img src="../../images/img-not-found.png" style={{width: 30 + "rem"}}></Card.Img>
         <Card.Text>{product.price}</Card.Text>
         <Card.Text>{product.quantity}</Card.Text>
