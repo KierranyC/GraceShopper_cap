@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchAllProducts } from "../../api";
+import { fetchAllProducts } from "../../apiCalls";
 
 // This component acts as a subnav for the AllProducts page. It should display a list of clickable cateogries to filter the products displayed.
-export const Categories = () => {
+export const Categories = ({ category, setCategory }) => {
+  // UseStates for Categories
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
 
+  // Gets all products once on start up
   useEffect(() => {
     async function getProducts() {
       try {
@@ -24,6 +25,21 @@ export const Categories = () => {
     getProducts();
   }, []);
 
+  // Logs the category selected everytime category changes
+  useEffect(() => {
+    console.log("category:", category);
+  }, [category]);
+
+  // Sets a list of unique category names to avoid repeat categories when rendering
+  const uniqueCategories = new Set(products.map((product) => product.category));
+
+  console.log("uniqueCategories", uniqueCategories);
+
+  // Sets the category to the category selected
+  const handleClick = (cat) => {
+    setCategory(cat);
+  };
+
   return (
     <Navbar variant="dark" bg="dark" className="navbar-expand-xxl">
       <Nav className="flex-row">
@@ -33,9 +49,14 @@ export const Categories = () => {
         <Nav.Item className="me-2">
           <Link to="/">All Products</Link>
         </Nav.Item>
-        {products.map((product) => (
-          <Nav.Item key={product.id} className="me-2">
-            <Link to={`/products/${product.category}`}>{product.category}</Link>
+        {[...uniqueCategories].map((category) => (
+          <Nav.Item key={category} className="me-2">
+            <Link
+              to={`/Products/${category}`}
+              onClick={() => handleClick(category)}
+            >
+              {category}
+            </Link>
           </Nav.Item>
         ))}
       </Nav>

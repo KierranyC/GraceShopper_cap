@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import {
   removeItemFromCart,
@@ -25,7 +26,20 @@ export const Products = ({
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productQuantities, setProductQuantities] = useState({});
   const navigate = useNavigate();
+=======
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { fetchAllProducts } from "../../apiCalls";
 
+// This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
+export const Products = ({ setProductId, productId, loggedIn }) => {
+  // UseStates for Products
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+>>>>>>> comments
+
+  // Gets all products once at the startup of this component
   useEffect(() => {
     async function getProducts() {
       try {
@@ -38,12 +52,18 @@ export const Products = ({
     getProducts();
   }, []);
 
-  const handleClick = (e) => {
-    setProductId(e.target.value);
+  // Filters products depending on the searchTerm
+  useEffect(() => {
+    filter();
+  }, [searchTerm]);
+
+  // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
+  const handleClick = (productId) => {
+    setProductId(productId);
     console.log(productId);
-    navigate(`/products/${productId}`);
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     // Load product quantities from localStorage when the component mounts
     const storedQuantities = localStorage.getItem("productQuantities");
@@ -123,6 +143,22 @@ export const Products = ({
     }
     return false;
   };
+=======
+  // A function for filtering based on a string search. Converts the search to lowercase and filters products for matching titles or descriptions in products
+  const filter = () => {
+    const lowerCaseQuery = searchTerm.toLowerCase();
+    const filtered = products.filter((product) => {
+      return (
+        product.title.toLowerCase().includes(lowerCaseQuery) ||
+        product.description.toLowerCase().includes(lowerCaseQuery)
+      );
+    });
+    setFilteredProducts(filtered);
+  };
+
+  // A variable for updating the products displayed on screen. If there is no searchTerm, shows all products
+  const productsToDisplay = searchTerm.length ? filteredProducts : products;
+>>>>>>> comments
 
   return (
     <div className="container-fluid">
@@ -138,11 +174,20 @@ export const Products = ({
             lg={3}
             xl={2}
           >
-            <Card.Body>
-              <Card.Img variant="top" src="/images/img-not-found.png" />
-              <Link to={`/products/${product.id}`}>
+            <Card.Body className="product-card">
+              <Card.Img
+                className="product-image"
+                variant="top"
+                src="/images/img-not-found.png"
+              />
+              <Link
+                className="text-decoration-none"
+                to={`/Product/${product.id}`}
+                onClick={() => handleClick(product.id)}
+              >
                 <Card.Title>{product.title}</Card.Title>
               </Link>
+<<<<<<< HEAD
               <Card.Subtitle>{product.price}</Card.Subtitle>
               {isInCart(product.id) ? (
                 <>
@@ -165,6 +210,10 @@ export const Products = ({
                   </Button>
                 </>
               )}
+=======
+              <Card.Subtitle>${product.price}</Card.Subtitle>
+              <Button>Add to Cart</Button>
+>>>>>>> comments
               <Button>Add to Wishlist</Button>
             </Card.Body>
           </Col>

@@ -1,4 +1,8 @@
 import express from "express";
+import usersRouter from "./users.js";
+import productsRouter from "./products.js";
+import ordersRouter from "./orders.js";
+import reviewsRouter from "./reviews.js";
 
 const apiRouter = express.Router();
 
@@ -9,17 +13,9 @@ apiRouter.get("/health", (req, res, next) => {
 });
 
 // place your routers here
-
-import usersRouter from "./users.js";
 apiRouter.use("/users", usersRouter);
-
-import productsRouter from "./products.js";
 apiRouter.use("/products", productsRouter);
-
-import ordersRouter from "./orders.js";
 apiRouter.use("/orders", ordersRouter);
-
-import reviewsRouter from "./reviews.js";
 apiRouter.use("/reviews", reviewsRouter);
 
 import cartRouter from "./cart.js";

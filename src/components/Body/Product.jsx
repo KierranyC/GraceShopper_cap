@@ -2,36 +2,41 @@ import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
-import { fetchProduct } from "../../api/index.js";
+import { fetchProduct } from "../../apiCalls/index.js";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
 export const Product = ({ productId }) => {
-  const [product, setProduct] = useState([]);
+  // UseStates for Product
+  const [product, setProduct] = useState({});
 
+  // Gets a product everytime productId is updated
   useEffect(() => {
     async function getProduct() {
       try {
+        console.log(productId);
         const data = await fetchProduct(productId);
-        if (Array.isArray(data)) {
+        console.log(data);
+
+        if (data && typeof data === "object") {
           setProduct(data);
-          console.log("data:", data);
-          console.log("product:", product);
         } else {
           console.error("Invalid API response format");
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching product:", error);
       }
     }
     getProduct();
-  }, []);
+  }, [productId]);
 
   return (
     <div>
       <Card>
         <Card.Title>{product.title}</Card.Title>
-        {/* <Card.Subtitle>Rating</Card.Subtitle> */}
-        <Card.Img src="../../images/img-not-found.png"></Card.Img>
+        <Card.Img
+          src="../../images/img-not-found.png"
+          style={{ width: 30 + "rem" }}
+        ></Card.Img>
         <Card.Text>{product.price}</Card.Text>
         <Card.Text>{product.quantity}</Card.Text>
         <Card.Text>{product.category}</Card.Text>

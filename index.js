@@ -1,43 +1,29 @@
-// This is the Web Server
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import apiRouter from "./api/index.js";
+import path from "path";
+import client from "./db/client.js";
+
+dotenv.config();
+// This is the Web Server
 const server = express();
 
-// enable cross-origin resource sharing to proxy api requests
-// from localhost:3000 to localhost:4000 in local dev env
-import cors from "cors";
-server.use(cors());
-
-// create logs for everything
-import morgan from "morgan";
-server.use(morgan("dev"));
-
-// handle application/json requests
-server.use(express.json());
-
-// server.get("/favicon.ico", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "favicon.ico"));
-// });
-
-// here's our static files
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-import path from "path";
-server.use("/static", express.static(path.join(__dirname, "build")));
+
+server.use(cors()); // Enable CORS first
+server.use(morgan("dev")); // Logging
+server.use(express.json()); // JSON parsing
+server.use("/static", express.static(path.join(__dirname, "build"))); // Static files
 
 // here's our API
-import { Router } from "express";
-const router = Router();
-import apiRouter from "./api/index.js";
-router.use("/products", apiRouter);
 server.use("/api", apiRouter);
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
-// bring in the DB connection
-import client from "./db/client.js";
 
 // connect to the server
 const PORT = process.env.PORT || 4000;

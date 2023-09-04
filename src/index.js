@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 // place them in the src/style directory, and import them like this:
 import "./style/App.css";
 
+// Renders the App component on the DOM node of id "root"
 // ReactDOM.render(<App />, document.getElementById("root"));
 const domNode = document.getElementById("root");
 const root = createRoot(domNode);

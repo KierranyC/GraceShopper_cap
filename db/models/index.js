@@ -1,7 +1,7 @@
-import * as products from "./products";
-import * as user from "./user";
-import * as orders from "./orders";
-import * as reviews from "./reviews";
-import * as cart from './cart';
+import * as products from "./products.js";
+import * as user from "./user.js";
+import * as orders from "./orders.js";
+import * as reviews from "./reviews.js";
+import * as cart from "./cart.js";
 
 export { products, user, orders, reviews, cart };
