@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { fetchAllProducts, getProductsByCategory } from "../../api";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { getProductsByCategory } from "../../apiCalls";
 
-// This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
+// This component displays all products in a category
 export const Category = ({
   setProductId,
   productId,
-  loggedIn,
   category,
   setCategory,
 }) => {
+  // UseStates for Category
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const navigate = useNavigate();
 
+  // Gets all products by category everytime category is updated
   useEffect(() => {
     async function getProducts() {
       try {
@@ -34,6 +32,7 @@ export const Category = ({
     getProducts();
   }, [category]);
 
+  // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
   const handleClick = (proId) => {
     setProductId(proId);
     console.log(productId);

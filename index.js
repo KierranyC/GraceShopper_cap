@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { Router } from "express";
 import apiRouter from "./api/index.js";
 import path from "path";
 import client from "./db/client.js";

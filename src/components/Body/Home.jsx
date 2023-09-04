@@ -4,6 +4,7 @@ import { Products } from "./AllProducts.jsx";
 
 // This component acts as the main route of our e-commerce application. It should display a list of featured products followed by all of the products.
 export const Home = ({ productId, setProductId }) => {
+  // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // const handleSearch = async (category, search) => {

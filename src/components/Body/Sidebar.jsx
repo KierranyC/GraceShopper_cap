@@ -2,6 +2,7 @@ import React from "react";
 
 // This component acts as a subnav for the AllProducts page. It should display a list of clickable cateogries to filter the products displayed.
 export const Sidebar = ({ categories, selectedCategory, onSelectCategory }) => {
+  // A function for updating the category selected
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
     onSelectCategory(selectedCategory);

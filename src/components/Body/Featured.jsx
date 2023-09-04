@@ -3,6 +3,7 @@ import { Carousel } from "react-bootstrap/esm";
 
 // This component is a slideshow of featured products. This could be directly tied to sales, ratings, customer view history, or even manually added to an arrary of featured products by an admin. Have not decided best approach yet.
 export const Featured = () => {
+  // UseStates for Featured
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   return (

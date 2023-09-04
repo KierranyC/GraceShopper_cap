@@ -39,7 +39,7 @@ async function getAllProducts() {
   }
 }
 
-async function getProductById({ id }) {
+async function getProductById(id) {
   try {
     const {
       rows: [product],
@@ -52,14 +52,14 @@ async function getProductById({ id }) {
       [id]
     );
 
-    return product || null; 
+    return product || null;
   } catch (error) {
     console.error("Error fetching product by ID:", error);
     throw new Error("Unable to fetch product by ID");
   }
 }
 
-async function getProductByTitle({ title }) {
+async function getProductByTitle(title) {
   try {
     const {
       rows: [product],
@@ -77,7 +77,7 @@ async function getProductByTitle({ title }) {
   }
 }
 
-async function getProductsByCategory({ category }) {
+async function getProductsByCategory(category) {
   try {
     const { rows: products } = await client.query(
       `
@@ -94,7 +94,7 @@ async function getProductsByCategory({ category }) {
   }
 }
 
-async function getProductsBySearch({ searchTerm }) {
+async function getProductsBySearch(searchTerm) {
   try {
     const { rows: products } = await client.query(
       `

@@ -5,10 +5,9 @@ import {
   faFacebook,
   faInstagram,
   faTwitter,
-  faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 
-// This component is a footer component that displays a form for customers to contact the seller(s). It should have an email submission form, as well as links to the sellers social medias
+// This is a footer component that displays a form for customers to contact the seller(s). It should have links to the seller's social medias
 export const Contacts = () => {
   return (
     <div>
