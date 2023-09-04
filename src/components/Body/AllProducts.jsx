@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { removeItemFromCart, fetchAllProducts, addItemToCart, fetchUserCart, createUserCart, updateCartItem } from "../../api";
-// import { useContext } from "react";
-// import { CartContext } from "../../CartContext";
+import { Link, useNavigate } from "react-router-dom";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
-export const Products = ({ token, setId, loggedIn, cart, setCart }) => {
+export const Products = ({setProductId, productId, loggedIn, token, setUserId, cart, setCart  }) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productQuantities, setProductQuantities] = useState({});
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function getProducts() {
       try {
@@ -21,6 +22,12 @@ export const Products = ({ token, setId, loggedIn, cart, setCart }) => {
     }
     getProducts();
   }, []);
+
+  const handleClick = (e) => {
+    setProductId(e.target.value);
+    console.log(productId);
+    navigate(`/products/${productId}`);
+  };
 
   useEffect(() => {
     // Load product quantities from localStorage when the component mounts
@@ -71,7 +78,7 @@ export const Products = ({ token, setId, loggedIn, cart, setCart }) => {
       const updatedCart = await updateCartItem(token, productId, updatedQuantity);
       setCart(updatedCart);
     }
-  };
+  }
 
   const handleRemoveFromCart = async (productId) => {
     const updatedCart = await removeItemFromCart(token, productId);
@@ -95,19 +102,23 @@ export const Products = ({ token, setId, loggedIn, cart, setCart }) => {
   return (
     <div className="container-fluid">
       <h1 className="text-center">Products</h1>
-      <Row className="products">
-        {products.map((product) =>
-
+      <Row className="products ">
+        {products.map((product) => (
           <Col
             key={product.id}
             value={product}
+            xs={12}
+            sm={6}
             md={4}
-            className="product-card mb-3"
+            lg={3}
+            xl={2}
           >
             <Card.Body>
-              {/*<Card.Img variant="top">{product.image}</Card.Img>*/}
-              <Card.Title>{product.title}</Card.Title>
-              <Card.Subtitle>${product.price}</Card.Subtitle>
+            <Card.Img variant="top" src="/images/img-not-found.png" />
+              <Link to={`/products/${product.id}`}>
+                <Card.Title>{product.title}</Card.Title>
+              </Link>
+              <Card.Subtitle>{product.price}</Card.Subtitle>
               {isInCart(product.id) ? (
                 <>
                   <Button onClick={() => handleAddOneItemToCart(product.id)}>+</Button>
@@ -119,6 +130,7 @@ export const Products = ({ token, setId, loggedIn, cart, setCart }) => {
                   <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
                 </>
               )}
+              <Button>Add to Wishlist</Button>
             </Card.Body>
           </Col>
         )}

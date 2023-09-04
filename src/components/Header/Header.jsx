@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Search } from "./Search.jsx";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getProductsByCategoryAndSearch } from "../../api";
-import { Categories } from "../Body/Categories.jsx";
+import { Categories } from "./Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-export const Header = ({ token, setToken, username }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
 
@@ -26,9 +24,34 @@ export const Header = ({ token, setToken, username }) => {
     navigate("/Login");
   };
 
+  const handleAccount = (event) => {
+    event.preventDefault();
+    navigate("/Account");
+  };
+
+  const handleWishList = (event) => {
+    event.preventDefault();
+    navigate("/Wishlist");
+  };
+
+  const handleCart = (event) => {
+    event.preventDefault();
+    navigate("/Cart");
+  };
+
+  const handleOrders = (event) => {
+    event.preventDefault();
+    navigate("/Orders");
+  };
+
   const handleRegister = (event) => {
     event.preventDefault();
     navigate("/Register");
+  };
+
+  const handleIcon = (event) => {
+    event.preventDefault();
+    navigate("/");
   };
 
   const checkToken = () => {
@@ -40,23 +63,35 @@ export const Header = ({ token, setToken, username }) => {
     }
   };
 
+  const handleSetIsListening = (isListening) => {
+    setIsListening(isListening);
+  };
+
   useEffect(() => {
     checkToken();
   }, [token]);
 
   return (
     <Navbar className="navbar-expand-lg navbar-dark bg-dark">
-      <Navbar.Brand href="/" className="d-none d-md-block">
-        Company Name
+      <Navbar.Brand
+        onClick={handleIcon}
+        className="company-name d-none d-md-block"
+      >
+        Oilay
       </Navbar.Brand>
-      <Search />
+      <div className="d-flex align-items-center justify-content-center">
+        <Categories />
+        {/* <Search /> */}
+      </div>
       {newUser === false && (
         <Nav>
           <NavDropdown title={username} id="basic-nav-dropdown">
-            <NavDropdown.Item href="/account">Account</NavDropdown.Item>
-            <NavDropdown.Item href="/wishlist">Wishlist</NavDropdown.Item>
-            <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-            <NavDropdown.Item href="/orders">Orders</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleWishList}>
+              Wishlist
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={handleCart}>Cart</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Divider />
 
             <NavDropdown.Item href="/" onClick={handleLogout}>
@@ -66,8 +101,13 @@ export const Header = ({ token, setToken, username }) => {
         </Nav>
       )}
       {newUser === true && (
-        <Nav>
-          <NavDropdown title="Sign Up Here!" id="basic-nav-dropdown">
+        <Nav className="ms-auto">
+          <NavDropdown
+            align="flex-end"
+            title="Sign Up Here!"
+            id="basic-nav-dropdown"
+            className="account-dropdown dropdown-menu-end"
+          >
             <NavDropdown.Item href="/" onClick={handleLogin}>
               Login
             </NavDropdown.Item>

@@ -4,7 +4,7 @@ import { Products } from "./AllProducts.jsx";
 import { getProductsByCategoryAndSearch } from "../../api";
 
 // This component acts as the main route of our e-commerce application. It should display a list of featured products followed by all of the products.
-export const Home = ({ cart, setCart, token }) => {
+export const Home = ({ productId, setProductId, cart, setCart, token }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // const handleSearch = async (category, search) => {
@@ -22,7 +22,14 @@ export const Home = ({ cart, setCart, token }) => {
   return (
     <div className="home">
       <Featured />
-      <Products filteredProducts={filteredProducts} cart={cart} setCart={setCart} token={token} />
+      <Products
+        filteredProducts={filteredProducts}
+        productId={productId}
+        setProductId={setProductId}
+        cart={cart}
+        setCart={setCart}
+        token={token}
+      />
     </div>
   );
 };

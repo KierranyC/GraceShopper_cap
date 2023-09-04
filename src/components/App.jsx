@@ -21,15 +21,17 @@ import {
 } from "../components/index";
 
 import { fetchUserCart } from "../api";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [id, setId] = useState("");
   const [cart, setCart] = useState([]);
+  const [productId, setProductId] = useState("");
+  const [userId, setUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -41,7 +43,7 @@ export const App = () => {
           setCart(cartData);
         })
         .catch((error) => {
-          console.error('Error fetching user cart:', error);
+          console.error("Error fetching user cart:", error);
         });
     } else {
       // No JWT token, so it's likely a guest session
@@ -56,8 +58,6 @@ export const App = () => {
     }
   }, []);
 
-
-
   const setAndStoreToken = (token) => {
     localStorage.setItem("token", token);
     setToken(token);
@@ -68,22 +68,43 @@ export const App = () => {
     setUsername(username);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setToken("");
-    localStorage.removeItem("token");
-  };
-
   return (
     <CartProvider>
       <BrowserRouter className="app-container">
-        <Header token={token} setToken={setToken} username={username} />
+        <Header
+          token={token}
+          setToken={setToken}
+          username={username}
+          setIsLoggedIn={setIsLoggedIn}
+        />
         <Routes>
-          <Route exact path="/" element={<Home cart={cart} setCart={setCart} token={token} />}></Route>
+          <Route
+            exact
+            path="/"
+            element={
+              <Home
+                productId={productId}
+                setProductId={setProductId}
+                cart={cart}
+                setCart={setCart}
+                token={token}
+              />
+            }
+          ></Route>
 
-          <Route exact path="/product/:productId" element={<Product />}></Route>
+          <Route
+            exact
+            path="/product/:productId"
+            element={
+              <Product productId={productId} setProductId={setProductId} />
+            }
+          ></Route>
 
-          <Route exact path="/cart" element={<Cart token={token} cart={cart} setCart={setCart} />}></Route>
+          <Route
+            exact
+            path="/cart"
+            element={<Cart token={token} cart={cart} setCart={setCart} />}
+          ></Route>
 
           <Route exact path="/orders" element={<Orders />}></Route>
 
@@ -95,13 +116,13 @@ export const App = () => {
                 setUsername={setUsername}
                 username={username}
                 token={token}
-                id={id}
-                setId={setId}
+                userId={userId}
+                setUserId={setUserId}
               />
             }
           ></Route>
 
-          <Route exact path="/wishlist" element={<Wishlist />}></Route>
+          <Route exact path="/Wishlist" element={<Wishlist />}></Route>
 
           <Route
             exact
@@ -112,21 +133,8 @@ export const App = () => {
                 username={username}
                 token={token}
                 setAndStoreUsername={setAndStoreUsername}
-                id={id}
-                setId={setId}
-              />
-            }
-          ></Route>
-
-          <Route
-            exact
-            path="/User/Edit"
-            element={
-              <AccountForm
-                setUsername={setUsername}
-                username={username}
-                token={token}
-                setAndStoreUsername={setAndStoreUsername}
+                userId={userId}
+                setUserId={setUserId}
               />
             }
           ></Route>

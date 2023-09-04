@@ -16,8 +16,6 @@ export const AccountForm = ({
   username,
   token,
   setAndStoreUsername,
-  id,
-  setId,
 }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -25,18 +23,6 @@ export const AccountForm = ({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const newUserInfo = await editUser(username, password, email, id, token);
-  //   console.log("NEW USER INFO:", newUserInfo);
-  //   setAndStoreUsername(newUserInfo.username);
-  //   setUsername(newUserInfo.username);
-  //   setPassword("");
-  //   setPassConfirm("");
-  //   setEmail("");
-  //   navigate('/account')
-  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -86,6 +72,7 @@ export const AccountForm = ({
       }
 
       setSuccess(true);
+      navigate("/Account")
     } catch (error) {
       setError("Error updating account: " + error.message);
     }

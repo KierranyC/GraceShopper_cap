@@ -15,9 +15,9 @@ server.use(morgan("dev"));
 // handle application/json requests
 server.use(express.json());
 
-server.get("/favicon.ico", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "favicon.ico"));
-});
+// server.get("/favicon.ico", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "favicon.ico"));
+// });
 
 // here's our static files
 const __dirname = path.dirname(new URL(import.meta.url).pathname);

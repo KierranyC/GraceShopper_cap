@@ -101,6 +101,10 @@ export const updateProduct = async (
   }
 };
 
+export const fetchAllCategories = console.log("Fetching Categories");
+
+// export const fetchQueryResults = console.log("Fetching Results");
+
 // GET - get all products in a certain category and search term
 
 export const getProductsByCategoryAndSearch = async ({
@@ -114,7 +118,7 @@ export const getProductsByCategoryAndSearch = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     const result = await response.json();
     console.log(result);
@@ -177,7 +181,7 @@ export const userLogin = async (username, password) => {
       }),
     });
     const result = await response.json();
-    localStorage.setItem("token", result.token);
+    // localStorage.setItem("token", result.token);
     console.log(result);
     return result;
   } catch (error) {
@@ -209,10 +213,11 @@ export const fetchUserData = async (token) => {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     const result = await response.json();
+    delete result.password;
     console.log(result);
     return result;
   } catch (err) {
@@ -229,7 +234,7 @@ const deleteProduct = async (id, setDeleted, deleted) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const result = await response.json();
@@ -237,7 +242,7 @@ const deleteProduct = async (id, setDeleted, deleted) => {
     return result;
   } catch (error) {
     console.error(error);
-  };
+  }
 };
 
 // GET - getting all user's orders
@@ -246,7 +251,7 @@ export const fetchUserOrders = async (username, token) => {
     const response = await fetch(`${BASE_URL}/users/${username}/orders`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const result = await response.json();
@@ -256,7 +261,6 @@ export const fetchUserOrders = async (username, token) => {
   }
 };
 
-
 //PATCH - Updating Users
 export const editUser = async (username, password, email, userId, token) => {
   try {
@@ -264,7 +268,7 @@ export const editUser = async (username, password, email, userId, token) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         username,
@@ -287,19 +291,19 @@ export const createUserCart = async (token, productId, quantity) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         productId,
-        quantity
-      })
-    })
-    const result = await response.json()
-    return result
+        quantity,
+      }),
+    });
+    const result = await response.json();
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 // GET - returning a user's cart
 
@@ -383,7 +387,7 @@ export const createUserCart = async (token, productId, quantity) => {
 export const fetchUserCart = async (authToken) => {
   try {
     const headers = {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
 
     if (authToken) {
@@ -397,7 +401,7 @@ export const fetchUserCart = async (authToken) => {
     }
 
     const response = await fetch(`${BASE_URL}/cart`, {
-      headers
+      headers,
     });
 
     const result = await response.json();
@@ -410,7 +414,7 @@ export const fetchUserCart = async (authToken) => {
 export const addItemToCart = async (authToken, productId, quantity) => {
   try {
     const headers = {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
 
     if (authToken) {
@@ -428,8 +432,8 @@ export const addItemToCart = async (authToken, productId, quantity) => {
       headers,
       body: JSON.stringify({
         productId,
-        quantity
-      })
+        quantity,
+      }),
     });
 
     const result = await response.json();

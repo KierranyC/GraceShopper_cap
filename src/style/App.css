@@ -22,10 +22,22 @@ nav.navbar {
   padding: 1rem;
 }
 
+.company-name {
+  font-size: xx-large;
+  font-family: "Dancing Script", cursive;
+}
+
 .search-bar-container {
   display: flex;
   flex-direction: row;
   flex: 1 1 50%;
+}
+
+.account-dropdown {
+  background-color: darkblue;
+  border-radius: 15px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .products-grid {
@@ -35,8 +47,33 @@ nav.navbar {
 }
 
 .product-card {
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
+  border-radius: 15px;
   padding: 10px;
+  box-shadow: 0 0 5px darkgrey;
+}
+
+.product-image {
+  border-radius: 15px;
+}
+
+.card-info {
+  color: rgb(50, 50, 50);
+  background-color: lightgrey;
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.product-title,
+.price {
+  margin: 10px;
+  text-decoration: none;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .form {

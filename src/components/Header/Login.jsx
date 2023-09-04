@@ -22,6 +22,7 @@ export const Login = ({
     const login = async () => {
       try {
         const result = await userLogin(username, password);
+        console.log(result);
         localStorage.setItem("token", result.token);
         setToken(result.token);
         setAndStoreUsername(username);
