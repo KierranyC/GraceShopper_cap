@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { removeItemFromCart, fetchAllProducts, addItemToCart, fetchUserCart, createUserCart, updateCartItem } from "../../api";
+import {
+  removeItemFromCart,
+  fetchAllProducts,
+  addItemToCart,
+  fetchUserCart,
+  createUserCart,
+  updateCartItem,
+} from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
-export const Products = ({setProductId, productId, loggedIn, token, setUserId, cart, setCart  }) => {
+export const Products = ({
+  setProductId,
+  productId,
+  loggedIn,
+  token,
+  setUserId,
+  cart,
+  setCart,
+}) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -15,7 +30,7 @@ export const Products = ({setProductId, productId, loggedIn, token, setUserId, c
     async function getProducts() {
       try {
         const data = await fetchAllProducts();
-        setProducts(data)
+        setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -39,65 +54,75 @@ export const Products = ({setProductId, productId, loggedIn, token, setUserId, c
 
   // Update product quantities in localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
+    localStorage.setItem(
+      "productQuantities",
+      JSON.stringify(productQuantities)
+    );
   }, [productQuantities]);
 
-  const handleAddItemToCart = async (productId) => {
-    const updatedCart = await addItemToCart(token, productId, 1);
+  useEffect(() => {
+    const storedQuantities = localStorage.getItem("productQuantities");
+    if (storedQuantities) {
+      setProductQuantities(JSON.parse(storedQuantities));
+    }
+  }, []);
+
+  const handleAddItemToCart = async (proId) => {
+    const updatedCart = await addItemToCart(token, proId, 1);
     setCart(updatedCart);
     // Update the quantity in the local state
     setProductQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [productId]: (prevQuantities[productId] || 0) + 1,
+      [proId]: (prevQuantities[proId] || 0) + 1,
     }));
   };
 
-
-  const handleAddOneItemToCart = async (productId) => {
-    const updatedQuantity = (productQuantities[productId] || 0) + 1;
+  const handleAddOneItemToCart = async (proId) => {
+    const updatedQuantity = (productQuantities[proId] || 0) + 1;
     setProductQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [productId]: updatedQuantity,
+      [proId]: updatedQuantity,
     }));
 
     // Send an API request to update the quantity in the database
-    const updatedCart = await updateCartItem(token, productId, updatedQuantity);
+    const updatedCart = await updateCartItem(token, proId, updatedQuantity);
     setCart(updatedCart);
   };
 
-  const handleDeleteOneItemFromCart = async (productId) => {
-    const currentQuantity = productQuantities[productId] || 0;
+  const handleDeleteOneItemFromCart = async (proId) => {
+    const currentQuantity = productQuantities[proId] || 0;
     if (currentQuantity > 0) {
       const updatedQuantity = currentQuantity - 1;
       setProductQuantities((prevQuantities) => ({
         ...prevQuantities,
-        [productId]: updatedQuantity,
+        [proId]: updatedQuantity,
       }));
 
       // Send an API request to update the quantity in the database
-      const updatedCart = await updateCartItem(token, productId, updatedQuantity);
+      const updatedCart = await updateCartItem(token, proId, updatedQuantity);
       setCart(updatedCart);
     }
-  }
+  };
 
-  const handleRemoveFromCart = async (productId) => {
-    const updatedCart = await removeItemFromCart(token, productId);
+  const handleRemoveFromCart = async (proId) => {
+    const updatedCart = await removeItemFromCart(token, proId);
     setCart(updatedCart);
 
     // Remove the quantity from local state
     setProductQuantities((prevQuantities) => {
       const updatedQuantities = { ...prevQuantities };
-      delete updatedQuantities[productId];
+      delete updatedQuantities[proId];
       return updatedQuantities;
     });
   };
 
-
-  const isInCart = (productId) => {
-    console.log(cart)
-    return cart.some((item) => item.productId === productId);
+  const isInCart = (proId) => {
+    console.log(cart);
+    if (cart && cart.length > 0) {
+      return cart.some((item) => item.proId === proId);
+    }
+    return false;
   };
-
 
   return (
     <div className="container-fluid">
@@ -114,26 +139,36 @@ export const Products = ({setProductId, productId, loggedIn, token, setUserId, c
             xl={2}
           >
             <Card.Body>
-            <Card.Img variant="top" src="/images/img-not-found.png" />
+              <Card.Img variant="top" src="/images/img-not-found.png" />
               <Link to={`/products/${product.id}`}>
                 <Card.Title>{product.title}</Card.Title>
               </Link>
               <Card.Subtitle>{product.price}</Card.Subtitle>
               {isInCart(product.id) ? (
                 <>
-                  <Button onClick={() => handleAddOneItemToCart(product.id)}>+</Button>
-                  <Button onClick={() => handleDeleteOneItemFromCart(product.id)}>-</Button>
-                  <Button onClick={() => handleRemoveFromCart(product.id)}>Remove</Button>
+                  <Button onClick={() => handleAddOneItemToCart(product.id)}>
+                    +
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteOneItemFromCart(product.id)}
+                  >
+                    -
+                  </Button>
+                  <Button onClick={() => handleRemoveFromCart(product.id)}>
+                    Remove
+                  </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
+                  <Button onClick={() => handleAddItemToCart(product.id)}>
+                    Add to Cart
+                  </Button>
                 </>
               )}
               <Button>Add to Wishlist</Button>
             </Card.Body>
           </Col>
-        )}
+        ))}
       </Row>
     </div>
   );
