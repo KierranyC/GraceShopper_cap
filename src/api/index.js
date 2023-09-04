@@ -241,7 +241,7 @@ export const fetchUserData = async (token) => {
 
 // DELETE - delete a product
 
-const deleteProduct = async (id, setDeleted, deleted) => {
+export const deleteProduct = async (id, setDeleted, deleted) => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/products/${id}`, {

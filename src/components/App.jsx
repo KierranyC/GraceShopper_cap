@@ -14,18 +14,28 @@ import {
   Orders,
   Register,
   Login,
-  Search,
-  Categories,
   AccountForm,
   Category,
+  Sidebar,
 } from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
+  const categories = [
+    { id: 1, name: "Shampoo" },
+    { id: 2, name: "Conditioner" },
+    { id: 3, name: "Repairing" },
+    { id: 4, name: "Styling" },
+    { id: 5, name: "Color & Dye" },
+    { id: 6, name: "Specialty" },
+  ];
+
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [productId, setProductId] = useState("");
   const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +76,22 @@ export const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<Home productId={productId} setProductId={setProductId} />}
+          element={
+            <div className="home-container">
+              <Sidebar
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={handleCategory}
+              />
+              <Home
+                selectedCategory={selectedCategory}
+                searchTerm={searchTerm}
+                categories={categories}
+                productId={productId}
+                setProductId={setProductId}
+              />
+            </div>
+          }
         ></Route>
 
         <Route

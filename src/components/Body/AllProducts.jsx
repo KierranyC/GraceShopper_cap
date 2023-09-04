@@ -26,21 +26,24 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
     getProducts();
   }, []);
 
-  const handleClick = (proId) => {
-    setProductId(proId);
+  useEffect(() => {
+    filter();
+  }, [searchTerm]);
+
+  const handleClick = (productId) => {
+    setProductId(productId);
     console.log(productId);
   };
 
   const filter = () => {
+    const lowerCaseQuery = searchTerm.toLowerCase();
     const filtered = products.filter((product) => {
-      const lowerCaseQuery = searchTerm.toLowerCase();
       return (
         product.title.toLowerCase().includes(lowerCaseQuery) ||
         product.description.toLowerCase().includes(lowerCaseQuery)
       );
     });
     setFilteredProducts(filtered);
-    console.log(filtered);
   };
 
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
@@ -61,7 +64,10 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
           >
             <Card.Body>
               <Card.Img variant="top" src="/images/img-not-found.png" />
-              <Link to={`/Product/${product.id}`} onClick={() => handleClick(product.id)}>
+              <Link
+                to={`/Product/${product.id}`}
+                onClick={() => handleClick(product.id)}
+              >
                 <Card.Title>{product.title}</Card.Title>
               </Link>
               <Card.Subtitle>{product.price}</Card.Subtitle>

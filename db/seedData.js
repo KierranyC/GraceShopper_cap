@@ -23,11 +23,11 @@ export async function createTables() {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
-        price INTEGER NOT NULL,
+        price DECIMAL(10, 2) NOT NULL,
         quantity INTEGER NOT NULL,
-        category VARCHAR(255) NOT NULL,
-        photo BYTEA
-      ); 
+        category VARCHAR(255)[] DEFAULT '{}'::VARCHAR(255)[],
+        photo VARCHAR(255)
+      );
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),  
@@ -155,6 +155,7 @@ export async function createInitialProducts() {
   try {
     const newProducts = [
       {
+        id: 1,
         title: "Argan Oil",
         description:
           "Premium moroccan argan oil that brings shine back to dull hair!",
@@ -164,6 +165,7 @@ export async function createInitialProducts() {
         photo: "placeholder",
       },
       {
+        id: 2,
         title: "Coconut and Tea Tree Oil",
         description: "Premium scalp oil!",
         price: 24,
@@ -172,6 +174,7 @@ export async function createInitialProducts() {
         photo: "placeholder",
       },
       {
+        id: 3,
         title: "Vegan and Non-GMO Oil",
         description: "Premium vegan and non-GMO oil!",
         price: 24,
