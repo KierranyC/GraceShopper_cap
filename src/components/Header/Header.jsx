@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Categories } from "./Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
+export const Header = ({ token, setToken, username, setIsLoggedIn, category, setCategory }) => {
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
         Oilay
       </Navbar.Brand>
       <div className="d-flex align-items-center justify-content-center">
-        <Categories />
+        <Categories category={category} setCategory={setCategory} />
         {/* <Search /> */}
       </div>
       {newUser === false && (

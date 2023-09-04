@@ -296,3 +296,23 @@ export const editUser = async (username, password, email, userId, token) => {
     console.error(err);
   }
 };
+
+export const getProductsByCategory = async ({
+  category,
+}) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/products/categories/${category}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};

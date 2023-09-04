@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchAllProducts } from "../../api";
+import { fetchAllProducts, getProductsByCategory } from "../../api";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
-export const Products = ({ setProductId, productId, loggedIn }) => {
+export const Category = ({
+  setProductId,
+  productId,
+  loggedIn,
+  category,
+  setCategory,
+}) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -13,9 +19,11 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
   useEffect(() => {
     async function getProducts() {
       try {
-        const data = await fetchAllProducts();
+        const data = await getProductsByCategory(category);
         if (Array.isArray(data)) {
           setProducts(data);
+          console.log("CategoryProducts", data);
+          console.log("Products, Category", products);
         } else {
           console.error("Invalid API response format");
         }
@@ -24,26 +32,12 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
       }
     }
     getProducts();
-  }, []);
+  }, [category]);
 
   const handleClick = (proId) => {
     setProductId(proId);
     console.log(productId);
   };
-
-  const filter = () => {
-    const filtered = products.filter((product) => {
-      const lowerCaseQuery = searchTerm.toLowerCase();
-      return (
-        product.title.toLowerCase().includes(lowerCaseQuery) ||
-        product.description.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
-    setFilteredProducts(filtered);
-    console.log(filtered);
-  };
-
-  const productsToDisplay = searchTerm.length ? filteredProducts : products;
 
   return (
     <div className="container-fluid">
@@ -61,7 +55,10 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
           >
             <Card.Body>
               <Card.Img variant="top" src="/images/img-not-found.png" />
-              <Link to={`/Product/${product.id}`} onClick={() => handleClick(product.id)}>
+              <Link
+                to={`/Product/${product.id}`}
+                onClick={() => handleClick(product.id)}
+              >
                 <Card.Title>{product.title}</Card.Title>
               </Link>
               <Card.Subtitle>{product.price}</Card.Subtitle>

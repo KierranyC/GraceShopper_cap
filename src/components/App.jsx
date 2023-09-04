@@ -17,6 +17,7 @@ import {
   Search,
   Categories,
   AccountForm,
+  Category,
 } from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
@@ -28,6 +29,7 @@ export const App = () => {
   const [productId, setProductId] = useState("");
   const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -53,28 +55,32 @@ export const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken} username={username} setIsLoggedIn={setIsLoggedIn} />
+      <Header
+        token={token}
+        setToken={setToken}
+        username={username}
+        setIsLoggedIn={setIsLoggedIn}
+        category={category}
+        setCategory={setCategory}
+      />
       <Routes>
         <Route
-          exact
           path="/"
           element={<Home productId={productId} setProductId={setProductId} />}
         ></Route>
 
         <Route
-          exact
-          path={`/Products/:productId`}
+          path={`/Product/:productId`}
           element={
             <Product productId={productId} setProductId={setProductId} />
           }
         ></Route>
 
-        <Route exact path="/Cart" element={<Cart />}></Route>
+        <Route path="/Cart" element={<Cart />}></Route>
 
-        <Route exact path="/Orders" element={<Orders />}></Route>
+        <Route path="/Orders" element={<Orders />}></Route>
 
         <Route
-          exact
           path="/Account"
           element={
             <Account
@@ -87,10 +93,9 @@ export const App = () => {
           }
         ></Route>
 
-        <Route exact path="/Wishlist" element={<Wishlist />}></Route>
+        <Route path="/Wishlist" element={<Wishlist />}></Route>
 
         <Route
-          exact
           path="/User/Edit"
           element={
             <AccountForm
@@ -103,7 +108,6 @@ export const App = () => {
         ></Route>
 
         <Route
-          exact
           path="/Register"
           element={
             <Register
@@ -117,7 +121,6 @@ export const App = () => {
         ></Route>
 
         <Route
-          exact
           path="/Login"
           element={
             <Login
@@ -128,6 +131,11 @@ export const App = () => {
               setAndStoreUsername={setAndStoreUsername}
             />
           }
+        ></Route>
+
+        <Route
+          path={`/Products/:category`}
+          element={<Category setCategory={setCategory} category={category} />}
         ></Route>
       </Routes>
       <footer className="footer">

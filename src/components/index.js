@@ -21,6 +21,7 @@ export { Featured } from "./Body/Featured.jsx";
 export { Home } from "./Body/Home.jsx";
 export { Product } from "./Body/Product.jsx";
 export { Reviews } from "./Body/Reviews.jsx";
+export {Category} from "./Body/Category.jsx";
 
 // Export Forms
 export { AccountForm } from "./Forms/AccountForm.jsx";

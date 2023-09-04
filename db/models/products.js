@@ -81,15 +81,16 @@ async function getProductsByCategory({ category }) {
   try {
     const { rows: products } = await client.query(
       `
-          SELECT products.*
-          FROM products
-          WHERE category = $1;
-          `,
+      SELECT products.*
+      FROM products
+      WHERE category = $1;
+      `,
       [category]
     );
     return products;
   } catch (error) {
-    throw error;
+    console.error("Error fetching products by category:", error);
+    throw new Error("Unable to fetch products by category");
   }
 }
 
