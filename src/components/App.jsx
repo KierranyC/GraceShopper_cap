@@ -14,17 +14,27 @@ import {
   Orders,
   Register,
   Login,
-  Search,
-  Categories,
   AccountForm,
+  Sidebar,
 } from "../components/index";
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
+  const categories = [
+    { id: 1, name: "Shampoo" },
+    { id: 2, name: "Conditioner" },
+    { id: 3, name: "Repairing" },
+    { id: 4, name: "Styling" },
+    { id: 5, name: "Color & Dye" },
+    { id: 6, name: "Specialty" },
+  ];
+
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [productId, setProductId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,22 +66,45 @@ export const App = () => {
     localStorage.removeItem("token");
   };
 
+  const handleCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <BrowserRouter className="app-container">
-      <Header token={token} setToken={setToken} username={username} />
+      <Header
+        token={token}
+        setToken={setToken}
+        username={username}
+        setSelectedCategory={setSelectedCategory}
+        setSearchTerm={setSearchTerm}
+      />
       <Routes>
         <Route
           exact
           path="/"
-          element={<Home productId={productId} setProductId={setProductId} />}
+          element={
+            <div className="home-container">
+              <Sidebar
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={handleCategory}
+              />
+              <Home
+                selectedCategory={selectedCategory}
+                searchTerm={searchTerm}
+                categories={categories}
+                productId={productId}
+                setProductId={setProductId}
+              />
+            </div>
+          }
         ></Route>
 
         <Route
           exact
           path={`/products/:productId`}
-          element={
-            <Product productId={productId} setProductId={setProductId} />
-          }
+          element={<Product />}
         ></Route>
 
         <Route exact path="/cart" element={<Cart />}></Route>
@@ -91,19 +124,6 @@ export const App = () => {
         ></Route>
 
         <Route exact path="/wishlist" element={<Wishlist />}></Route>
-
-        <Route
-          exact
-          path="/User/Edit"
-          element={
-            <AccountForm
-              setUsername={setUsername}
-              username={username}
-              token={token}
-              setAndStoreUsername={setAndStoreUsername}
-            />
-          }
-        ></Route>
 
         <Route
           exact

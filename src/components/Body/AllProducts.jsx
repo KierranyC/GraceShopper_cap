@@ -26,22 +26,25 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
     getProducts();
   }, []);
 
-  const handleClick = (e) => {
-    setProductId(e.target.value);
+  useEffect(() => {
+    filter();
+  }, [searchTerm]);
+
+  const handleClick = (productId) => {
+    setProductId(productId);
     console.log(productId);
     navigate(`/products/${productId}`);
   };
 
   const filter = () => {
+    const lowerCaseQuery = searchTerm.toLowerCase();
     const filtered = products.filter((product) => {
-      const lowerCaseQuery = searchTerm.toLowerCase();
       return (
         product.title.toLowerCase().includes(lowerCaseQuery) ||
         product.description.toLowerCase().includes(lowerCaseQuery)
       );
     });
     setFilteredProducts(filtered);
-    console.log(filtered);
   };
 
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
@@ -50,19 +53,16 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
     <div className="container-fluid">
       <h1 className="text-center">Products</h1>
       <Row className="products">
-        {products.map((product) => (
-          <Col
-            key={product.id}
-            value={product}
-            md={4}
-            className="product-card mb-3"
-          >
+        {productsToDisplay.map((product) => (
+          <Col key={product.id} md={4} className="product-card mb-3">
             <Link to={`/products/${product.id}`}>
               <Card.Body>
                 <Card.Img variant="top" src="/images/img-not-found.png" />
                 <Card.Title>{product.title}</Card.Title>
                 <Card.Subtitle>{product.price}</Card.Subtitle>
-                <Button>Add to Cart</Button>
+                <Button onClick={() => handleClick(product.id)}>
+                  Add to Cart
+                </Button>
                 <Button>Add to Wishlist</Button>
               </Card.Body>
             </Link>
