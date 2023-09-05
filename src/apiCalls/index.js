@@ -458,3 +458,7 @@ export const removeItemFromCart = async (authToken, guestSessionId, productId) =
     console.error(error);
   };
 }
+
+export const userCheckout = async () => {
+
+}

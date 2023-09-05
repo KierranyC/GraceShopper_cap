@@ -13,6 +13,7 @@ export { Orders } from "./Header/Orders.jsx";
 export { Register } from "./Header/Register.jsx";
 export { Search } from "./Header/Search.jsx";
 export { Wishlist } from "./Header/Wishlist.jsx";
+export { Checkout } from './Header/Checkout.jsx';
 
 // Export Body components
 export { Products } from "./Body/AllProducts.jsx";

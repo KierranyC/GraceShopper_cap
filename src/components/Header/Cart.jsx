@@ -5,6 +5,8 @@ import {
   addItemToCart,
   updateCartItem,
 } from "../../apiCalls";
+import { Navigate, useNavigate } from "react-router";
+
 
 export const Cart = ({
   token,
@@ -19,7 +21,8 @@ export const Cart = ({
   const [guestTotalCost, setGuestTotalCost] = useState(0);
   const [productQuantities, setProductQuantities] = useState({});
   const [inCart, setInCart] = useState({});
-  console.log(guestCart)
+  const navigate = useNavigate()
+
   useEffect(() => {
     const storageKey = isLoggedIn ? "cart" : "guestCart";
     localStorage.setItem(
@@ -171,6 +174,14 @@ export const Cart = ({
     }
   };
 
+  const handleCheckout = () => {
+    if (token) {
+      navigate('/checkout')
+    } else {
+      navigate('/register')
+    }
+  }
+
   return (
     <div>
       {isLoggedIn ? (
@@ -256,7 +267,7 @@ export const Cart = ({
         guestCart.length > 0 && (
           <h1>Total: ${guestTotalCost}</h1>
         )}
-      <Button variant="primary">Checkout</Button>
+      <Button variant="primary" onClick={(handleCheckout)}>Checkout</Button>
     </div>
   );
 };

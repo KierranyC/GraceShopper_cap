@@ -6,6 +6,9 @@ import apiRouter from "./api/index.js";
 import path from "path";
 import client from "./db/client.js";
 
+import Stripe from 'stripe';
+const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
+
 dotenv.config();
 // This is the Web Server
 const server = express();

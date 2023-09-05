@@ -26,8 +26,7 @@ export async function createTables() {
         quantity INTEGER NOT NULL,
         category VARCHAR(255),
         photo VARCHAR(255),
-        featured BOOLEAN DEFAULT true,
-        stripe_id VARCHAR(255)
+        featured BOOLEAN DEFAULT true
       );
        CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
@@ -161,6 +160,40 @@ export async function getInitialUsers() {
 export async function createInitialProducts() {
   console.log("Starting to create products...");
   try {
+    // const newProducts = [
+    //   {
+    //     id: 1,
+    //     title: "Argan Oil",
+    //     description:
+    //       "Premium moroccan argan oil that brings shine back to dull hair!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Moisturizing Oils",
+    //     photo: "placeholder",
+    //     stripe_id: 'prod_OXKv7hjNtNC4ka'
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "Coconut and Tea Tree Oil",
+    //     description: "Premium scalp oil!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Scalp Oils",
+    //     photo: 'placeholder',
+    //     stripe_id: 'prod_OXL1j7T4DhRqy0'
+    //   },
+    //   {
+    //     id: 3,
+    //     title: "Vegan and Non-GMO Oil",
+    //     description: "Premium vegan and non-GMO oil!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Vegan Oils",
+    //     photo: 'placeholder!',
+    //     stripe_id: 'prod_OXL3pGIPAv6ozY'
+    //   }
+    // ]
+
     const newProducts = [
       {
         id: 1,
@@ -171,7 +204,6 @@ export async function createInitialProducts() {
         quantity: 5000,
         category: "Moisturizing Oils",
         photo: "placeholder",
-        stripe_id: 'prod_OXKv7hjNtNC4ka'
       },
       {
         id: 2,
@@ -180,8 +212,7 @@ export async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Scalp Oils",
-        photo: 'placeholder',
-        stripe_id: 'prod_OXL1j7T4DhRqy0'
+        photo: "placeholder",
       },
       {
         id: 3,
@@ -190,10 +221,63 @@ export async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Vegan Oils",
-        photo: 'placeholder!',
-        stripe_id: 'prod_OXL3pGIPAv6ozY'
-      }
-    ]
+        photo: "placeholder!",
+      },
+      {
+        title: "Silky Smooth Shampoo",
+        description:
+          "Revitalize and strengthen your hair with our silky smooth shampoo.",
+        price: 12,
+        quantity: 2500,
+        category: "Shampoo",
+        photo: "placeholder",
+      },
+      {
+        title: "Hydrating Conditioner",
+        description:
+          "Deeply hydrate and nourish your hair with our premium conditioner.",
+        price: 14,
+        quantity: 2000,
+        category: "Conditioner",
+        photo: "placeholder",
+      },
+      {
+        title: "Curl Enhancing Cream",
+        description:
+          "Define and enhance your natural curls with our specialized cream.",
+        price: 18,
+        quantity: 1800,
+        category: "Styling Products",
+        photo: "placeholder",
+      },
+      {
+        title: "Heat Protectant Spray",
+        description:
+          "Shield your hair from heat damage with our effective heat protectant spray.",
+        price: 16,
+        quantity: 2200,
+        category: "Styling Products",
+        photo: "placeholder",
+      },
+      {
+        title: "Color Care Shampoo",
+        description:
+          "Extend the life of your hair color with our color care shampoo.",
+        price: 13,
+        quantity: 2100,
+        category: "Shampoo",
+        photo: "placeholder",
+      },
+      {
+        title: "Repairing Hair Mask",
+        description:
+          "Repair and restore damaged hair with our rejuvenating hair mask.",
+        price: 20,
+        quantity: 1700,
+        category: "Hair Masks",
+        photo: "placeholder",
+      },
+    ];
 
     const products = await Promise.all(newProducts.map(createProduct));
     console.log("Products:");
