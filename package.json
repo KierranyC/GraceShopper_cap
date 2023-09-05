@@ -44,8 +44,12 @@
     "react-router-dom": "6.15.0",
     "react-scripts": "^5.0.1",
     "react-speech-recognition": "^3.10.0",
+<<<<<<< HEAD
     "react-spinners": "^0.13.8",
     "uuid": "^9.0.0"
+=======
+    "react-stripe-checkout": "^2.6.3"
+>>>>>>> 0e6807ec3f54eb8c7adc9add5723fa6d87e981a4
   },
   "devDependencies": {
     "nodemon": "^3.0.1",

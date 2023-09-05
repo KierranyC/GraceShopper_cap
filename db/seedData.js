@@ -24,9 +24,15 @@ export async function createTables() {
         description TEXT NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
         quantity INTEGER NOT NULL,
+<<<<<<< HEAD
         category VARCHAR(255),
         photo VARCHAR(255),
         featured BOOLEAN DEFAULT true
+=======
+        category VARCHAR(255) NOT NULL,
+        photo BYTEA,
+        stripe_id VARCHAR(255)
+>>>>>>> 0e6807ec3f54eb8c7adc9add5723fa6d87e981a4
       );
        CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
@@ -169,7 +175,12 @@ export async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Moisturizing Oils",
+<<<<<<< HEAD
         photo: "placeholder",
+=======
+        photo: 'placeholder',
+        stripe_id: 'prod_OXKv7hjNtNC4ka'
+>>>>>>> 0e6807ec3f54eb8c7adc9add5723fa6d87e981a4
       },
       {
         id: 2,
@@ -178,7 +189,12 @@ export async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Scalp Oils",
+<<<<<<< HEAD
         photo: "placeholder",
+=======
+        photo: 'placeholder',
+        stripe_id: 'prod_OXL1j7T4DhRqy0'
+>>>>>>> 0e6807ec3f54eb8c7adc9add5723fa6d87e981a4
       },
       {
         id: 3,
@@ -187,6 +203,7 @@ export async function createInitialProducts() {
         price: 24,
         quantity: 5000,
         category: "Vegan Oils",
+<<<<<<< HEAD
         photo: "placeholder!",
       },
       {
@@ -244,6 +261,12 @@ export async function createInitialProducts() {
         photo: "placeholder",
       },
     ];
+=======
+        photo: 'placeholder!',
+        stripe_id: 'prod_OXL3pGIPAv6ozY'
+      }
+    ]
+>>>>>>> 0e6807ec3f54eb8c7adc9add5723fa6d87e981a4
 
     const products = await Promise.all(newProducts.map(createProduct));
     console.log("Products:");
