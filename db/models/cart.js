@@ -87,16 +87,13 @@ async function getUserCart(userId, guestId) {
     let cartItems;
 
     if (userId !== null) {
-      // User is logged in
       const condition = `"userId" = $1`;
       cartItems = await getUserCartItems(condition, [userId]);
     } else {
-      // User is a guest
       const condition = `"guestId" = $1`;
       cartItems = await getUserCartItems(condition, [guestId]);
     }
 
-    // Fetch product information for each item in the cart
     const cartWithProductInfo = await Promise.all(cartItems.map(async (cartItem) => {
       const productInfo = await getProductInfo(cartItem.productId);
       return {

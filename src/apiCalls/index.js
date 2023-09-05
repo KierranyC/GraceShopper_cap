@@ -11,7 +11,6 @@ export const fetchAllProducts = async () => {
       },
     });
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     console.error(error);
@@ -121,6 +120,7 @@ export const fetchUserOrders = async (username, token) => {
 
 // GET - Gets all products in a certain category
 export const getProductsByCategory = async (category) => {
+  console.log('CATEGORY API CALL:', category)
   try {
     const response = await fetch(
       `${BASE_URL}/products/categories/${category}`,
@@ -374,7 +374,7 @@ export const fetchGuestCart = async (guestSessionId) => {
 
 
 export const addItemToCart = async (authToken, guestSessionId, productId, quantity) => {
-  console.log(authToken, guestSessionId)
+  // console.log(authToken, guestSessionId)
   try {
     const headers = {
       "Content-Type": "application/json"

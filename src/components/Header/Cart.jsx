@@ -3,13 +3,13 @@ import { Button } from "react-bootstrap";
 
 export const Cart = ({ isLoggedIn, cart, setCart, guestCart, setGuestCart }) => {
   const [totalCost, setTotalCost] = useState(0);
-  const [guestTotalCost, setGuestTotalCost] = useState(0); // New state for guest cart total cost
+  const [guestTotalCost, setGuestTotalCost] = useState(0);
   console.log(cart)
   useEffect(() => {
     const storageKey = isLoggedIn ? "cart" : "guestCart";
     localStorage.setItem(storageKey, JSON.stringify(isLoggedIn ? cart : guestCart));
 
-    // Calculate total cost based on whether the user is logged in or not
+    // calculate total cost based on whether the user is logged in or not
     const cost = (isLoggedIn ? cart : guestCart).reduce((total, product) => {
       const productSubtotal = product.productInfo.price * product.quantity;
       return total + productSubtotal;
@@ -18,7 +18,7 @@ export const Cart = ({ isLoggedIn, cart, setCart, guestCart, setGuestCart }) => 
     if (isLoggedIn) {
       setTotalCost(cost);
     } else {
-      setGuestTotalCost(cost); // Update guest cart total cost
+      setGuestTotalCost(cost); // to update guest cart total cost
     }
   }, [cart, guestCart, isLoggedIn]);
 
@@ -35,17 +35,17 @@ export const Cart = ({ isLoggedIn, cart, setCart, guestCart, setGuestCart }) => 
   return (
     <div>
       {isLoggedIn ? (
-        <p>Items in your cart:</p>
+        <h1>Items in your cart:</h1>
       ) : (
         <p>Guest cart:</p>
       )}
       {isLoggedIn && cart.length > 0 ? (
         cart.map((currentProduct) => (
           <div key={currentProduct.id}>
-            <h1>{currentProduct.productInfo.title}</h1>
-            <h2>Price: ${currentProduct.productInfo.price}</h2>
-            <h2>Quantity: {currentProduct.quantity}</h2>
-            <h2>Subtotal: ${currentProduct.productInfo.price * currentProduct.quantity}</h2>
+            <h2>{currentProduct.productInfo.title}</h2>
+            <h4>Price: ${currentProduct.productInfo.price}</h4>
+            <h4>Quantity: {currentProduct.quantity}</h4>
+            <h4>Subtotal: ${currentProduct.productInfo.price * currentProduct.quantity}</h4>
           </div>
         ))
       ) : (
@@ -68,7 +68,7 @@ export const Cart = ({ isLoggedIn, cart, setCart, guestCart, setGuestCart }) => 
         <h1>Total: ${totalCost}</h1>
       )}
       {!isLoggedIn && guestCart.length > 0 && (
-        <h1>Total: ${guestTotalCost}</h1> // Display guest cart total cost for guests
+        <h1>Total: ${guestTotalCost}</h1>
       )}
       <Button variant="primary">Checkout</Button>
     </div>

@@ -43,29 +43,30 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:productId", async (req, res, next) => {
-  const { productId } = req.params;
-  try {
-    const product = await getProductById(productId);
+// router.get("/:productId", async (req, res, next) => {
+//   const { productId } = req.params;
+//   console.log(productId)
+//   try {
+//     const product = await getProductById(productId);
 
-    if (product) {
-      res.send(product);
-    } else {
-      res.status(404).send({
-        error: "ERROR",
-        message: `Product ${productId} not found`,
-        title: "productNotFound",
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).send({
-      error: "ERROR",
-      message: "Internal server error while fetching product",
-      title: "internalServerError",
-    });
-  }
-});
+//     if (product) {
+//       res.send(product);
+//     } else {
+//       res.status(404).send({
+//         error: "ERROR",
+//         message: `Product ${productId} not found`,
+//         title: "productNotFound",
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     res.status(500).send({
+//       error: "ERROR",
+//       message: "Internal server error while fetching product",
+//       title: "internalServerError",
+//     });
+//   }
+// });
 
 router.patch("/:productId", async (req, res, next) => {
   if (!req.headers.authorization) {
@@ -106,9 +107,10 @@ router.patch("/:productId", async (req, res, next) => {
 
 router.get("/categories/:category", async (req, res, next) => {
   const { category } = req.params;
+  console.log('CATEGORY:', category)
   try {
-    const product = await getProductsByCategory(category);
-    res.send(product);
+    const products = await getProductsByCategory(category);
+    res.send(products);
   } catch (error) {
     next(error);
   }

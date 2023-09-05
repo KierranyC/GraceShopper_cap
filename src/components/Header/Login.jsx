@@ -26,6 +26,7 @@ export const Login = ({
         const result = await userLogin(username, password);
         console.log(result);
         localStorage.setItem("token", result.token);
+        localStorage.removeItem("guestCart");
         setToken(result.token);
         setAndStoreUsername(username);
         setUsername("");

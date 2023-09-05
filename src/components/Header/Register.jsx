@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { signUp } from "../../apiCalls";
 import { useNavigate } from "react-router-dom";
-import { createUserCart } from "../../api";
+import { createUserCart } from "../../apiCalls";
 
 // This component registers new users and adds them to the database.
 export const Register = ({

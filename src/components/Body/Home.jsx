@@ -3,7 +3,17 @@ import { Featured } from "./Featured.jsx";
 import { Products } from "./AllProducts.jsx";
 
 // This component acts as the main route of our e-commerce application. It should display a list of featured products followed by all of the products.
-export const Home = ({ productId, setProductId, cart, setCart, token }) => {
+export const Home = ({
+  productId,
+  setProductId,
+  cart,
+  setCart,
+  token,
+  guestCart,
+  setGuestCart,
+  storedGuestSessionId,
+  isLoggedIn
+}) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -29,6 +39,10 @@ export const Home = ({ productId, setProductId, cart, setCart, token }) => {
         cart={cart}
         setCart={setCart}
         token={token}
+        guestCart={guestCart}
+        setGuestCart={setGuestCart}
+        storedGuestSessionId={storedGuestSessionId}
+        isLoggedIn={isLoggedIn}
       />
     </div>
   );
