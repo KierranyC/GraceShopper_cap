@@ -139,13 +139,14 @@ async function updateCartItemQuantity({ userId, guestId, productId, quantity }) 
     const condition = userId ? `"userId"` : `"guestId"`;
     const values = userId ? [userId, productId, quantity] : [guestId, productId, quantity];
 
-    const { rows: updatedCart } = await client.query(`
+    await client.query(`
       UPDATE "cartItems" 
       SET quantity = $3
       WHERE ${condition} = $1 AND "productId" = $2
       RETURNING *;
     `, values);
 
+    const updatedCart = await getUserCart(userId, guestId)
     console.log('UPDATED CART DB FUNC:', updatedCart)
     return updatedCart;
   } catch (error) {

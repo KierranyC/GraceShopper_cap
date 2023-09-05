@@ -374,7 +374,7 @@ export const fetchGuestCart = async (guestSessionId) => {
 
 
 export const addItemToCart = async (authToken, guestSessionId, productId, quantity) => {
-  // console.log(authToken, guestSessionId)
+  console.log(authToken, guestSessionId)
   try {
     const headers = {
       "Content-Type": "application/json"

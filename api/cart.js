@@ -153,7 +153,6 @@ router.patch('/update', requireAuthentication, async (req, res, next) => {
         productId,
         quantity,
       });
-      console.log("UPDATED CART API ROUTE", updatedCart);
       res.send(updatedCart);
     }
   } catch (error) {
