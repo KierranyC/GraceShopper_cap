@@ -8,6 +8,7 @@ import {
   updateProduct,
   getProductsBySearch,
 } from "../db/models/products.js";
+import requireAuthentication from "./utils.js";
 const router = express.Router();
 
 router.post("/", async (req, res, next) => {
@@ -33,6 +34,7 @@ router.post("/", async (req, res, next) => {
 });
 
 router.get("/", async (req, res, next) => {
+
   try {
     const products = await getAllProducts();
     res.send(products);

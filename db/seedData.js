@@ -15,7 +15,7 @@ async function createTables() {
       );
       CREATE TABLE guests (
         id SERIAL PRIMARY KEY,
-        "sessionId" UUID
+        "sessionId" UUID UNIQUE
       );
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
@@ -51,7 +51,7 @@ async function createTables() {
       CREATE TABLE "cartItems" (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),
-        "guestId" INTEGER REFERENCES guests(id),
+        "guestId" UUID REFERENCES guests("sessionId"),
         "productId" INTEGER REFERENCES products(id),
         quantity INTEGER DEFAULT 0 
       );

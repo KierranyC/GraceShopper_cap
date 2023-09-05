@@ -281,47 +281,9 @@ export const editUser = async (username, password, email, userId, token) => {
 
 // POST - creating cart for user upon registering or logging in
 
-export const createUserCart = async (token, productId, quantity) => {
-  try {
-    const response = await fetch(`${BASE_URL}/cart/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        productId,
-        quantity
-      })
-    })
-    const result = await response.json()
-    return result
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-// GET - returning a user's cart
-
-// export const fetchUserCart = async (token) => {
+// export const createUserCart = async (token, productId, quantity) => {
 //   try {
-//     const response = await fetch(`${BASE_URL}/cart`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`
-//       },
-//     })
-//     const result = await response.json()
-//     return result;
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// export const addItemToCart = async (token, productId, quantity) => {
-
-//   try {
-//     const response = await fetch(`${BASE_URL}/cart/add`, {
+//     const response = await fetch(`${BASE_URL}/cart/create`, {
 //       method: "POST",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -333,46 +295,6 @@ export const createUserCart = async (token, productId, quantity) => {
 //       })
 //     })
 //     const result = await response.json()
-//     // console.log(result)
-//     return result
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// export const updateCartItem = async (token, productId, quantity) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/cart/update`, {
-//       method: "PATCH",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`
-//       },
-//       body: JSON.stringify({
-//         productId,
-//         quantity,
-//       })
-//     })
-//     const result = await response.json()
-//     return result
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// export const removeItemFromCart = async (token, productId) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/cart/remove`, {
-//       method: 'DELETE',
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`
-//       },
-//       body: JSON.stringify({
-//         productId
-//       })
-//     })
-//     const result = await response.json()
 //     return result
 //   } catch (error) {
 //     console.error(error)
@@ -380,24 +302,51 @@ export const createUserCart = async (token, productId, quantity) => {
 // }
 
 // GET - returning a user's cart
-export const fetchUserCart = async (authToken) => {
+// export const fetchUserCart = async (authToken) => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json"
+//     };
+
+//     if (authToken) {
+//       headers["Authorization"] = `Bearer ${authToken}`;
+//     } else {
+//       // Handle guest session ID here, if applicable
+//       const guestSessionId = localStorage.getItem("guestSessionId");
+//       if (guestSessionId) {
+//         headers["x-guest-session-id"] = guestSessionId;
+//       }
+//     }
+
+//     const response = await fetch(`${BASE_URL}/cart`, {
+//       headers
+//     });
+
+//     const result = await response.json();
+//     return result;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+// export const createNewGuest = async (guestSessionId) => {
+//   try {
+
+//   }
+// }
+
+export const fetchUserCart = async (token) => {
   try {
     const headers = {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
 
-    if (authToken) {
-      headers["Authorization"] = `Bearer ${authToken}`;
-    } else {
-      // Handle guest session ID here, if applicable
-      const guestSessionId = localStorage.getItem("guestSessionId");
-      if (guestSessionId) {
-        headers["x-guest-session-id"] = guestSessionId;
-      }
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const response = await fetch(`${BASE_URL}/cart`, {
-      headers
+      headers,
     });
 
     const result = await response.json();
@@ -407,7 +356,48 @@ export const fetchUserCart = async (authToken) => {
   }
 };
 
-export const addItemToCart = async (authToken, productId, quantity) => {
+export const createNewGuest = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/newguest`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    const result = await response.json()
+    return result;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const fetchGuestCart = async (guestSessionId) => {
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (guestSessionId) {
+      headers["x-guest-session-id"] = guestSessionId;
+    }
+
+    const response = await fetch(`${BASE_URL}/cart`, {
+      headers,
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
+export const addItemToCart = async (authToken, guestSessionId, productId, quantity) => {
+  console.log(authToken, guestSessionId)
   try {
     const headers = {
       "Content-Type": "application/json"
@@ -415,12 +405,9 @@ export const addItemToCart = async (authToken, productId, quantity) => {
 
     if (authToken) {
       headers["Authorization"] = `Bearer ${authToken}`;
-    } else {
-      // Handle guest session ID here, if applicable
-      const guestSessionId = localStorage.getItem("guestSessionId");
-      if (guestSessionId) {
-        headers["x-guest-session-id"] = guestSessionId;
-      }
+    } else if (guestSessionId) {
+      headers["x-guest-session-id"] = guestSessionId;
+
     }
 
     const response = await fetch(`${BASE_URL}/cart/add`, {
@@ -433,27 +420,24 @@ export const addItemToCart = async (authToken, productId, quantity) => {
     });
 
     const result = await response.json();
+    // console.log(result)
     return result;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateCartItem = async (tokenOrSessionId, productId, quantity) => {
+export const updateCartItem = async (authToken, guestSessionId, productId, quantity) => {
   try {
     const headers = {
       "Content-Type": "application/json",
     };
 
-    if (tokenOrSessionId) {
-      // If tokenOrSessionId is provided, it could be either a token or session ID.
-      // Check if it looks like a token (assuming token format starts with 'Bearer')
-      if (tokenOrSessionId.startsWith("Bearer")) {
-        headers["Authorization"] = tokenOrSessionId;
-      } else {
-        // Otherwise, treat it as a session ID and set the 'x-guest-session-id' header
-        headers["x-guest-session-id"] = tokenOrSessionId;
-      }
+    if (authToken) {
+      headers["Authorization"] = `Bearer ${authToken}`;
+    } else if (guestSessionId) {
+      headers["x-guest-session-id"] = guestSessionId;
+
     }
 
     const response = await fetch(`${BASE_URL}/cart/update`, {
@@ -471,30 +455,29 @@ export const updateCartItem = async (tokenOrSessionId, productId, quantity) => {
   }
 };
 
-export const removeItemFromCart = async (tokenOrSessionId, productId) => {
+export const removeItemFromCart = async (authToken, guestSessionId, productId) => {
   try {
     const headers = {
       "Content-Type": "application/json",
     };
 
-    if (tokenOrSessionId) {
-      if (tokenOrSessionId.startsWith("Bearer")) {
-        headers["Authorization"] = tokenOrSessionId;
-      } else {
-        headers["x-guest-session-id"] = tokenOrSessionId;
-      }
+    if (authToken) {
+      headers["Authorization"] = `Bearer ${authToken}`;
+    } else if (guestSessionId) {
+      headers["x-guest-session-id"] = guestSessionId;
+
     }
 
     const response = await fetch(`${BASE_URL}/cart/remove`, {
       method: "DELETE",
       headers,
       body: JSON.stringify({
-        productId,
+        productId
       }),
     });
     const result = await response.json();
     return result;
   } catch (error) {
     console.error(error);
-  }
-};
+  };
+}

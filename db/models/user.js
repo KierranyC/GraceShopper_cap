@@ -30,12 +30,12 @@ async function createUser({ email, username, password, isAdmin }) {
   }
 }
 
-async function createGuest({ sessionId }) {
+async function createGuest(sessionId) {
   try {
     const { rows: [guest] } = await client.query(`
     INSERT INTO guests("sessionId")
     VALUES ($1)
-    RETURNING *;
+    RETURNING "sessionId";
     `, [sessionId]);
 
     return guest;
@@ -44,19 +44,40 @@ async function createGuest({ sessionId }) {
   }
 }
 
-async function findGuestBySessionId(guestSessionId) {
-  try {
-    const { rows: [guest] } = await client.query(`
-    SELECT * 
-    FROM guests
-    WHERE "sessionId" = $1; 
-    `, [guestSessionId]);
+// async function findGuestBySessionId(guestSessionId) {
+//   try {
+//     const { rows: [guest] } = await client.query(`
+//     SELECT *
+//     FROM guests
+//     WHERE "sessionId" = $1;
+//     `, [guestSessionId]);
 
-    return guest
+//     return guest
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+async function findGuestBySessionId(sessionId) {
+  try {
+    const { rows } = await client.query(`
+      SELECT *
+      FROM guests
+      WHERE "sessionId" = $1;
+    `, [sessionId]);
+
+    if (rows.length === 0) {
+      // Handle the case where no guest is found with the provided sessionId
+      return null;
+    }
+
+    // Return the guest information
+    return rows[0];
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
+
 
 async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
