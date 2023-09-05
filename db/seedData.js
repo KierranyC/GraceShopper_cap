@@ -25,7 +25,8 @@ export async function createTables() {
         price DECIMAL(10, 2) NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR(255) NOT NULL,
-        photo BYTEA
+        photo BYTEA,
+        stripe_id VARCHAR(255)
       );
        CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
