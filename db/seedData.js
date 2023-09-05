@@ -24,8 +24,9 @@ export async function createTables() {
         description TEXT NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
         quantity INTEGER NOT NULL,
-        category VARCHAR(255) NOT NULL,
-        photo BYTEA
+        category VARCHAR(255),
+        photo VARCHAR(255),
+        featured BOOLEAN DEFAULT true
       );
        CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
