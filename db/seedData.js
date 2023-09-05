@@ -16,8 +16,7 @@ export async function createTables() {
       );
       CREATE TABLE guests (
         id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        "sessionId" UUID NOT NULL
+        "sessionId" UUID UNIQUE
       );
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
@@ -29,7 +28,7 @@ export async function createTables() {
         photo VARCHAR(255),
         featured BOOLEAN DEFAULT true
       );
-      CREATE TABLE orders (
+       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),  
         "guestId" INTEGER REFERENCES guests(id),      
@@ -41,7 +40,7 @@ export async function createTables() {
         id SERIAL PRIMARY KEY,
         "orderId" INTEGER REFERENCES orders(id),
         "productId" INTEGER REFERENCES products(id),
-        "quantity" INTEGER,
+        quantity INTEGER,
         price INTEGER
       );
       CREATE TABLE reviews (
@@ -51,7 +50,14 @@ export async function createTables() {
         "productId" INTEGER REFERENCES products(id),
         body TEXT NOT NULL
       );
-      `);
+      CREATE TABLE "cartItems" (
+        id SERIAL PRIMARY KEY,
+        "userId" INTEGER REFERENCES users(id),
+        "guestId" UUID REFERENCES guests("sessionId"),
+        "productId" INTEGER REFERENCES products(id),
+        quantity INTEGER DEFAULT 0 
+      );
+    `);
     console.log("Tables Created!");
   } catch (error) {
     console.log("Error creating tables");

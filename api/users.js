@@ -25,6 +25,18 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.post('/newguest', async (req, res, next) => {
+  try {
+    const guestSessionId = uuidv4()
+    // console.log("NEW GUEST SESSION ID:", guestSessionId)
+    const newGuest = await createGuest(guestSessionId)
+    console.log('new guest;', newGuest)
+    res.send(newGuest)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/me', requireAuthentication, async (req, res, next) => {
 
   try {

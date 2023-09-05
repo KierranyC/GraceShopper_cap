@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { userLogin } from "../../apiCalls";
+import { fetchUserCart, userLogin } from "../../apiCalls";
 // This component logs in users
 export const Login = ({
   setToken,
   username,
   setUsername,
   setAndStoreUsername,
+  cart,
+  setCart,
 }) => {
   // UseStates for Login
   const [password, setPassword] = useState("");
@@ -24,6 +26,7 @@ export const Login = ({
         const result = await userLogin(username, password);
         console.log(result);
         localStorage.setItem("token", result.token);
+        localStorage.removeItem("guestCart");
         setToken(result.token);
         setAndStoreUsername(username);
         setUsername("");

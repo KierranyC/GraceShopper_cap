@@ -22,6 +22,8 @@ import {
   // Sidebar,
 } from "../components/index";
 
+import { fetchUserCart, fetchGuestCart, createNewGuest } from "../apiCalls";
+
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
   // const categories = [
@@ -40,21 +42,83 @@ export const App = () => {
   const [password, setPassword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [cart, setCart] = useState([]);
   const [productId, setProductId] = useState("");
   const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState("");
+  const [guestCart, setGuestCart] = useState([]);
+  const [categoryProducts, setCategoryProducts] = useState([]);
+  const [storedGuestSessionId, setStoredGuestSessionId] = useState("");
 
   // Stores a token and username locally and sets a user to Logged in
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    const storedGuestSessionId = localStorage.getItem("guestSessionId");
+    // console.log('APP COMP STORED TOKEN:', storedToken)
     if (storedToken) {
       setToken(storedToken);
       setIsLoggedIn(true);
+      fetchUserCart(storedToken)
+        .then((cartData) => {
+          setCart(cartData);
+          localStorage.setItem("cart", JSON.stringify(cartData));
+        })
+        .catch((error) => {
+          console.error("Error fetching user cart:", error);
+        });
+    } else if (storedGuestSessionId && !storedToken) {
+      setStoredGuestSessionId(storedGuestSessionId);
+      fetchGuestCart(storedGuestSessionId)
+        .then((cartData) => {
+          // console.log('FETCHED GUEST CART FROM BACKEND:', cartData)
+          if (cartData) {
+            setGuestCart(cartData);
+            localStorage.setItem("guestCart", JSON.stringify(cartData));
+            // console.log(guestCart)
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching guest cart:', error);
+        });
+    } else {
+      // if no user or guest is present, create new guest
+      if (!token && !storedGuestSessionId) {
+        createNewGuest()
+          .then((newGuest) => {
+            // console.log('NEW GUEST RETURNED FROM BACKEND:', newGuest);
+            setStoredGuestSessionId(newGuest.sessionId);
+            localStorage.setItem('guestSessionId', newGuest.sessionId);
+            // fetchOrCreateGuestCart(newGuest.sessionId)
+            //   .then((cartData) => {
+            //     setGuestCart(cartData);
+            //     localStorage.setItem("guestCart", JSON.stringify(cartData));
+            //   })
+            //   .catch((error) => {
+            //     console.error('Error fetching guest cart:', error);
+            //   });
+          })
+          .catch((error) => {
+            console.error('Error creating new guest:', error);
+          });
+      }
     }
+
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("category:", category);
+    localStorage.setItem("selectedCategory", category);
+  }, [category]);
+
+  useEffect(() => {
+    const storedCategory = localStorage.getItem("selectedCategory");
+    if (storedCategory) {
+      setCategory(storedCategory);
     }
   }, []);
 
@@ -72,10 +136,15 @@ export const App = () => {
     <BrowserRouter className="app-container">
       {/* Header for the App. This components is responsible for Navigation as well as managing user actions such as logging in/out, checking their cart or wishlist, or accessing the admin dashboard for Admins */}
       <Header
+
         token={token}
+
         setToken={setToken}
+
         username={username}
+
         setIsLoggedIn={setIsLoggedIn}
+
         category={category}
         setCategory={setCategory}
       />
@@ -85,6 +154,7 @@ export const App = () => {
         <Route
           path="/"
           element={
+
             <div className="home-container">
               {/* <Sidebar
                 categories={categories}
@@ -95,10 +165,18 @@ export const App = () => {
                 selectedCategory={selectedCategory}
                 searchTerm={searchTerm}
                 // categories={categories}
+                storedGuestSessionId={storedGuestSessionId}
                 productId={productId}
+                isLoggedIn={isLoggedIn}
                 setProductId={setProductId}
+                guestCart={guestCart}
+                cart={cart}
+                setCart={setCart}
+                token={token}
+                setGuestCart={setGuestCart}
               />
             </div>
+
           }
         ></Route>
 
@@ -111,7 +189,17 @@ export const App = () => {
         ></Route>
 
         {/* This page displays a user's cart. The cart page should be unique to each user, showing a list of products selected by the user for purchase */}
-        <Route path="/Cart" element={<Cart />}></Route>
+        <Route
+
+          path="/Cart"
+          element={<Cart
+            storedGuestSessionId={storedGuestSessionId}
+            isLoggedIn={isLoggedIn}
+            token={token} cart={cart} setCart={setCart}
+            guestCart={guestCart}
+            setGuestCart={setGuestCart}
+          />}
+        ></Route>
 
         {/* This page displays a user's past orders. The orders page should be unique to each user, showing a list of previous orders, as well as their status, and dates (date ordered/date received) */}
         <Route path="/Orders" element={<Orders />}></Route>
@@ -142,6 +230,8 @@ export const App = () => {
               username={username}
               token={token}
               setAndStoreUsername={setAndStoreUsername}
+              cart={cart}
+              setCart={setCart}
             />
           }
         ></Route>
@@ -156,6 +246,8 @@ export const App = () => {
               username={username}
               setUsername={setUsername}
               setAndStoreUsername={setAndStoreUsername}
+              cart={cart}
+              setCart={setCart}
             />
           }
         ></Route>
@@ -170,6 +262,8 @@ export const App = () => {
               username={username}
               setUsername={setUsername}
               setAndStoreUsername={setAndStoreUsername}
+              cart={cart}
+              setCart={setCart}
             />
           }
         ></Route>
@@ -177,7 +271,19 @@ export const App = () => {
         {/* This page displays a list of products by category */}
         <Route
           path={`/Products/:category`}
-          element={<Category setCategory={setCategory} category={category} />}
+          element={
+            <Category
+              setCategory={setCategory}
+              category={category}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+              storedGuestSessionId={storedGuestSessionId}
+              token={token}
+              cart={cart}
+              setCart={setCart}
+              categoryProducts={categoryProducts}
+              setCategoryProducts={setCategoryProducts}
+            />}
         ></Route>
       </Routes>
       <footer className="footer">

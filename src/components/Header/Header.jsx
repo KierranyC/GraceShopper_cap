@@ -26,6 +26,7 @@ export const Header = ({
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     setNewUser(true);
+    navigate('/login')
   };
 
   // A function that directs a user to the Login route
@@ -130,6 +131,7 @@ export const Header = ({
             <NavDropdown.Item href="/" onClick={handleRegister}>
               Register
             </NavDropdown.Item>
+            <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       )}

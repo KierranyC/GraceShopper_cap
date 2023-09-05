@@ -30,19 +30,54 @@ async function createUser({ email, username, password, isAdmin }) {
   }
 }
 
-async function createGuest({ email, sessionId }) {
+async function createGuest(sessionId) {
   try {
     const { rows: [guest] } = await client.query(`
-    INSERT INTO guests(email, "sessionId")
-    VALUES ($1, $2)
-    RETURNING *;
-    `);
+    INSERT INTO guests("sessionId")
+    VALUES ($1)
+    RETURNING "sessionId";
+    `, [sessionId]);
 
     return guest;
   } catch (error) {
     console.error(error);
   }
 }
+
+// async function findGuestBySessionId(guestSessionId) {
+//   try {
+//     const { rows: [guest] } = await client.query(`
+//     SELECT *
+//     FROM guests
+//     WHERE "sessionId" = $1;
+//     `, [guestSessionId]);
+
+//     return guest
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+async function findGuestBySessionId(sessionId) {
+  try {
+    const { rows } = await client.query(`
+      SELECT *
+      FROM guests
+      WHERE "sessionId" = $1;
+    `, [sessionId]);
+
+    if (rows.length === 0) {
+      // Handle the case where no guest is found with the provided sessionId
+      return null;
+    }
+
+    // Return the guest information
+    return rows[0];
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
@@ -116,6 +151,10 @@ async function getUserByUsername(username) {
 }
 
 async function updateUser(id, fields = {}) {
+
+  const hashedPassword = await bcrypt.hash(fields.password, SALT_COUNT);
+  fields.password = hashedPassword
+
   try {
     const string = Object.keys(fields)
       .map(
@@ -145,6 +184,7 @@ async function updateUser(id, fields = {}) {
 export {
   createUser,
   createGuest,
+  findGuestBySessionId,
   getAllUsers,
   getUserById,
   getUser,

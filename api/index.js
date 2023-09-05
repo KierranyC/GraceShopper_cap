@@ -18,4 +18,7 @@ apiRouter.use("/products", productsRouter);
 apiRouter.use("/orders", ordersRouter);
 apiRouter.use("/reviews", reviewsRouter);
 
+import cartRouter from "./cart.js";
+apiRouter.use('/cart', cartRouter);
+
 export default apiRouter;
