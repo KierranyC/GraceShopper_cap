@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Search } from "./Search.jsx";
+// An attempt to add Search functionality
+// import { Search } from "./Search.jsx";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Categories } from "./Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
-export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
+export const Header = ({
+  token,
+  setToken,
+  username,
+  setIsLoggedIn,
+  category,
+  setCategory,
+}) => {
+  // UseStates for Header
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
 
+  // A function for logging out a user
   const handleLogout = (event) => {
     event.preventDefault();
     setIsLoggedIn(false);
@@ -18,41 +28,43 @@ export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
     setNewUser(true);
   };
 
+  // A function that directs a user to the Login route
   const handleLogin = (event) => {
     event.preventDefault();
     navigate("/Login");
   };
 
+  // A function that directs a user to the Account route
   const handleAccount = (event) => {
     event.preventDefault();
     navigate("/Account");
   };
 
+  // A function that directs a user to the Wishlist route
   const handleWishList = (event) => {
     event.preventDefault();
     navigate("/Wishlist");
   };
 
+  // A function that directs a user to the Cart route
   const handleCart = (event) => {
     event.preventDefault();
     navigate("/Cart");
   };
 
+  // A function that directs a user to the Orders route
   const handleOrders = (event) => {
     event.preventDefault();
     navigate("/Orders");
   };
 
+  // A function that directs a user to the Register route
   const handleRegister = (event) => {
     event.preventDefault();
     navigate("/Register");
   };
 
-  const handleIcon = (event) => {
-    event.preventDefault();
-    navigate("/");
-  };
-
+  // A function that checks for an existing token in local storage. If one does not exists, displays pages for a new user
   const checkToken = () => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -62,24 +74,29 @@ export const Header = ({ token, setToken, username, setIsLoggedIn }) => {
     }
   };
 
-  const handleSetIsListening = (isListening) => {
-    setIsListening(isListening);
+  // A function that directs a user to a search route
+  const handleSearch = (event) => {
+    event.preventDefault();
+    navigate(`/search/${searchTerm}`);
   };
 
+  // A function for voice search implementation
+  // const handleSetIsListening = (isListening) => {
+  //   setIsListening(isListening);
+  // };
+
+  // Checks for a token everytime token is updated
   useEffect(() => {
     checkToken();
   }, [token]);
 
   return (
-    <Navbar className="navbar-expand-lg navbar-dark bg-dark">
-      <Navbar.Brand
-        onClick={handleIcon}
-        className="company-name d-none d-md-block"
-      >
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar.Brand as={Link} to="/" className="company-name">
         Oilay
       </Navbar.Brand>
       <div className="d-flex align-items-center justify-content-center">
-        <Categories />
+        <Categories category={category} setCategory={setCategory} />
         {/* <Search /> */}
       </div>
       {newUser === false && (

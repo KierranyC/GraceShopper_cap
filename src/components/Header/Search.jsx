@@ -4,15 +4,17 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // We need to make a function that fetches all categories from the database
-import { fetchAllCategories } from "../../api/index";
+// import { fetchAllCategories } from "../../api/index";
 
 // This is the search bar component. It should have a field for users to search for products, categories to click on to further filter searches, and a voice search button for customers who may have a hard time typing.
 export const Search = ({ setIsLoading, setSearchResults }) => {
+  // UseStates for Search
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All products");
   const [isListening, setIsListening] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
 
+  // Gets all categories once on startup
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -26,6 +28,7 @@ export const Search = ({ setIsLoading, setSearchResults }) => {
     fetchCategories();
   }, []);
 
+  // A function for fetching a query and updating search results
   const handleSearch = async () => {
     setIsLoading(true);
 
@@ -42,29 +45,30 @@ export const Search = ({ setIsLoading, setSearchResults }) => {
     }
   };
 
-  const handleVoiceSearch = () => {
-    setIsListening(!isListening);
-    if (!isListening) {
-      // Stop listening
-      recognition.start();
-    } else {
-      // Start listening
-      recognition.stop();
-    }
-  };
+  // A function for handling voice searching
+  // const handleVoiceSearch = () => {
+  //   setIsListening(!isListening);
+  //   if (!isListening) {
+  //     // Stop listening
+  //     recognition.start();
+  //   } else {
+  //     // Start listening
+  //     recognition.stop();
+  //   }
+  // };
 
-  const recognition = new window.webkitSpeechRecognition(); // Initialize the SpeechRecognition object
+  // const recognition = new window.webkitSpeechRecognition();
 
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = "en-US";
+  // recognition.continuous = true;
+  // recognition.interimResults = true;
+  // recognition.lang = "en-US";
 
-  recognition.onresult = (event) => {
-    const transcript = Array.from(event.results)
-      .map((result) => result[0].transcript)
-      .join(" ");
-    setSearchTerm(transcript);
-  };
+  // recognition.onresult = (event) => {
+  //   const transcript = Array.from(event.results)
+  //     .map((result) => result[0].transcript)
+  //     .join(" ");
+  //   setSearchTerm(transcript);
+  // };
 
   return (
     <div className="search-bar-container">
@@ -106,9 +110,9 @@ export const Search = ({ setIsLoading, setSearchResults }) => {
         <Button variant="primary" onClick={handleSearch}>
           Search
         </Button>
-        <Button variant="secondary" onClick={handleVoiceSearch}>
+        {/* <Button variant="secondary" onClick={handleVoiceSearch}>
           <FontAwesomeIcon icon={faMicrophone} />
-        </Button>
+        </Button> */}
       </Form>
     </div>
   );

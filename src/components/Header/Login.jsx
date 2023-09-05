@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { userLogin } from "../../api";
+import { userLogin } from "../../apiCalls";
 // This component logs in users
 export const Login = ({
   setToken,
@@ -9,11 +9,13 @@ export const Login = ({
   setUsername,
   setAndStoreUsername,
 }) => {
+  // UseStates for Login
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // A function that submits data entered into the fields and empties the fields
   const handleSubmit = async (event) => {
     event.preventDefault();
 

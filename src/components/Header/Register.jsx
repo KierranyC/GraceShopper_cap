@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { signUp } from "../../api";
+import { signUp } from "../../apiCalls";
 import { useNavigate } from "react-router-dom";
 
 // This component registers new users and adds them to the database.
@@ -11,6 +11,7 @@ export const Register = ({
   setUsername,
   setAndStoreUsername,
 }) => {
+  // UseStates for Register
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
@@ -18,6 +19,7 @@ export const Register = ({
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  // A function that submits data entered into the fields and empties the fields
   const handleSubmit = async (event) => {
     event.preventDefault();
 

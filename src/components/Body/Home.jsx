@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Featured } from "./Featured.jsx";
 import { Products } from "./AllProducts.jsx";
-import { getProductsByCategoryAndSearch } from "../../api";
+import { fetchFeaturedProducts } from "../../apiCalls/index.js";
 
 // This component acts as the main route of our e-commerce application. It should display a list of featured products followed by all of the products.
 export const Home = ({ productId, setProductId }) => {
+  // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchFeatured() {
+      try {
+        const data = await fetchFeaturedProducts();
+        setFeaturedProducts(data);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      }
+    }
+
+    fetchFeatured();
+  }, []);
 
   // const handleSearch = async (category, search) => {
   //   try {
@@ -21,7 +36,7 @@ export const Home = ({ productId, setProductId }) => {
 
   return (
     <div className="home">
-      <Featured />
+      <Featured featuredProducts={featuredProducts} />
       <Products
         filteredProducts={filteredProducts}
         productId={productId}

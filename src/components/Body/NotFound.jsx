@@ -1,5 +1,6 @@
 import React from "react";
 
+// A component for pages not found or deleted pages.
 export const NotFound = () => {
   return (
     <div>
