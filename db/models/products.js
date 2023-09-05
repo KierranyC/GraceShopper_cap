@@ -133,6 +133,23 @@ async function updateProduct({ id, ...fields }) {
   }
 }
 
+async function getFeaturedProducts() {
+  try {
+    const { rows: products } = await client.query(
+      `
+      SELECT products.*
+      FROM products
+      WHERE featured = true;
+      `
+    );
+
+    return products;
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
+    throw error;
+  }
+}
+
 export {
   createProduct,
   getAllProducts,
@@ -141,4 +158,5 @@ export {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  getFeaturedProducts,
 };

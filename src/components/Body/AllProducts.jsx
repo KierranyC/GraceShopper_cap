@@ -71,7 +71,7 @@ export const Products = ({ setProductId, productId, loggedIn }) => {
               <Card.Img
                 className="product-image"
                 variant="top"
-                src="/images/img-not-found.png"
+                src={product.photo}
               />
               <Link
                 className="text-decoration-none"

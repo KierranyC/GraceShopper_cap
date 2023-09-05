@@ -18,6 +18,21 @@ export const fetchAllProducts = async () => {
   }
 };
 
+// Get - gets all featured products
+export const fetchFeaturedProducts = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/featured`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // GET - view a single product
 export const fetchProduct = async (productId) => {
   try {
@@ -305,7 +320,7 @@ export const deleteProduct = async (id, setDeleted, deleted) => {
       },
     });
     const result = await response.json();
-    result.success ? setDeleted(deleted + 1) : null;
+    // result.success ? setDeleted(deleted + 1) : null;
     return result;
   } catch (error) {
     console.error(error);

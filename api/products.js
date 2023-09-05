@@ -7,6 +7,7 @@ import {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  getFeaturedProducts,
 } from "../db/models/products.js";
 const router = express.Router();
 
@@ -107,6 +108,15 @@ router.get("/categories/:category", async (req, res, next) => {
   try {
     const product = await getProductsByCategory(category);
     res.send(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/featured", async (req, res, next) => {
+  try {
+    const featuredProducts = await getFeaturedProducts();
+    res.send(featuredProducts);
   } catch (error) {
     next(error);
   }

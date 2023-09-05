@@ -25,8 +25,9 @@ export async function createTables() {
         description TEXT NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
         quantity INTEGER NOT NULL,
-        category VARCHAR(255)[] DEFAULT '{}'::VARCHAR(255)[],
-        photo VARCHAR(255)
+        category VARCHAR(255),
+        photo VARCHAR(255),
+        featured BOOLEAN DEFAULT true
       );
       CREATE TABLE orders (
         id SERIAL PRIMARY KEY,
@@ -155,32 +156,33 @@ export async function createInitialProducts() {
   try {
     const newProducts = [
       {
-        id: 1,
         title: "Argan Oil",
         description:
           "Premium moroccan argan oil that brings shine back to dull hair!",
         price: 24,
         quantity: 5000,
         category: "Moisturizing Oils",
-        photo: "placeholder",
+        photo:
+          "https://media.istockphoto.com/id/1284541685/photo/hair-care-routine-oil-for-head-girl-holding-dropper.jpg?s=612x612&w=0&k=20&c=YTKFT2zyLZcVEEj5TZDUfftDfo1kD4CQE3MUrYx-vI4=",
+        featured: true,
       },
       {
-        id: 2,
         title: "Coconut and Tea Tree Oil",
         description: "Premium scalp oil!",
         price: 24,
         quantity: 5000,
         category: "Scalp Oils",
-        photo: "placeholder",
+        photo:
+          "https://media.istockphoto.com/id/1277418311/photo/coconut-oil-and-fresh-coconuts-on-the-wooden-table.jpg?s=612x612&w=0&k=20&c=l09vIHLwPsySZt3lKBprefSwnO8hFT-ijwG-GkfGyDw=",
       },
       {
-        id: 3,
         title: "Vegan and Non-GMO Oil",
         description: "Premium vegan and non-GMO oil!",
         price: 24,
         quantity: 5000,
         category: "Vegan Oils",
-        photo: "placeholder!",
+        photo:
+          "https://media.istockphoto.com/id/1297167045/photo/natural-cosmetics-for-beauty-of-face-and-body-on-green-background-from-plants.jpg?s=612x612&w=0&k=20&c=CYIp0qVk3-Lsm3qdTuJ6dpRFUrSdUORywHIpH8ImhGk=",
       },
       {
         title: "Silky Smooth Shampoo",
@@ -189,7 +191,8 @@ export async function createInitialProducts() {
         price: 12,
         quantity: 2500,
         category: "Shampoo",
-        photo: "placeholder",
+        photo:
+          "https://img.freepik.com/premium-photo/shampoo-hair-mask-comb-with-fresh-green-leaves-natural-hair-care-cosmetics-with-copy-space_541595-73.jpg",
       },
       {
         title: "Hydrating Conditioner",
@@ -198,7 +201,9 @@ export async function createInitialProducts() {
         price: 14,
         quantity: 2000,
         category: "Conditioner",
-        photo: "placeholder",
+        photo:
+          "https://static.vecteezy.com/system/resources/thumbnails/015/955/167/small/close-up-wooden-combs-hair-combs-with-conditioner-for-hair-and-personal-care-on-background-hair-treatment-concept-photo.jpg",
+        featured: true,
       },
       {
         title: "Curl Enhancing Cream",
@@ -207,7 +212,8 @@ export async function createInitialProducts() {
         price: 18,
         quantity: 1800,
         category: "Styling Products",
-        photo: "placeholder",
+        photo:
+          "https://media.istockphoto.com/id/535406446/photo/woman-holding-a-bowl-with-nourishing-mask.jpg?s=612x612&w=0&k=20&c=X_NdEfgpwHjtITJ_m7krRPB704Ytx3tFoZZkR-Lq9sE=",
       },
       {
         title: "Heat Protectant Spray",
@@ -216,7 +222,8 @@ export async function createInitialProducts() {
         price: 16,
         quantity: 2200,
         category: "Styling Products",
-        photo: "placeholder",
+        photo:
+          "https://plus.unsplash.com/premium_photo-1661455940147-069a3c8b2feb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE2fHx8ZW58MHx8fHx8&w=1000&q=80",
       },
       {
         title: "Color Care Shampoo",
@@ -225,7 +232,8 @@ export async function createInitialProducts() {
         price: 13,
         quantity: 2100,
         category: "Shampoo",
-        photo: "placeholder",
+        photo:
+          "https://cdn.pixabay.com/photo/2018/06/28/01/49/blue-hair-3503011_640.jpg",
       },
       {
         title: "Repairing Hair Mask",
@@ -234,7 +242,9 @@ export async function createInitialProducts() {
         price: 20,
         quantity: 1700,
         category: "Hair Masks",
-        photo: "placeholder",
+        photo:
+          "https://media.istockphoto.com/id/975941870/photo/natural-hair-treatment-with-coconut.jpg?s=612x612&w=0&k=20&c=hNhIFgYFVb6nETjeq86el7SmhIMUIAZyC3kbWLzRymU=",
+        featured: true,
       },
     ];
 

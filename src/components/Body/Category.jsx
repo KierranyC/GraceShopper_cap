@@ -52,8 +52,12 @@ export const Category = ({
             lg={3}
             xl={2}
           >
-            <Card.Body>
-              <Card.Img variant="top" src="/images/img-not-found.png" />
+            <Card.Body className="product-card">
+              <Card.Img
+                className="product-image"
+                variant="top"
+                src={product.photo}
+              />
               <Link
                 to={`/Product/${product.id}`}
                 onClick={() => handleClick(product.id)}
