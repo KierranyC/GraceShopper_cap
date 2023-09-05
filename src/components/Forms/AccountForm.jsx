@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { editUser, fetchUserData } from "../../api";
+import { editUser, fetchUserData } from "../../apiCalls";
 import { useNavigate } from "react-router-dom";
 
-// This component is a form for account information. 
-// This component should render a form for customers to modify 
-// their username, password, customer name(if thats something we 
-// want to include), and optionally profile pic.Not sure yet if I 
-// want to include payment information directly onto this form, or 
+// This component is a form for account information.
+// This component should render a form for customers to modify
+// their username, password, customer name(if thats something we
+// want to include), and optionally profile pic.Not sure yet if I
+// want to include payment information directly onto this form, or
 // have it be somewhere else.
 
 // This component COULD become a Modal but not sure how to get them working yet :(
@@ -16,8 +16,6 @@ export const AccountForm = ({
   username,
   token,
   setAndStoreUsername,
-  id,
-  setId,
 }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -25,18 +23,6 @@ export const AccountForm = ({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const newUserInfo = await editUser(username, password, email, id, token);
-  //   console.log("NEW USER INFO:", newUserInfo);
-  //   setAndStoreUsername(newUserInfo.username);
-  //   setUsername(newUserInfo.username);
-  //   setPassword("");
-  //   setPassConfirm("");
-  //   setEmail("");
-  //   navigate('/account')
-  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,10 +52,14 @@ export const AccountForm = ({
     setError("");
 
     try {
-      const userInfo = await fetchUserData(token)
-      console.log(userInfo)
+      const userInfo = await fetchUserData(token);
+      console.log(userInfo);
       const newUserInfo = await editUser(
-        username, password, email, userInfo.id, token
+        username,
+        password,
+        email,
+        userInfo.id,
+        token
       );
       setAndStoreUsername(newUserInfo.username);
       // Update the relevant state values
@@ -86,6 +76,7 @@ export const AccountForm = ({
       }
 
       setSuccess(true);
+      navigate("/Account");
     } catch (error) {
       setError("Error updating account: " + error.message);
     }
@@ -94,7 +85,7 @@ export const AccountForm = ({
   return (
     <div>
       <h1>Account Form</h1>
-      <Form onSubmit={event => handleSubmit(event)}>
+      <Form onSubmit={(event) => handleSubmit(event)}>
         <Form.Group className="mb-3">
           <Form.Label>Edit Username:</Form.Label>
           <Form.Control
@@ -164,4 +155,3 @@ export const AccountForm = ({
     </div>
   );
 };
-

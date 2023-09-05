@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { signUp } from "../../api";
+import { signUp } from "../../apiCalls";
 import { useNavigate } from "react-router-dom";
 import { createUserCart } from "../../api";
 
@@ -14,6 +14,7 @@ export const Register = ({
   cart,
   setCart
 }) => {
+  // UseStates for Register
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
   const [success, setSuccess] = useState(false);
@@ -21,6 +22,7 @@ export const Register = ({
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  // A function that submits data entered into the fields and empties the fields
   const handleSubmit = async (event) => {
     event.preventDefault();
 

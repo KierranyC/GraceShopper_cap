@@ -1,7 +1,8 @@
+// A base url for making CRUD calls to the API server
 export const BASE_URL = "http://localhost:4000/api";
 
+// ----- All GET requests -----
 // GET - get all products
-
 export const fetchAllProducts = async () => {
   try {
     const response = await fetch(`${BASE_URL}/products`, {
@@ -10,14 +11,135 @@ export const fetchAllProducts = async () => {
       },
     });
     const result = await response.json();
+    console.log(result);
     return result;
   } catch (error) {
     console.error(error);
   }
 };
 
-// POST - create new product
+// GET - view a single product
+export const fetchProduct = async (productId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${productId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
+    if (response.status === 404) {
+      return {
+        error: "Product not found",
+        message: `Product with ID ${productId} does not exist`,
+      };
+    }
+
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return {
+      error: "Internal server error",
+      message: "An error occurred while fetching the product",
+    };
+  }
+};
+
+// GET - get all products in a certain category and search term
+export const getProductsByCategoryAndSearch = async ({
+  category,
+  searchTerm,
+}) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/products?category=${category}&search=${searchTerm}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET - getting all users
+export const fetchAllUsers = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/users`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET - getting a user
+export const fetchUserData = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    delete result.password;
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET - getting all user's orders
+export const fetchUserOrders = async (username, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${username}/orders`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET - Gets all products in a certain category
+export const getProductsByCategory = async (category) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/products/categories/${category}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// ----- All POST requests -----
+// POST - create new product
 export const createProduct = async (
   title,
   description,
@@ -49,83 +171,7 @@ export const createProduct = async (
   }
 };
 
-// GET - view a single product
-
-export const fetchProduct = async (productId) => {
-  try {
-    const response = await fetch(`${BASE_URL}/products/${productId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const result = await response.json();
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// PATCH - update a product
-
-export const updateProduct = async (
-  productId,
-  title,
-  description,
-  price,
-  quantity,
-  category,
-  photo
-) => {
-  try {
-    const response = await fetch(`${BASE_URL}/products/${productId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        price,
-        quantity,
-        category,
-        photo,
-      }),
-    });
-    const result = await response.json();
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// GET - get all products in a certain category and search term
-
-export const getProductsByCategoryAndSearch = async ({
-  category,
-  searchTerm,
-}) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/products?category=${category}&search=${searchTerm}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-    const result = await response.json();
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // POST - register user
-
 export const signUp = async (
   email,
   username,
@@ -163,8 +209,12 @@ export const signUp = async (
 };
 
 // POST - user login
-
-export const userLogin = async (username, password) => {
+export const userLogin = async (
+  username,
+  password,
+  setIsLoggedIn,
+  setToken
+) => {
   try {
     const response = await fetch(`${BASE_URL}/users/login`, {
       method: "POST",
@@ -185,14 +235,32 @@ export const userLogin = async (username, password) => {
   }
 };
 
-// GET - getting all users
-
-export const fetchAllUsers = async () => {
+// ----- All PATCH requests -----
+// PATCH - update a product
+export const updateProduct = async (
+  productId,
+  title,
+  description,
+  price,
+  quantity,
+  category,
+  photo
+) => {
   try {
-    const response = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}/products/${productId}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify({
+        title,
+        description,
+        price,
+        quantity,
+        category,
+        photo,
+      }),
     });
     const result = await response.json();
     console.log(result);
@@ -201,61 +269,6 @@ export const fetchAllUsers = async () => {
     console.error(err);
   }
 };
-
-// GET - getting a user
-
-export const fetchUserData = async (token) => {
-  try {
-    const response = await fetch(`${BASE_URL}/users/me`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-    });
-    const result = await response.json();
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// DELETE - delete a product
-
-const deleteProduct = async (id, setDeleted, deleted) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/products/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
-    result.success ? setDeleted(deleted + 1) : null;
-    return result;
-  } catch (error) {
-    console.error(error);
-  };
-};
-
-// GET - getting all user's orders
-export const fetchUserOrders = async (username, token) => {
-  try {
-    const response = await fetch(`${BASE_URL}/users/${username}/orders`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 
 //PATCH - Updating Users
 export const editUser = async (username, password, email, userId, token) => {
@@ -264,7 +277,7 @@ export const editUser = async (username, password, email, userId, token) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         username,
@@ -279,61 +292,25 @@ export const editUser = async (username, password, email, userId, token) => {
   }
 };
 
-// POST - creating cart for user upon registering or logging in
-
-// export const createUserCart = async (token, productId, quantity) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}/cart/create`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`
-//       },
-//       body: JSON.stringify({
-//         productId,
-//         quantity
-//       })
-//     })
-//     const result = await response.json()
-//     return result
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// GET - returning a user's cart
-// export const fetchUserCart = async (authToken) => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
-
-//     if (authToken) {
-//       headers["Authorization"] = `Bearer ${authToken}`;
-//     } else {
-//       // Handle guest session ID here, if applicable
-//       const guestSessionId = localStorage.getItem("guestSessionId");
-//       if (guestSessionId) {
-//         headers["x-guest-session-id"] = guestSessionId;
-//       }
-//     }
-
-//     const response = await fetch(`${BASE_URL}/cart`, {
-//       headers
-//     });
-
-//     const result = await response.json();
-//     return result;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// export const createNewGuest = async (guestSessionId) => {
-//   try {
-
-//   }
-// }
+// ----- All DELETE requests -----
+// DELETE - delete a product
+export const deleteProduct = async (id, setDeleted, deleted) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    result.success ? setDeleted(deleted + 1) : null;
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const fetchUserCart = async (token) => {
   try {
