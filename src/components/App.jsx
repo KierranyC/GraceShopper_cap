@@ -299,7 +299,8 @@ export const App = () => {
             element={
               <Checkout
                 cart={cart}
-                token={token} />
+                token={token}
+                setCart={setCart} />
             }
           >
           </Route>

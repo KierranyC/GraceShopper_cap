@@ -3,21 +3,20 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { loadStripe } from '@stripe/stripe-js'
 const stripePromise = loadStripe('pk_test_51NioUWB9h1tasC0ykIAyg7SJbGfRNzDb559q33iMjua0tFBflE1PxXUskslPBws3LAq6f91Ft28FbWV6ngJJszvF004IsSpnXR')
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
-const PaymentForm = ({ cart, token }) => {
+const PaymentForm = ({ setCart, cart, token }) => {
   const [paymentError, setPaymentError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const [cardholderName, setCardholderName] = useState('')
-
+  const navigate = useNavigate()
   const handlePayment = async () => {
 
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet, or Elements is not ready.
       return;
     }
 
-    // Create a payment method using CardElement
     const { paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
@@ -36,13 +35,9 @@ const PaymentForm = ({ cart, token }) => {
         },
         body: JSON.stringify({ cart, paymentMethod }),
       });
-      console.log('STRIPE RESPONSE DATA:', response)
       if (response.ok) {
-        // Payment was successful, navigate to a success page
-        // You can also handle other success actions here
         const responseData = await response.json();
 
-        // Confirm the payment with the clientSecret
         const { clientSecret } = responseData;
         const { paymentIntent, error: confirmationError } = await stripe.confirmCardPayment(clientSecret, {
           payment_method: paymentMethod.id,
@@ -50,13 +45,13 @@ const PaymentForm = ({ cart, token }) => {
 
         if (confirmationError) {
           console.error(confirmationError);
-          setPaymentError('Payment confirmation failed. Please try again.');
+          alert('Payment confirmation failed. Please try again.');
         } else {
-          console.log('Payment confirmed successfully:', paymentIntent);
-          // Handle success, e.g., show a success message or navigate to a success page
+          navigate('/')
+          alert('Payment confirmed successfully:');
+          setCart([])
         }
       } else {
-        // Payment failed, handle the error
         console.error('Payment failed');
         const responseData = await response.json();
         console.error(responseData.error);
@@ -91,14 +86,14 @@ const PaymentForm = ({ cart, token }) => {
 };
 
 
-export const Checkout = ({ cart, token }) => {
+export const Checkout = ({ setCart, cart, token }) => {
 
 
   return (
     <div>
       <h2>Checkout</h2>
       <Elements stripe={stripePromise}>
-        <PaymentForm token={token} cart={cart} />
+        <PaymentForm setCart={setCart} token={token} cart={cart} />
       </Elements>
     </div>
   );

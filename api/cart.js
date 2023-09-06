@@ -209,10 +209,13 @@ router.post('/checkout', requireAuthentication, async (req, res) => {
         return total + productSubtotal;
       }, 0);
 
+    const costInCents = cost * 100;
+
     console.log('CART COST:', cost)
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: cost,
-      currency: "usd"
+      amount: costInCents,
+      currency: "usd",
+      payment_method_types: ['card']
     })
 
     console.log('STRIPE PAYMENT INTENT:', paymentIntent)
