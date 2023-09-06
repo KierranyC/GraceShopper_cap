@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 const stripePromise = loadStripe('pk_test_51NioUWB9h1tasC0ykIAyg7SJbGfRNzDb559q33iMjua0tFBflE1PxXUskslPBws3LAq6f91Ft28FbWV6ngJJszvF004IsSpnXR')
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
-const PaymentForm = ({ cart }) => {
-  const [paymentError, setPaymentError] = React.useState(null);
+const PaymentForm = ({ cart, token }) => {
+  const [paymentError, setPaymentError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
+  const [cardholderName, setCardholderName] = useState('')
 
   const handlePayment = async () => {
 
@@ -20,6 +21,9 @@ const PaymentForm = ({ cart }) => {
     const { paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
+      billing_details: {
+        name: cardholderName,
+      },
     });
 
 
@@ -28,10 +32,11 @@ const PaymentForm = ({ cart }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ cart, paymentMethod }),
       });
-
+      console.log('STRIPE RESPONSE DATA:', response)
       if (response.ok) {
         // Payment was successful, navigate to a success page
         // You can also handle other success actions here
@@ -71,6 +76,14 @@ const PaymentForm = ({ cart }) => {
         <h3>Payment Information</h3>
         <CardElement />
       </div>
+      <Form.Group controlId="cardholderName">
+        <Form.Control
+          type="text"
+          placeholder="Cardholder Name"
+          value={cardholderName}
+          onChange={(e) => setCardholderName(e.target.value)}
+        />
+      </Form.Group>
       {paymentError && <p className="error">{paymentError}</p>}
       <Button onClick={handlePayment}>Pay Now</Button>
     </div>
@@ -78,14 +91,14 @@ const PaymentForm = ({ cart }) => {
 };
 
 
-export const Checkout = ({ cart }) => {
+export const Checkout = ({ cart, token }) => {
 
 
   return (
     <div>
       <h2>Checkout</h2>
       <Elements stripe={stripePromise}>
-        <PaymentForm cart={cart} />
+        <PaymentForm token={token} cart={cart} />
       </Elements>
     </div>
   );

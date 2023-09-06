@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { signUp } from "../../apiCalls";
+import { fetchUserCart, signUp } from "../../apiCalls";
 import { useNavigate } from "react-router-dom";
-import { createUserCart } from "../../apiCalls";
+import { updateCart } from "../../apiCalls";
 
 // This component registers new users and adds them to the database.
 export const Register = ({
@@ -12,7 +12,10 @@ export const Register = ({
   setUsername,
   setAndStoreUsername,
   cart,
-  setCart
+  setCart,
+  storedGuestSessionId,
+  guestCart,
+  setIsLoggedIn
 }) => {
   // UseStates for Register
   const [password, setPassword] = useState("");
@@ -21,22 +24,39 @@ export const Register = ({
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-
+  // console.log('CURRENT GUEST ID AND GUEST CART:', storedGuestSessionId, guestCart)
   // A function that submits data entered into the fields and empties the fields
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const fetchAndUpdateUserCart = async (userToken) => {
+      try {
+        const userCart = await fetchUserCart(userToken)
+        setCart(userCart)
+        localStorage.setItem("cart", JSON.stringify(userCart))
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
     const registerUser = async () => {
       try {
         const result = await signUp(email, username, password);
         console.log("NEW USER:", result);
-        localStorage.setItem("token", result.token);
+        // localStorage.setItem("token", result.token);
         setToken(result.token);
+        setIsLoggedIn(true)
         setAndStoreUsername(username);
         setUsername("");
         setEmail("");
         setPassword("");
         setPassConfirm("");
+        if (guestCart.length > 0) {
+          // console.log('STORED GUEST ID FRONT END CHECK:', storedGuestSessionId)
+          await updateCart(result.token, storedGuestSessionId)
+          fetchAndUpdateUserCart(result.token)
+          setIsLoggedIn(true)
+        }
         if (result.token) {
           navigate("/");
         }

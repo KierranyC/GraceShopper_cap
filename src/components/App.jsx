@@ -63,6 +63,7 @@ export const App = () => {
     if (storedToken) {
       setToken(storedToken);
       setIsLoggedIn(true);
+      setStoredGuestSessionId('')
       fetchUserCart(storedToken)
         .then((cartData) => {
           setCart(cartData);
@@ -253,6 +254,9 @@ export const App = () => {
                 setAndStoreUsername={setAndStoreUsername}
                 cart={cart}
                 setCart={setCart}
+                storedGuestSessionId={storedGuestSessionId}
+                guestCart={guestCart}
+                setIsLoggedIn={setIsLoggedIn}
               />
             }
           ></Route>
@@ -294,7 +298,8 @@ export const App = () => {
             path={'/Checkout'}
             element={
               <Checkout
-                cart={cart} />
+                cart={cart}
+                token={token} />
             }
           >
           </Route>
