@@ -7,16 +7,19 @@ import { Categories } from "./Categories.jsx";
 
 // This component will be displayed across the top of all routes on the application. This should have the company name, a search bar to search for products, as well as some links to different routes. For logged in users, links to Login and Signup should be replaced by Logout, and Admins should have a link to their dashboard for ease of access.
 export const Header = ({
+  isAdmin,
   token,
   setToken,
   username,
   setIsLoggedIn,
   category,
   setCategory,
+  setIsAdmin
 }) => {
   // UseStates for Header
   const [newUser, setNewUser] = useState(true);
   const navigate = useNavigate();
+  console.log('IS ADMIN CHECK HEADER:', isAdmin)
 
   // A function for logging out a user
   const handleLogout = (event) => {
@@ -24,6 +27,8 @@ export const Header = ({
     setIsLoggedIn(false);
     setToken("");
     localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    setIsAdmin(false)
     localStorage.removeItem("username");
     setNewUser(true);
     navigate('/login')
@@ -65,6 +70,11 @@ export const Header = ({
     navigate("/Register");
   };
 
+  const handleAdmin = (event) => {
+    event.preventDefault()
+    navigate('/AdminDashboard')
+  }
+
   // A function that checks for an existing token in local storage. If one does not exists, displays pages for a new user
   const checkToken = () => {
     const storedToken = localStorage.getItem("token");
@@ -100,7 +110,24 @@ export const Header = ({
         <Categories category={category} setCategory={setCategory} />
         {/* <Search /> */}
       </div>
-      {newUser === false && (
+
+      {!newUser && isAdmin ? (
+        <Nav>
+          <NavDropdown title={username} id="basic-nav-dropdown">
+            <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleWishList}>
+              Wishlist
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={handleCart}>Cart</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="/" onClick={handleLogout}>
+              Logout
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      ) : !newUser && (
         <Nav>
           <NavDropdown title={username} id="basic-nav-dropdown">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
@@ -110,7 +137,6 @@ export const Header = ({
             <NavDropdown.Item onClick={handleCart}>Cart</NavDropdown.Item>
             <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Divider />
-
             <NavDropdown.Item href="/" onClick={handleLogout}>
               Logout
             </NavDropdown.Item>

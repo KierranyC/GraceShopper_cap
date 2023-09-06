@@ -9,13 +9,13 @@ import {
   createUserCart,
   getUserCartItems
 } from "../db/models/cart.js";
-import requireAuthentication from './utils.js';
+import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
 const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
 const router = express.Router();
 
 router.get('/', requireAuthentication, async (req, res, next) => {
-  // console.log('REQUEST GUEST CART:', req.user)
+  console.log('GET CART ROUTE:', req.user)
   let userId;
 
   if (req.user.sessionId) {

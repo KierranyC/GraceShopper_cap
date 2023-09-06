@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
+  deleteProduct,
   getProductsByCategory,
   removeItemFromCart,
   addItemToCart,
@@ -21,7 +22,8 @@ export const Category = ({
   cart,
   setCart,
   categoryProducts,
-  setCategoryProducts
+  setCategoryProducts,
+  isAdmin
 }) => {
   // UseStates for Category
   const [products, setProducts] = useState([]);
@@ -190,6 +192,18 @@ export const Category = ({
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+      // Make an API call to delete the product by productId
+      const updatedProducts = await deleteProduct(token, productId);
+
+      // Update the products list by removing the deleted product
+      // setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+      setCategoryProducts(updatedProducts)
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
 
   return (
     <div className="container-fluid">
@@ -222,6 +236,14 @@ export const Category = ({
                 </>
               ) : (
                 <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
+              )}
+              {isAdmin && (
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteProduct(product.id)}
+                >
+                  Delete
+                </Button>
               )}
               <Button>Add to Wishlist</Button>
             </Card.Body>

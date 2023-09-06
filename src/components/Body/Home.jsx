@@ -12,7 +12,8 @@ export const Home = ({
   guestCart,
   setGuestCart,
   storedGuestSessionId,
-  isLoggedIn
+  isLoggedIn,
+  isAdmin
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -33,6 +34,7 @@ export const Home = ({
     <div className="home">
       <Featured />
       <Products
+        isAdmin={isAdmin}
         filteredProducts={filteredProducts}
         productId={productId}
         setProductId={setProductId}

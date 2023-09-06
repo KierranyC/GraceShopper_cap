@@ -7,26 +7,25 @@ import {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  deleteProduct
 } from "../db/models/products.js";
-import requireAuthentication from "./utils.js";
+import { requireAuthentication, requireAdminAuthorization } from "./utils.js";
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
-  if (!req.headers.authorization) {
-    next();
-  }
+router.post("/", requireAuthentication, requireAdminAuthorization, async (req, res, next) => {
+
 
   const { title, description, price, quantity, category, photo } = req.body;
   try {
     const newProduct = await createProduct({
       title,
       description,
-      price,
-      quantity,
+      price: parseFloat(price),
+      quantity: parseInt(quantity),
       category,
       photo,
     });
-
+    console.log('NEW PRODUCT', newProduct)
     res.send(newProduct);
   } catch (error) {
     next(error);
@@ -115,5 +114,17 @@ router.get("/categories/:category", async (req, res, next) => {
     next(error);
   }
 });
+
+router.delete('/:productId', requireAuthentication, requireAdminAuthorization, async (req, res, next) => {
+  const { productId } = req.body;
+  console.log(productId)
+  try {
+    const updatedProducts = await deleteProduct(productId)
+    // console.log(updatedProducts)
+    res.send(updatedProducts)
+  } catch (error) {
+    next(error)
+  }
+})
 
 export default router;

@@ -69,11 +69,30 @@ export const getProductsByCategoryAndSearch = async ({
 };
 
 // GET - getting all users
-export const fetchAllUsers = async () => {
+export const fetchAllUsers = async (token) => {
+  console.log('FETCH ALL USERS TOKEN CHECK:', token)
   try {
     const response = await fetch(`${BASE_URL}/users`, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const fetchAllGuests = async (token) => {
+  console.log('FETCH ALL GUESTS TOKEN CHECK:', token)
+  try {
+    const response = await fetch(`${BASE_URL}/users/guests`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     });
     const result = await response.json();
@@ -141,6 +160,7 @@ export const getProductsByCategory = async (category) => {
 // ----- All POST requests -----
 // POST - create new product
 export const createProduct = async (
+  token,
   title,
   description,
   price,
@@ -148,11 +168,13 @@ export const createProduct = async (
   category,
   photo
 ) => {
+  console.log(token)
   try {
     const response = await fetch(`${BASE_URL}/products`, {
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,
@@ -201,7 +223,7 @@ export const signUp = async (
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (error) {
     console.error(error);
@@ -294,18 +316,19 @@ export const editUser = async (username, password, email, userId, token) => {
 
 // ----- All DELETE requests -----
 // DELETE - delete a product
-export const deleteProduct = async (id, setDeleted, deleted) => {
+export const deleteProduct = async (token, productId) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/products/${id}`, {
+    const response = await fetch(`${BASE_URL}/products/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
+      body: JSON.stringify({
+        productId
+      })
     });
     const result = await response.json();
-    result.success ? setDeleted(deleted + 1) : null;
     return result;
   } catch (error) {
     console.error(error);
@@ -459,6 +482,40 @@ export const removeItemFromCart = async (authToken, guestSessionId, productId) =
   };
 }
 
-export const userCheckout = async () => {
+export const deleteUser = async (token, userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        userId
+      })
+    })
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
 
+export const deleteGuest = async (token, guestId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/guest/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        guestId
+      })
+    })
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+  }
 }

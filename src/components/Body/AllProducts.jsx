@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { removeItemFromCart, fetchAllProducts, addItemToCart, fetchUserCart, createUserCart, updateCartItem } from "../../apiCalls";
+import { deleteProduct, removeItemFromCart, fetchAllProducts, addItemToCart, fetchUserCart, createUserCart, updateCartItem } from "../../apiCalls";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
 export const Products = ({
@@ -12,7 +12,9 @@ export const Products = ({
   setId,
   isLoggedIn,
   cart,
-  setCart }) => {
+  setCart,
+  isAdmin
+}) => {
   // UseStates for Products
   // comment!
   const [products, setProducts] = useState([]);
@@ -194,6 +196,19 @@ export const Products = ({
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+      // Make an API call to delete the product by productId
+      const updatedProducts = await deleteProduct(token, productId);
+
+      // Update the products list by removing the deleted product
+      // setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+      setProducts(updatedProducts)
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
+
   // A variable for updating the products displayed on screen. If there is no searchTerm, shows all products
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
 
@@ -233,6 +248,14 @@ export const Products = ({
                 </>
               ) : (
                 <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
+              )}
+              {isAdmin && (
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteProduct(product.id)}
+                >
+                  Delete
+                </Button>
               )}
               <Button>Add to Wishlist</Button>
             </Card.Body >

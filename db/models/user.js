@@ -83,8 +83,22 @@ async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
   try {
     const { rows } = await client.query(`
-    SELECT * 
+    SELECT id, username, email, "isAdmin"
     FROM users;
+    `);
+
+    return rows;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getAllGuests() {
+  /* this adapter should fetch a list of users from your db */
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM guests;
     `);
 
     return rows;
@@ -100,7 +114,7 @@ async function getUserById(userId) {
     const {
       rows: [user],
     } = await client.query(`
-    SELECT id, username, password
+    SELECT *
     FROM users
     WHERE id = ${userId}
     `);
@@ -181,6 +195,62 @@ async function updateUser(id, fields = {}) {
   }
 }
 
+async function deleteUser(id) {
+
+  try {
+    await client.query(`
+    DELETE FROM orders
+    WHERE "userId"=${id};
+    `);
+    await client.query(`
+    DELETE FROM users
+    WHERE users.id=${id};
+    `);
+
+    await client.query(`
+    DELETE FROM "cartItems"
+    WHERE "userId"=$1;
+    `, [id]);
+
+    const { rows: updatedUsers } = await client.query(`
+    SELECT id, email, username, "isAdmin"
+    FROM users;
+    `);
+
+    return updatedUsers
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function deleteGuest(sessionId) {
+  console.log(sessionId)
+  try {
+    // await client.query(`
+    // DELETE FROM orders
+    // WHERE "guestId"=$1;
+    // `, [sessionId]);
+    await client.query(`
+    DELETE FROM guests
+    WHERE "sessionId"=$1;
+    `, [sessionId]);
+
+    await client.query(`
+    DELETE FROM "cartItems"
+    WHERE "guestId"=$1;
+    `, [sessionId]);
+
+    const { rows: updatedGuests } = await client.query(`
+    SELECT *
+    FROM guests;
+    `);
+
+    return updatedGuests;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export {
   createUser,
   createGuest,
@@ -190,4 +260,7 @@ export {
   getUser,
   getUserByUsername,
   updateUser,
+  getAllGuests,
+  deleteUser,
+  deleteGuest
 };

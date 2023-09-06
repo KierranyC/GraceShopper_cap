@@ -91,7 +91,6 @@ export async function createInitialUsers() {
         email: "sheryl123@gmail.com",
         username: "sheryl",
         password: "badgyalsheryl1",
-        isAdmin: false,
       },
       {
         email: "lani@gmail.com",

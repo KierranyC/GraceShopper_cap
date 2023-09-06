@@ -134,6 +134,26 @@ async function updateProduct({ id, ...fields }) {
   }
 }
 
+async function deleteProduct(productId) {
+  console.log('PRODUCT ID TO DELETE', productId)
+  try {
+    await client.query(`
+    DELETE FROM products
+    WHERE products.id=$1;
+    `, [productId])
+
+    const { rows: updatedProducts } = await client.query(`
+    SELECT * FROM 
+    products;
+    `)
+
+    console.log(updatedProducts)
+    return updatedProducts
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export {
   createProduct,
   getAllProducts,
@@ -142,4 +162,5 @@ export {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  deleteProduct
 };
