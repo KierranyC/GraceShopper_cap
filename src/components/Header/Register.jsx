@@ -15,7 +15,8 @@ export const Register = ({
   setCart,
   storedGuestSessionId,
   guestCart,
-  setIsLoggedIn
+  setIsLoggedIn,
+  setIsAdmin
 }) => {
   // UseStates for Register
   const [password, setPassword] = useState("");
@@ -44,22 +45,35 @@ export const Register = ({
         const result = await signUp(email, username, password);
         console.log("NEW USER:", result);
         // localStorage.setItem("token", result.token);
-        setToken(result.token);
-        setIsLoggedIn(true)
-        setAndStoreUsername(username);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setPassConfirm("");
-        if (guestCart.length > 0) {
-          // console.log('STORED GUEST ID FRONT END CHECK:', storedGuestSessionId)
-          await updateCart(result.token, storedGuestSessionId)
-          fetchAndUpdateUserCart(result.token)
-          setIsLoggedIn(true)
-        }
+        // setToken(result.token);
+        // setAndStoreUsername(username);
+        // setUsername("");
+        // setEmail("");
+        // setPassword("");
+        // setPassConfirm("");
+        // if (result.token) {
+        //   setIsAdmin(true)
+        // }
+        // if (result.token) {
+        //   navigate("/");
+        // }
         if (result.token) {
+          localStorage.setItem("token", result.token);
+          setToken(result.token);
+          setAndStoreUsername(username);
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setPassConfirm("");
+          if (result.user.isAdmin) {
+            localStorage.setItem("isAdmin", "true"); // Store isAdmin as a string "true"
+            setIsAdmin(true);
+          }
           navigate("/");
         }
+
+
+
       } catch (error) {
         console.log(error);
       }

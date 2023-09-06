@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap/esm";
+import { ButtonGroup, Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
 import { fetchProduct } from "../../apiCalls/index.js";
+import { Button } from "react-bootstrap";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
 export const Product = ({ productId }) => {
@@ -30,19 +31,24 @@ export const Product = ({ productId }) => {
   }, [productId]);
 
   return (
-    <div>
-      <Card>
-        <Card.Title>{product.title}</Card.Title>
-        <Card.Img
-          src="../../images/img-not-found.png"
-          style={{ width: 30 + "rem" }}
-        ></Card.Img>
-        <Card.Text>{product.price}</Card.Text>
-        <Card.Text>{product.quantity}</Card.Text>
-        <Card.Text>{product.category}</Card.Text>
-        <Card.Text>{product.description}</Card.Text>
-      </Card>
-      <Featured />
+    <div className="product-page m-3">
+      <h2 className="text-center">{product.title}</h2>
+      <div className="single-product m-3">
+        <img src={product.photo} className="product-image" />
+        <Card className="product-information">
+          <Card.Text>Price: {product.price}</Card.Text>
+          <Card.Text>
+            {product.quantity ? <p>In Stock</p> : <p>Out of Stock</p>}
+          </Card.Text>
+          <Card.Text>Category: {product.category}</Card.Text>
+          <Card.Text>{product.description}</Card.Text>
+          <ButtonGroup>
+            <Button className="">Add to Cart</Button>
+            <Button>Add to Wishlist</Button>
+          </ButtonGroup>
+        </Card>
+      </div>
+      {/* <Featured /> */}
       <Reviews />
     </div>
   );

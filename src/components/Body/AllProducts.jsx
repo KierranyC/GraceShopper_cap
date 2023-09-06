@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { removeItemFromCart, fetchAllProducts, addItemToCart, fetchUserCart, createUserCart, updateCartItem } from "../../apiCalls";
+import {
+  deleteProduct,
+  removeItemFromCart,
+  fetchAllProducts,
+  addItemToCart,
+  fetchUserCart,
+  createUserCart,
+  updateCartItem,
+} from "../../apiCalls";
+import { Carousel } from "react-bootstrap/esm";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
 export const Products = ({
@@ -12,7 +21,11 @@ export const Products = ({
   setId,
   isLoggedIn,
   cart,
-  setCart }) => {
+  setCart,
+  isAdmin,
+  setProductId,
+  featuredProducts,
+}) => {
   // UseStates for Products
   // comment!
   const [products, setProducts] = useState([]);
@@ -71,13 +84,12 @@ export const Products = ({
 
   // comment!
   useEffect(() => {
-    localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
-    // localStorage.setItem("inCart", JSON.stringify(inCart));
-  }, [productQuantities]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("inCart", JSON.stringify(inCart));
-  // }, [inCart]);
+    localStorage.setItem(
+      "productQuantities",
+      JSON.stringify(productQuantities)
+    );
+    localStorage.setItem("inCart", JSON.stringify(inCart));
+  }, [productQuantities, inCart]);
 
   // Filters products depending on the searchTerm
   useEffect(() => {
@@ -103,7 +115,7 @@ export const Products = ({
   };
 
   const handleAddItemToCart = async (productId) => {
-    // console.log(storedGuestSessionId)
+    console.log(storedGuestSessionId);
     try {
       let updatedCart;
 
@@ -121,8 +133,13 @@ export const Products = ({
           //   [productId]: true,
           // }));
         }
-      } else if (storedGuestSessionId && !token) {
-        updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
+      } else if (storedGuestSessionId) {
+        updatedCart = await addItemToCart(
+          null,
+          storedGuestSessionId,
+          productId,
+          1
+        );
         // console.log(updatedCart)
         if (updatedCart) {
           // console.log('UPDATED CART FRONT END PRODUCTS:', updatedCart)
@@ -138,7 +155,7 @@ export const Products = ({
         }
       }
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+      console.error("Error adding item to cart:", error);
     }
   };
 
@@ -153,14 +170,24 @@ export const Products = ({
       let updatedCart;
 
       if (storedGuestSessionId) {
-        updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
+        updatedCart = await updateCartItem(
+          null,
+          storedGuestSessionId,
+          productId,
+          updatedQuantity
+        );
         setGuestCart(updatedCart);
       } else if (token) {
-        updatedCart = await updateCartItem(token, null, productId, updatedQuantity); // Pass productId and updatedQuantity
+        updatedCart = await updateCartItem(
+          token,
+          null,
+          productId,
+          updatedQuantity
+        ); // Pass productId and updatedQuantity
         setCart(updatedCart);
       }
     } catch (error) {
-      console.error('Error updating item quantity in cart:', error);
+      console.error("Error updating item quantity in cart:", error);
     }
   };
 
@@ -179,22 +206,31 @@ export const Products = ({
         }));
 
         if (storedGuestSessionId) {
-          updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
+          updatedCart = await updateCartItem(
+            null,
+            storedGuestSessionId,
+            productId,
+            updatedQuantity
+          );
           setGuestCart(updatedCart);
         } else if (token) {
-          updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
+          updatedCart = await updateCartItem(
+            token,
+            null,
+            productId,
+            updatedQuantity
+          );
           setCart(updatedCart);
         }
       }
       // Always attempt to remove the item from the cart (it's okay if it's not there)
       if (storedGuestSessionId) {
-        updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
-        console.log(updatedCart)
-        // setGuestCart(updatedCart);
-        // setInCart((prevInCart) => ({
-        //   ...prevInCart,
-        //   [productId]: false,
-        // }));
+        updatedCart = await removeItemFromCart(
+          null,
+          storedGuestSessionId,
+          productId
+        );
+        setGuestCart(updatedCart);
       } else if (token) {
         updatedCart = await removeItemFromCart(token, null, productId);
         setCart(updatedCart);
@@ -204,7 +240,11 @@ export const Products = ({
         // }));
       }
 
-
+      // Set inCart to false regardless of the currentQuantity
+      setInCart((prevInCart) => ({
+        ...prevInCart,
+        [productId]: false,
+      }));
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
     }
@@ -215,6 +255,33 @@ export const Products = ({
 
   return (
     <div className="container-fluid">
+      <div className="text-center">
+        <h2>Featured Products</h2>
+        {featuredProducts.length > 0 ? (
+          <Carousel>
+            {featuredProducts.map((product) => (
+              <Carousel.Item key={product.id}>
+                <Link
+                  to={`/Product/${product.id}`}
+                  onClick={() => handleClick(product.id)}
+                  className="text-decoration-none"
+                >
+                  <img
+                    src={product.photo}
+                    alt={product.title}
+                    className="d-block w-100"
+                  />
+                  <Carousel.Caption>
+                    <h3>{product.title}</h3>
+                  </Carousel.Caption>
+                </Link>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        ) : (
+          <p>No featured products available.</p>
+        )}
+      </div>
       <h1 className="text-center">Products</h1>
       <Row className="products ">
         {products.map((product) => (
@@ -231,7 +298,7 @@ export const Products = ({
               <Card.Img
                 className="product-image"
                 variant="top"
-                src="/images/img-not-found.png"
+                src={product.photo}
               />
               <Link
                 className="text-decoration-none"
@@ -243,19 +310,34 @@ export const Products = ({
               <Card.Subtitle>${product.price}</Card.Subtitle>
               {productQuantities[product.id] > 0 ? (
                 <>
-                  <Button onClick={() => handleAddOneItemToCart(product.id)}>+</Button>
-                  <Button onClick={() => handleDeleteOneItemFromCart(product.id)}>-</Button>
+                  <Button onClick={() => handleAddOneItemToCart(product.id)}>
+                    +
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteOneItemFromCart(product.id)}
+                  >
+                    -
+                  </Button>
                   {/* <Button onClick={() => handleRemoveFromCart(product.id)}>Remove</Button> */}
                 </>
               ) : (
-                <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
+                <Button onClick={() => handleAddItemToCart(product.id)}>
+                  Add to Cart
+                </Button>
+              )}
+              {isAdmin && (
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteProduct(product.id)}
+                >
+                  Delete
+                </Button>
               )}
               <Button>Add to Wishlist</Button>
-            </Card.Body >
-          </Col >
+            </Card.Body>
+          </Col>
         ))}
-      </Row >
-    </div >
+      </Row>
+    </div>
   );
 };
-

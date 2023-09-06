@@ -2,8 +2,6 @@
 export { App } from "./App.jsx";
 
 // Export Header componenents
-export { Dashboard } from "./Header/Admin/Dashboard.jsx";
-export { KPI } from "./Header/Admin/KPI.jsx";
 export { Account } from "./Header/Account.jsx";
 export { Cart } from "./Header/Cart.jsx";
 export { Categories } from "./Header/Categories.jsx";
@@ -14,7 +12,7 @@ export { Register } from "./Header/Register.jsx";
 export { Search } from "./Header/Search.jsx";
 export { Wishlist } from "./Header/Wishlist.jsx";
 export { Checkout } from './Header/Checkout.jsx';
-
+export { AdminDashboard } from './Header/AdminInfo/Dashboard.jsx'
 // Export Body components
 export { Products } from "./Body/AllProducts.jsx";
 export { Contacts } from "./Body/Contacts.jsx";

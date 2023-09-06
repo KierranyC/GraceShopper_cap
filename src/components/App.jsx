@@ -19,7 +19,8 @@ import {
   Login,
   AccountForm,
   Category,
-  Checkout
+  Checkout,
+  AdminDashboard
   // Sidebar,
 } from "../components/index";
 
@@ -54,13 +55,20 @@ export const App = () => {
   const [guestCart, setGuestCart] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [storedGuestSessionId, setStoredGuestSessionId] = useState("");
-
+  const [isAdmin, setIsAdmin] = useState(false)
   // Stores a token and username locally and sets a user to Logged in
   useEffect(() => {
+    const storedIsAdmin = localStorage.getItem("isAdmin");
+    if (storedIsAdmin === "true") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false)
+    }
     const storedToken = localStorage.getItem("token");
     const storedGuestSessionId = localStorage.getItem("guestSessionId");
     // console.log('APP COMP STORED TOKEN:', storedToken)
     if (storedToken) {
+      console.log('IS ADMIN CHECK APP:', isAdmin)
       setToken(storedToken);
       setIsLoggedIn(true);
       setStoredGuestSessionId('')
@@ -144,9 +152,9 @@ export const App = () => {
         <Header
 
           token={token}
-
+          isAdmin={isAdmin}
           setToken={setToken}
-
+          setIsAdmin={setIsAdmin}
           username={username}
 
           setIsLoggedIn={setIsLoggedIn}
@@ -170,6 +178,7 @@ export const App = () => {
                 <Home
                   selectedCategory={selectedCategory}
                   searchTerm={searchTerm}
+                  isAdmin={isAdmin}
                   // categories={categories}
                   storedGuestSessionId={storedGuestSessionId}
                   productId={productId}
@@ -254,6 +263,7 @@ export const App = () => {
                 setAndStoreUsername={setAndStoreUsername}
                 cart={cart}
                 setCart={setCart}
+                setIsAdmin={setIsAdmin}
                 storedGuestSessionId={storedGuestSessionId}
                 guestCart={guestCart}
                 setIsLoggedIn={setIsLoggedIn}
@@ -273,6 +283,7 @@ export const App = () => {
                 setAndStoreUsername={setAndStoreUsername}
                 cart={cart}
                 setCart={setCart}
+                setIsAdmin={setIsAdmin}
               />
             }
           ></Route>
@@ -292,6 +303,7 @@ export const App = () => {
                 setCart={setCart}
                 categoryProducts={categoryProducts}
                 setCategoryProducts={setCategoryProducts}
+                isAdmin={isAdmin}
               />}
           ></Route>
           <Route
@@ -302,6 +314,13 @@ export const App = () => {
                 token={token} />
             }
           >
+          </Route>
+          <Route
+            path={'/AdminDashboard'}
+            element={
+              <AdminDashboard
+                token={token}
+              />}>
           </Route>
         </Routes>
         <footer className="footer">

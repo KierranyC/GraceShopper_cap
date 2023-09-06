@@ -7,26 +7,26 @@ import {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  deleteProduct,
+  getFeaturedProducts,
 } from "../db/models/products.js";
-import requireAuthentication from "./utils.js";
+import { requireAuthentication, requireAdminAuthorization } from "./utils.js";
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
-  if (!req.headers.authorization) {
-    next();
-  }
+router.post("/", requireAuthentication, requireAdminAuthorization, async (req, res, next) => {
+
 
   const { title, description, price, quantity, category, photo } = req.body;
   try {
     const newProduct = await createProduct({
       title,
       description,
-      price,
-      quantity,
+      price: parseFloat(price),
+      quantity: parseInt(quantity),
       category,
       photo,
     });
-
+    console.log('NEW PRODUCT', newProduct)
     res.send(newProduct);
   } catch (error) {
     next(error);
@@ -43,30 +43,39 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.get("/:productId", async (req, res, next) => {
-//   const { productId } = req.params;
-//   console.log(productId)
-//   try {
-//     const product = await getProductById(productId);
+router.get("/featured", async (req, res, next) => {
+  try {
+    const featuredProducts = await getFeaturedProducts();
+    res.send(featuredProducts);
+  } catch (error) {
+    next(error);
+  }
+});
 
-//     if (product) {
-//       res.send(product);
-//     } else {
-//       res.status(404).send({
-//         error: "ERROR",
-//         message: `Product ${productId} not found`,
-//         title: "productNotFound",
-//       });
-//     }
-//   } catch (error) {
-//     console.error("Error fetching product:", error);
-//     res.status(500).send({
-//       error: "ERROR",
-//       message: "Internal server error while fetching product",
-//       title: "internalServerError",
-//     });
-//   }
-// });
+router.get("/:productId", async (req, res, next) => {
+  const { productId } = req.params;
+  console.log(productId)
+  try {
+    const product = await getProductById(productId);
+
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({
+        error: "ERROR",
+        message: `Product ${productId} not found`,
+        title: "productNotFound",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).send({
+      error: "ERROR",
+      message: "Internal server error while fetching product",
+      title: "internalServerError",
+    });
+  }
+});
 
 router.patch("/:productId", async (req, res, next) => {
   if (!req.headers.authorization) {
@@ -105,6 +114,8 @@ router.patch("/:productId", async (req, res, next) => {
   }
 });
 
+
+
 router.get("/categories/:category", async (req, res, next) => {
   const { category } = req.params;
   console.log('CATEGORY:', category)
@@ -115,5 +126,18 @@ router.get("/categories/:category", async (req, res, next) => {
     next(error);
   }
 });
+
+router.delete('/:productId', requireAuthentication, requireAdminAuthorization, async (req, res, next) => {
+  const { productId } = req.body;
+  console.log(productId)
+  try {
+    const updatedProducts = await deleteProduct(productId)
+    // console.log(updatedProducts)
+    res.send(updatedProducts)
+  } catch (error) {
+    next(error)
+  }
+})
+
 
 export default router;
