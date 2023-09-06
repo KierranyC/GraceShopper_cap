@@ -10,6 +10,7 @@ export const Login = ({
   setAndStoreUsername,
   cart,
   setCart,
+  setIsAdmin
 }) => {
   // UseStates for Login
   const [password, setPassword] = useState("");
@@ -24,16 +25,32 @@ export const Login = ({
     const login = async () => {
       try {
         const result = await userLogin(username, password);
-        console.log(result);
-        localStorage.setItem("token", result.token);
-        localStorage.removeItem("guestCart");
-        setToken(result.token);
-        setAndStoreUsername(username);
-        setUsername("");
-        setPassword("");
+        console.log('LOGGED IN USER:', result);
+        // localStorage.setItem("token", result.token);
+        // localStorage.removeItem("guestCart");
+        // setToken(result.token);
+        // setAndStoreUsername(username);
+        // setUsername("");
+        // setPassword("");
+        // if (result.token) {
+        //   navigate("/");
+        // }
         if (result.token) {
+          localStorage.setItem("token", result.token);
+          localStorage.removeItem("guestCart");
+          setToken(result.token);
+          setAndStoreUsername(username);
+          setUsername("");
+          setPassword("");
+          console.log('IS ADMIN CHECK LOGIN:', result.user.isAdmin)
+          if (result.user.isAdmin) {
+            localStorage.setItem("isAdmin", "true"); // Store isAdmin as a string "true"
+            setIsAdmin(true);
+          }
           navigate("/");
         }
+
+
       } catch (error) {
         console.log(error);
       }

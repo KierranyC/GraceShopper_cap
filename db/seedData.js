@@ -91,7 +91,6 @@ export async function createInitialUsers() {
         email: "sheryl123@gmail.com",
         username: "sheryl",
         password: "badgyalsheryl1",
-        isAdmin: false,
       },
       {
         email: "lani@gmail.com",
@@ -160,6 +159,40 @@ export async function getInitialUsers() {
 export async function createInitialProducts() {
   console.log("Starting to create products...");
   try {
+    // const newProducts = [
+    //   {
+    //     id: 1,
+    //     title: "Argan Oil",
+    //     description:
+    //       "Premium moroccan argan oil that brings shine back to dull hair!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Moisturizing Oils",
+    //     photo: "placeholder",
+    //     stripe_id: 'prod_OXKv7hjNtNC4ka'
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "Coconut and Tea Tree Oil",
+    //     description: "Premium scalp oil!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Scalp Oils",
+    //     photo: 'placeholder',
+    //     stripe_id: 'prod_OXL1j7T4DhRqy0'
+    //   },
+    //   {
+    //     id: 3,
+    //     title: "Vegan and Non-GMO Oil",
+    //     description: "Premium vegan and non-GMO oil!",
+    //     price: 24,
+    //     quantity: 5000,
+    //     category: "Vegan Oils",
+    //     photo: 'placeholder!',
+    //     stripe_id: 'prod_OXL3pGIPAv6ozY'
+    //   }
+    // ]
+
     const newProducts = [
       {
         title: "Argan Oil",

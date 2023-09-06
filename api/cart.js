@@ -9,11 +9,13 @@ import {
   createUserCart,
   getUserCartItems
 } from "../db/models/cart.js";
-import requireAuthentication from './utils.js';
+import { requireAuthentication } from './utils.js';
+import Stripe from "stripe";
+const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
 const router = express.Router();
 
 router.get('/', requireAuthentication, async (req, res, next) => {
-  // console.log('REQUEST GUEST CART:', req.user)
+  console.log('GET CART ROUTE:', req.user)
   let userId;
 
   if (req.user.sessionId) {
@@ -180,6 +182,27 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
     next(error);
   }
 });
+
+router.post('/checkout', async (req, res) => {
+  const { cart, paymentMethod } = req.body;
+  console.log(cart, paymentMethod)
+  try {
+    const cost = cart.reduce(
+      (total, product) => {
+        const productSubtotal = product.productInfo.price * product.quantity;
+        return total + productSubtotal;
+      }, 0);
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: cost,
+      currency: 'usd'
+    })
+
+    res.send({ clientSecret: paymentIntent.client_secret })
+  } catch (error) {
+    console.error(error)
+  }
+})
 
 
 export default router;

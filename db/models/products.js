@@ -40,7 +40,7 @@ async function getAllProducts() {
 }
 
 async function getProductById(id) {
-  console.log('PRODUCT ID:', id)
+  console.log("PRODUCT ID:", id);
   try {
     const {
       rows: [product],
@@ -52,7 +52,7 @@ async function getProductById(id) {
       `,
       [id]
     );
-    console.log(product)
+    console.log(product);
     return product || null;
   } catch (error) {
     console.error("Error fetching product by ID:", error);
@@ -104,7 +104,7 @@ async function getProductsBySearch(searchTerm) {
       WHERE title 
       `
     );
-  } catch (error) { }
+  } catch (error) {}
 }
 
 async function updateProduct({ id, ...fields }) {
@@ -134,6 +134,28 @@ async function updateProduct({ id, ...fields }) {
   }
 }
 
+async function deleteProduct(productId) {
+  console.log("PRODUCT ID TO DELETE", productId);
+  try {
+    await client.query(
+      `
+    DELETE FROM products
+    WHERE products.id=$1;
+    `,
+      [productId]
+    );
+
+    const { rows: updatedProducts } = await client.query(`
+    SELECT * FROM 
+    products;
+    `);
+
+    console.log(updatedProducts);
+    return updatedProducts;
+  } catch (error) {
+    console.error(error);
+  }
+}
 async function getFeaturedProducts() {
   try {
     const { rows: products } = await client.query(
@@ -159,5 +181,6 @@ export {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+  deleteProduct,
   getFeaturedProducts,
 };

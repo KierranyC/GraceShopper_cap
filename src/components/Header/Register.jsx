@@ -12,7 +12,8 @@ export const Register = ({
   setUsername,
   setAndStoreUsername,
   cart,
-  setCart
+  setCart,
+  setIsAdmin
 }) => {
   // UseStates for Register
   const [password, setPassword] = useState("");
@@ -30,16 +31,36 @@ export const Register = ({
       try {
         const result = await signUp(email, username, password);
         console.log("NEW USER:", result);
-        localStorage.setItem("token", result.token);
-        setToken(result.token);
-        setAndStoreUsername(username);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setPassConfirm("");
+        // localStorage.setItem("token", result.token);
+        // setToken(result.token);
+        // setAndStoreUsername(username);
+        // setUsername("");
+        // setEmail("");
+        // setPassword("");
+        // setPassConfirm("");
+        // if (result.token) {
+        //   setIsAdmin(true)
+        // }
+        // if (result.token) {
+        //   navigate("/");
+        // }
         if (result.token) {
+          localStorage.setItem("token", result.token);
+          setToken(result.token);
+          setAndStoreUsername(username);
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setPassConfirm("");
+          if (result.user.isAdmin) {
+            localStorage.setItem("isAdmin", "true"); // Store isAdmin as a string "true"
+            setIsAdmin(true);
+          }
           navigate("/");
         }
+
+
+
       } catch (error) {
         console.log(error);
       }

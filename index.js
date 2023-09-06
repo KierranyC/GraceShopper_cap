@@ -5,6 +5,9 @@ import morgan from "morgan";
 import apiRouter from "./api/index.js";
 import path from "path";
 import client from "./db/client.js";
+// import { admin, adminRouter } from './App.js';
+import Stripe from 'stripe';
+const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
 
 dotenv.config();
 // This is the Web Server
@@ -19,6 +22,9 @@ server.use("/static", express.static(path.join(__dirname, "build"))); // Static 
 
 // here's our API
 server.use("/api", apiRouter);
+
+// adminJs
+// server.use("admin", adminRouter)
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
