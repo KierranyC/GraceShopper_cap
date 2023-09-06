@@ -69,6 +69,7 @@ export async function dropTables() {
   console.log("Dropping All Tables...");
   try {
     await client.query(`
+    DROP TABLE IF EXISTS "cartItems" CASCADE;
     DROP TABLE IF EXISTS reviews CASCADE;
     DROP TABLE IF EXISTS "orderItems" CASCADE;
     DROP TABLE IF EXISTS orders CASCADE;
