@@ -48,7 +48,7 @@ export const Product = ({ productId }) => {
           </ButtonGroup>
         </Card>
       </div>
-      <Featured />
+      {/* <Featured /> */}
       <Reviews />
     </div>
   );

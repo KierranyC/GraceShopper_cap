@@ -14,7 +14,7 @@ export const Home = ({
   setGuestCart,
   storedGuestSessionId,
   isLoggedIn,
-  isAdmin
+  isAdmin,
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -48,7 +48,7 @@ export const Home = ({
 
   return (
     <div className="home">
-      <Featured featuredProducts={featuredProducts} />
+      {/* <Featured featuredProducts={featuredProducts} /> */}
       <Products
         isAdmin={isAdmin}
         filteredProducts={filteredProducts}
@@ -61,6 +61,7 @@ export const Home = ({
         setGuestCart={setGuestCart}
         storedGuestSessionId={storedGuestSessionId}
         isLoggedIn={isLoggedIn}
+        featuredProducts={featuredProducts}
       />
     </div>
   );
