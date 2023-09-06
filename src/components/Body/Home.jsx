@@ -25,6 +25,7 @@ export const Home = ({
       try {
         const data = await fetchFeaturedProducts();
         setFeaturedProducts(data);
+        console.log(featuredProducts);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }

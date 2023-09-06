@@ -32,11 +32,16 @@ async function createUser({ email, username, password, isAdmin }) {
 
 async function createGuest(sessionId) {
   try {
-    const { rows: [guest] } = await client.query(`
+    const {
+      rows: [guest],
+    } = await client.query(
+      `
     INSERT INTO guests("sessionId")
     VALUES ($1)
     RETURNING "sessionId";
-    `, [sessionId]);
+    `,
+      [sessionId]
+    );
 
     return guest;
   } catch (error) {
@@ -60,11 +65,14 @@ async function createGuest(sessionId) {
 
 async function findGuestBySessionId(sessionId) {
   try {
-    const { rows } = await client.query(`
+    const { rows } = await client.query(
+      `
       SELECT *
       FROM guests
       WHERE "sessionId" = $1;
-    `, [sessionId]);
+    `,
+      [sessionId]
+    );
 
     if (rows.length === 0) {
       // Handle the case where no guest is found with the provided sessionId
@@ -77,7 +85,6 @@ async function findGuestBySessionId(sessionId) {
     console.error(error);
   }
 }
-
 
 async function getAllUsers() {
   /* this adapter should fetch a list of users from your db */
@@ -165,9 +172,8 @@ async function getUserByUsername(username) {
 }
 
 async function updateUser(id, fields = {}) {
-
   const hashedPassword = await bcrypt.hash(fields.password, SALT_COUNT);
-  fields.password = hashedPassword
+  fields.password = hashedPassword;
 
   try {
     const string = Object.keys(fields)
