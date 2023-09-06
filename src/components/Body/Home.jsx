@@ -13,7 +13,7 @@ export const Home = ({
   guestCart,
   setGuestCart,
   storedGuestSessionId,
-  isLoggedIn
+  isLoggedIn,
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -24,6 +24,7 @@ export const Home = ({
       try {
         const data = await fetchFeaturedProducts();
         setFeaturedProducts(data);
+        console.log(featuredProducts);
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }

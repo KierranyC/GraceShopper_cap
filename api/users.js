@@ -15,6 +15,9 @@ import requireAuthentication from "./utils.js";
 import jwt from "jsonwebtoken";
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from "bcrypt";
+
+const SALT_COUNT = 10;
 
 router.get("/", async (req, res, next) => {
   try {
@@ -182,7 +185,8 @@ router.patch("/:userId", requireAuthentication, async (req, res, next) => {
   }
 
   if (password.length > 0) {
-    updatedFields.password = password
+    const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+    updatedFields.password = hashedPassword;
   }
 
   if (email.length > 0) {
