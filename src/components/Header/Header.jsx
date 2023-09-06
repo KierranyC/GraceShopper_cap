@@ -103,7 +103,7 @@ export const Header = ({
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand as={Link} to="/" className="company-name d-none d-md-block">
+      <Navbar.Brand as={Link} to="/" className="company-name">
         Oilay
       </Navbar.Brand>
       <div className="d-flex align-items-center justify-content-center">

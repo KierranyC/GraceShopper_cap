@@ -54,15 +54,27 @@ nav.navbar {
 }
 
 .product-card {
-  margin: 10px;
+  margin-bottom: 10px;
   border: 2px solid #ccc;
   border-radius: 15px;
   padding: 10px;
   box-shadow: 0 0 5px darkgrey;
 }
 
+.single-product {
+  display: flex;
+}
+
 .product-image {
   border-radius: 15px;
+}
+
+.product-information {
+  margin-left: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
 }
 
 .card-info {

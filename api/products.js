@@ -7,7 +7,11 @@ import {
   getProductsByCategory,
   updateProduct,
   getProductsBySearch,
+<<<<<<< HEAD
   deleteProduct
+=======
+  getFeaturedProducts,
+>>>>>>> 4cdb0bd6d7a692658957fcda48620e2c4462bfbd
 } from "../db/models/products.js";
 import { requireAuthentication, requireAdminAuthorization } from "./utils.js";
 const router = express.Router();
@@ -126,5 +130,13 @@ router.delete('/:productId', requireAuthentication, requireAdminAuthorization, a
     next(error)
   }
 })
+router.get("/featured", async (req, res, next) => {
+  try {
+    const featuredProducts = await getFeaturedProducts();
+    res.send(featuredProducts);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;

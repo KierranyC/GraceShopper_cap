@@ -52,22 +52,22 @@ export const Categories = ({ category, setCategory }) => {
   return (
     <Navbar variant="dark" bg="dark" className="navbar-expand-xxl">
       <Nav className="flex-row">
-        <NavDropdown>
-          <NavDropdown.Item></NavDropdown.Item>
-        </NavDropdown>
-        <Nav.Item className="me-2">
-          <Link to="/">All Products</Link>
-        </Nav.Item>
-        {[...uniqueCategories].map((category) => (
-          <Nav.Item key={category} className="me-2">
-            <Link
+        <NavDropdown title="Categories">
+          <NavDropdown.Item as={Link} to="/" className="dropdown-item">
+            All Products
+          </NavDropdown.Item>
+          {[...uniqueCategories].map((category) => (
+            <NavDropdown.Item
+              key={category}
+              as={Link}
               to={`/Products/${category}`}
               onClick={() => handleClick(category)}
+              className="dropdown-item"
             >
               {category}
-            </Link>
-          </Nav.Item>
-        ))}
+            </NavDropdown.Item>
+          ))}
+        </NavDropdown>
       </Nav>
     </Navbar>
   );

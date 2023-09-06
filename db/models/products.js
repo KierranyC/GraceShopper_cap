@@ -151,16 +151,30 @@ async function deleteProduct(productId) {
     return updatedProducts
   } catch (error) {
     console.error(error)
-  }
-}
+    async function getFeaturedProducts() {
+      try {
+        const { rows: products } = await client.query(
+          `
+      SELECT products.*
+      FROM products
+      WHERE featured = true;
+      `
+        );
 
-export {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  getProductByTitle,
-  getProductsByCategory,
-  updateProduct,
-  getProductsBySearch,
-  deleteProduct
-};
+        return products;
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+        throw error;
+      }
+    }
+
+    export {
+      createProduct,
+      getAllProducts,
+      getProductById,
+      getProductByTitle,
+      getProductsByCategory,
+      updateProduct,
+      getProductsBySearch,
+      deleteProduct
+    };
