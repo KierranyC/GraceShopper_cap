@@ -84,13 +84,12 @@ export const Products = ({
 
   // comment!
   useEffect(() => {
-    localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
-    // localStorage.setItem("inCart", JSON.stringify(inCart));
-  }, [productQuantities]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("inCart", JSON.stringify(inCart));
-  // }, [inCart]);
+    localStorage.setItem(
+      "productQuantities",
+      JSON.stringify(productQuantities)
+    );
+    localStorage.setItem("inCart", JSON.stringify(inCart));
+  }, [productQuantities, inCart]);
 
   // Filters products depending on the searchTerm
   useEffect(() => {
@@ -117,7 +116,6 @@ export const Products = ({
 
   const handleAddItemToCart = async (productId) => {
     console.log(storedGuestSessionId);
-    // console.log(storedGuestSessionId)
     try {
       let updatedCart;
 
@@ -251,7 +249,11 @@ export const Products = ({
         // }));
       }
 
-
+      // Set inCart to false regardless of the currentQuantity
+      setInCart((prevInCart) => ({
+        ...prevInCart,
+        [productId]: false,
+      }));
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
     }

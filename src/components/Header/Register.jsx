@@ -15,7 +15,8 @@ export const Register = ({
   setCart,
   storedGuestSessionId,
   guestCart,
-  setIsLoggedIn
+  setIsLoggedIn,
+  setIsAdmin
 }) => {
   // UseStates for Register
   const [password, setPassword] = useState("");

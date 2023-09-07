@@ -263,6 +263,7 @@ export const App = () => {
                 setAndStoreUsername={setAndStoreUsername}
                 cart={cart}
                 setCart={setCart}
+                setIsAdmin={setIsAdmin}
                 storedGuestSessionId={storedGuestSessionId}
                 guestCart={guestCart}
                 setIsLoggedIn={setIsLoggedIn}
