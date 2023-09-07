@@ -1,143 +1,150 @@
-# Let's Build a Full Stack Application
+# Project Goals
 
-This full stack app boilerplate consists of:
+## Database
 
-- an Express web server,
-- a PostgreSQL database instance,
-- and a React front-end
+**Main Goal:** To create an organized database that is both efficient and easy to read.
 
-You'll also find a bunch of convenient commands and workflows that will allow you to develop your app locally and deploy it to heroku. Let's dive in!
+### Products Table
 
-# Local Development
+The following table must contain at least:
 
-## Getting Started
+- Title
+- Description
+- Price
+- Inventory (quantity)
+- Category
+- Photo
+- Tags/filters
+- Product ID
 
-1. Fork and clone this repo to your local machine, then run the following commands to reinitialize your git history from scratch:
+### Users Table
 
-```bash
-# these commands reset your git history
-$ rm -rf .git
-$ git init
-```
+The following table must contain at least:
 
-2. Create a bare GitHub repo (no `.gitignore`, `README.md`, `CHANGELOG.md`, or license) and copy the ssh address to assign to your local clone with `git remote add origin <paste-your-ssh-address-here>`
+- A valid email address
+- Username
+- Password
+- User ID
 
-3. `npm install` to add project dependencies to your local machine.
+### Order Table
 
-4. Choose a name for your local database instance and edit `db/index.js` to assign the name to `DB_NAME`. Next, run `createdb <your-db-name-goes-here>` from your command line to spin up your database.
+The following table must contain at least:
 
-5. `npm run start:dev` will build your React app and start your express server in concurrent mode (meaning that both processes run in the same terminal window). Once this command is running, you can start developing! `nodemon` and `react-scripts` will listen to file changes and update continuously (hot-module-reloading).
+- User ID / Guest ID
+- A list of items with:
+  - Product’s price (Price must remain fixed at the time of purchase, regardless of current price)
+  - Product ID
+  - Quantity purchased
+- Order ID
 
-<em>NB: If you see a `proxy error` message in the terminal, just hard refresh your browser window and you'll be all set.</em>
+### Reviews Table
 
-## Project Structure
+The following table must contain at least:
 
-```bash
-├── .github/workflows
-│   └── heroku-deploy.yaml
-│  
-├── api
-│   ├── apiRouter.test.js
-│   └── index.js
-│
-├── db
-│   ├── models
-│   │   ├── index.js
-│   │   └── user.js
-│   ├── client.js
-│   ├── index.js
-│   └── init_db.js
-│
-├── public
-│   └── index.html
-│
-├── src
-│   ├── axios-services
-│   │   └── index.js
-│   ├── components
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── style
-│   │   ├── App.css
-│   │   └── index.css
-│   └── index.js
-│
-├── .gitignore
-├── index.js
-├── package-lock.json
-├── package.json
-└── README.md
-```
+- Product ID
+- User ID
+- Message
+- Review ID
 
-`/db` contains your `index.js` which exports the client instance and your database adapter models, as well as `init_db.js` which should be run when you need to rebuild your tables and seed data.
+## Frontend
 
-`/public` and `/src` are the two puzzle pieces for your React front-end. `/public` contains any static files necessary for your front-end. This can include images, a favicon, and most importantly the `index.html` that is the root of your React application.
+**Main Goal:** To create a user-friendly frontend UI, with easy-to-follow navigation and organization.
 
-`src/axios-services` contains your axios network request adapters. `src/components` contains your React component files.
+Visitors should be able to:
 
-Inside `/api` you have `index.js` which is responsible for building the `apiRouter` that you'll attach in the express server, and `apiRouter.test.js` which will give you direction on test-driven development for your api. Your React application and Express server use any routes you build in the `/api` directory to send/receive data via JSON, for example, a `usersRouter.js` that will be required and mounted in the `apiRouter.js`.
+### Tier One
 
-Rounding things out, we've got the top level `index.js` that creates your Express Server. This should be responsible for setting up your API, starting your server, and connecting to your database. We've also got our `.gitignore`, `package-lock.json`, and `package.json` where you'll find the scripts necessary to get your app off the ground, as well as this `README.md`.
+- Browse products
+- Purchase products
+- View individual product details:
+  - Description
+  - Photos
+  - Reviews
+- Create an account
 
-## Command Line Tools
+### Tier Two
 
-In addition to `start:dev`, `client:build`, `client:dev` and `server:dev`, you have access to `db:build` which rebuilds the database, all the tables, and ensures that there is meaningful data present.
+- Filter products by category
+- Enjoy an aesthetically pleasing website (Good user experience)
+- Navigate the website successfully (screen-reader, keyboard navigation, colorblind options, etc.)
+- Helpful Links:
+  - [A11y Project Checklist](https://a11yproject.com/checklist)
+  - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- Have a persistent cart:
+  - Keep cart when moving from guest to logged-in user
+  - Receive errors or updates on the website status (loading spinners, “Item not found”, “Error 404”, etc)
 
-# Deployment
+### Tier Three
 
-## Setting up Heroku
+- Login/Signup through third-party authentication (ex. Google OAuth)
+- Receive email confirmations when placing an order
+- Receive notifications for specific interactions (ex. Cart updates)
+- Filter products with a search field (can use Algolia)
+- Enjoy pages of content rather than endless scrolling for better UX
+- View featured products (best sellers, newest products, etc)
+- Add products to a wishlist
 
-Setup your heroku project by choosing a site name and provisioning a postgres database. These commands create a heroku project backed by a postgres db instance which will live at https://project-name-goes-here.herokuapp.com. You'll want to replace `project-name-goes-here` with your selected project name.
+### Tier Four
 
-You'll only need to do this step once, at the outset of your project:
+- Post products to social media accounts (integrating Facebook, Instagram, etc)
+- Receive recommended products (based on search history, matching tags, etc)
+- Logged-in customers should be able to do everything above, as well as:
 
-```bash
-# create your project
-$ heroku create project-name-goes-here
-# create your database instance
-$ heroku addons:create heroku-postgresql:hobby-dev
-```
+### Tier One
 
-Next we'll configure your database instance to ignore the `ssl` configuration object our `pg` client instance expects:
+- Have a persistent cart
+- Have access to their cart across multiple devices
+- Exclusively view and edit their cart
+- Change desired product quantity
+- Remove items from the cart
+- Add products to their cart
+- Purchase items in the cart
 
-```bash
-# set ssl mode to no-verify
-$ heroku config:set PGSSLMODE=no-verify
-# confirm your environment variable has been set
-$ heroku config
-```
+### Tier Two
 
-## Configuring GitHub Actions Secrets for CI/CD
+- View order history (items and prices)
+- View and edit user profile
 
-We're going to leverage continuous integration and continuous development methodologies, or CI/CD, to deploy your app. To enable CI/CD you'll need to add a few environment variables to your project repo.
+## Administrators
 
-Under Settings, choose the Secrets option under Security. You'll see the following dialog, and you'll be able to add a secret by selecting the `New repository secret` button. Once you create a GitHub secret you can never see it again, but you can modify it! We're going to add 3 secrets to our repo:
+Administrators should be able to do everything above, as well as:
 
-- `HEROKU_API_KEY`: you'll find this listed in your heroku account settings
-- `HEROKU_APP_NAME`: this is the project name you chose above
-- `HEROKU_EMAIL`: this is the email address associated with your heroku account
+### Tier One
 
-![](/assets/github-actions-secrets.png)
+- Have validated data
+- Have permissions to:
+  - Add products
+  - Edit products
+  - Delete products
+  - View users' information
 
-Each project group will elect one person to be the "owner" of the heroku account, and that person's api key and email address will be used to register the secrets above.
+### Tier Two
 
-**After the bootcamp ends**, you might want to redeploy and make changes to your team's application. Once you've forked this repo to your personal GitHub Account, you can add your own secrets and redeploy under a different heroku app name!
+- Allow customers to have a variety of payment options (Integrate Stripe)
 
-## Deployment
+### Tier Three
 
-In `.github/workflows` you'll find a YAML, an acronym for "YAML Ain't Markup Language", that triggers an automated deployment by watching your `main` branch: whenever a new pull request is merged to `main`, your app will automagically deploy itself on heroku.
+- Trigger password resets for a user
+- Ensure accurate product inventory (and edit quantities)
+- Offer customer discounts with promo codes
 
-Optionally, you can also trigger this deployment workflow by pushing to the `deploy` branch. Many companies use this pattern to enable hotfixes without going through the lengthy review process of creating a PR and merging it.
+### Tier Four
 
-Note that this workflow does **not** seed your database. To seed your remote postgres instance, run the following command:
+- Visualize relevant KPIs in the admin dashboard (e.g., total sales over time)
 
-```bash
-# this command seeds your remote postgres instance
-$ heroku run npm run db:build
-```
+## Engineers
 
-As you project grows you'll probably want to re-seed and refresh your database from time to time. Rerun this command whenever you want to re-seed.
+Engineers should be able to do everything above, as well as:
 
-# Wrapup
+### Tier One
 
-You'll be able to view your fullstack application by running `heroku open`. Bask in the glory of your live site, and happy coding!
+- Have access to the database
+- Create dummy data
+- Secure user data
+
+### Tier Three
+
+- Use continuous integration and delivery (deployment) of the codebase
+  - Resources:
+    - [What is Continuous Integration?](https://www.atlassian.com/continuous-delivery/continuous-integration)
+    - [CircleCI Documentation](https://circleci.com/docs/)

@@ -1,33 +1,35 @@
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import apiRouter from "./api/index.js";
+import path from "path";
+import client from "./db/client.js";
+// import { admin, adminRouter } from './App.js';
+import Stripe from 'stripe';
+const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
+
+dotenv.config();
 // This is the Web Server
-const express = require('express');
 const server = express();
 
-// enable cross-origin resource sharing to proxy api requests
-// from localhost:3000 to localhost:4000 in local dev env
-const cors = require('cors');
-server.use(cors());
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-// create logs for everything
-const morgan = require('morgan');
-server.use(morgan('dev'));
-
-// handle application/json requests
-server.use(express.json());
-
-// here's our static files
-const path = require('path');
-server.use(express.static(path.join(__dirname, 'build')));
+server.use(cors()); // Enable CORS first
+server.use(morgan("dev")); // Logging
+server.use(express.json()); // JSON parsing
+server.use("/static", express.static(path.join(__dirname, "build"))); // Static files
 
 // here's our API
-server.use('/api', require('./api'));
+server.use("/api", apiRouter);
+
+// adminJs
+// server.use("admin", adminRouter)
 
 // by default serve up the react app if we don't recognize the route
 server.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
-// bring in the DB connection
-const { client } = require('./db');
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
@@ -38,11 +40,11 @@ const handle = server.listen(PORT, async () => {
 
   try {
     await client.connect();
-    console.log('Database is open for business!');
+    console.log("Database is open for business!");
   } catch (error) {
-    console.error('Database is closed for repairs!\n', error);
+    console.error("Database is closed for repairs!\n", error);
   }
 });
 
 // export server and handle for routes/*.test.js
-module.exports = { server, handle };
+export { server, handle };

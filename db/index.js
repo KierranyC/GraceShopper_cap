@@ -1,7 +1,7 @@
-const client = require('./client');
-const models = require('./models');
+import client from "./client";
+import * as models from "./models";
 
-module.exports = {
+export {
   client,
-  ...models,
+  models
 };
