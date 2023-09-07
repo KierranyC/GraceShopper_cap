@@ -18,7 +18,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 server.use(cors()); // Enable CORS first
 server.use(morgan("dev")); // Logging
 server.use(express.json()); // JSON parsing
-server.use("/static", express.static(path.join(__dirname, "build"))); // Static files
+// server.use("/static", express.static(path.join(__dirname, "build"))); // Static files
 
 // here's our API
 server.use("/api", apiRouter);
