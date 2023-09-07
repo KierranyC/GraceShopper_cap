@@ -8,7 +8,6 @@ primary_region = "dfw"
 
 [build]
   command = "npm run build"
-  build_directory = "C:\Users\kierr\course\GraceShopper\build"
 
 [http_service]
   internal_port = 3000
