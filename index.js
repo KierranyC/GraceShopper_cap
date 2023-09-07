@@ -27,9 +27,9 @@ server.use("/api", apiRouter);
 // server.use("admin", adminRouter)
 
 // by default serve up the react app if we don't recognize the route
-server.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// server.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
