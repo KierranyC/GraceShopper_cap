@@ -30,10 +30,10 @@ app.use(
   })
 );
 
-app.get('/', (req, res) => {
-  const path = resolve(process.env.STATIC_DIR + '/public/index.html');
-  res.sendFile(path);
-});
+// app.get('/', (req, res) => {
+//   const path = resolve(process.env.STATIC_DIR + '/public/index.html');
+//   res.sendFile(path);
+// });
 
 // Fetch the Checkout Session to display the JSON result on the success page
 app.get('/checkout-session', async (req, res) => {
@@ -113,7 +113,7 @@ app.listen(4242, () => console.log(`Node server listening on port ${4242}!`));
 
 function checkEnv() {
   const price = process.env.PRICE;
-  if(price === "price_12345" || !price) {
+  if (price === "price_12345" || !price) {
     console.log("You must set a Price ID in the environment variables. Please see the README.");
     process.exit(0);
   }
