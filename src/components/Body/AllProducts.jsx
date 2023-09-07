@@ -53,6 +53,7 @@ export const Products = ({
       try {
         const data = await fetchAllProducts();
         setProducts(data);
+        console.log(products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -141,7 +142,12 @@ export const Products = ({
           1
         );
       } else if (storedGuestSessionId && !token) {
-        updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
+        updatedCart = await addItemToCart(
+          null,
+          storedGuestSessionId,
+          productId,
+          1
+        );
         // console.log(updatedCart)
         if (updatedCart) {
           // console.log('UPDATED CART FRONT END PRODUCTS:', updatedCart)
@@ -195,8 +201,8 @@ export const Products = ({
 
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
-      const currentQuantity = productQuantities[productId]
-      console.log('CURRENT QUANTITY:', currentQuantity)
+      const currentQuantity = productQuantities[productId];
+      console.log("CURRENT QUANTITY:", currentQuantity);
       let updatedCart;
 
       if (currentQuantity > 0) {
@@ -233,8 +239,12 @@ export const Products = ({
           productId
         );
         setGuestCart(updatedCart);
-        updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
-        console.log(updatedCart)
+        updatedCart = await removeItemFromCart(
+          null,
+          storedGuestSessionId,
+          productId
+        );
+        console.log(updatedCart);
         // setGuestCart(updatedCart);
         // setInCart((prevInCart) => ({
         //   ...prevInCart,
@@ -255,7 +265,10 @@ export const Products = ({
         [productId]: false,
       }));
     } catch (error) {
-      console.error('Error handling item quantity or removing item from cart:', error);
+      console.error(
+        "Error handling item quantity or removing item from cart:",
+        error
+      );
     }
   };
 
@@ -278,7 +291,7 @@ export const Products = ({
                   <img
                     src={product.photo}
                     alt={product.title}
-                    className="d-block w-100"
+                    className="featured"
                   />
                   <Carousel.Caption>
                     <h3>{product.title}</h3>

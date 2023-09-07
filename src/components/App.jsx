@@ -189,6 +189,7 @@ export const App = () => {
                   setCart={setCart}
                   token={token}
                   setGuestCart={setGuestCart}
+                  username={username}
                 />
               </div>
 

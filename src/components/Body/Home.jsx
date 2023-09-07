@@ -15,6 +15,7 @@ export const Home = ({
   storedGuestSessionId,
   isLoggedIn,
   isAdmin,
+  username
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -33,6 +34,10 @@ export const Home = ({
 
     fetchFeatured();
   }, []);
+
+  useEffect(()=> {
+    console.log("hello")
+  }, [username])
 
   // const handleSearch = async (category, search) => {
   //   try {
