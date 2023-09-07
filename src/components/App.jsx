@@ -71,6 +71,7 @@ export const App = () => {
       console.log('IS ADMIN CHECK APP:', isAdmin)
       setToken(storedToken);
       setIsLoggedIn(true);
+      setStoredGuestSessionId('')
       fetchUserCart(storedToken)
         .then((cartData) => {
           setCart(cartData);
@@ -188,6 +189,7 @@ export const App = () => {
                   setCart={setCart}
                   token={token}
                   setGuestCart={setGuestCart}
+                  username={username}
                 />
               </div>
 
@@ -263,6 +265,9 @@ export const App = () => {
                 cart={cart}
                 setCart={setCart}
                 setIsAdmin={setIsAdmin}
+                storedGuestSessionId={storedGuestSessionId}
+                guestCart={guestCart}
+                setIsLoggedIn={setIsLoggedIn}
               />
             }
           ></Route>
@@ -306,7 +311,9 @@ export const App = () => {
             path={'/Checkout'}
             element={
               <Checkout
-                cart={cart} />
+                cart={cart}
+                token={token}
+                setCart={setCart} />
             }
           >
           </Route>

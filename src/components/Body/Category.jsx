@@ -28,7 +28,7 @@ export const Category = ({
   // UseStates for Category
   const [products, setProducts] = useState([]);
   const [productQuantities, setProductQuantities] = useState({});
-  const [inCart, setInCart] = useState({});
+  // const [inCart, setInCart] = useState({});
   // console.log(category, categoryProducts)
 
   // Gets all products by category everytime category is updated
@@ -58,32 +58,32 @@ export const Category = ({
     }
   }, []);
 
-  // comment!
-  useEffect(() => {
-    // Initialize a new 'inCart' object
+  // // comment!
+  // useEffect(() => {
+  //   // Initialize a new 'inCart' object
 
-    const newInCart = {};
+  //   const newInCart = {};
 
-    // Update 'inCart' based on the contents of the user cart
-    for (const item of cart) {
-      newInCart[item.productId] = true;
-    }
+  //   // Update 'inCart' based on the contents of the user cart
+  //   for (const item of cart) {
+  //     newInCart[item.productId] = true;
+  //   }
 
-    // Update 'inCart' based on the contents of the guest cart
-    if (storedGuestSessionId) {
-      for (const item of guestCart) {
-        newInCart[item.productId] = true;
-      }
-    }
+  //   // Update 'inCart' based on the contents of the guest cart
+  //   if (storedGuestSessionId) {
+  //     for (const item of guestCart) {
+  //       newInCart[item.productId] = true;
+  //     }
+  //   }
 
-    // Set the updated 'inCart' state
-    setInCart(newInCart);
-  }, [cart, guestCart, storedGuestSessionId]);
+  //   // Set the updated 'inCart' state
+  //   setInCart(newInCart);
+  // }, [cart, guestCart, storedGuestSessionId]);
 
   useEffect(() => {
     localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
-    localStorage.setItem("inCart", JSON.stringify(inCart));
-  }, [productQuantities, inCart]);
+    // localStorage.setItem("inCart", JSON.stringify(inCart));
+  });
 
   // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
   const handleClick = (proId) => {
@@ -104,10 +104,10 @@ export const Category = ({
             ...prevQuantities,
             [productId]: (prevQuantities[productId] || 0) + 1,
           }));
-          setInCart((prevInCart) => ({
-            ...prevInCart,
-            [productId]: true,
-          }));
+          // setInCart((prevInCart) => ({
+          //   ...prevInCart,
+          //   [productId]: true,
+          // }));
         }
       } else if (storedGuestSessionId) {
         updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
@@ -118,10 +118,10 @@ export const Category = ({
             ...prevQuantities,
             [productId]: (prevQuantities[productId] || 0) + 1,
           }));
-          setInCart((prevInCart) => ({
-            ...prevInCart,
-            [productId]: true,
-          }));
+          // setInCart((prevInCart) => ({
+          //   ...prevInCart,
+          //   [productId]: true,
+          // }));
         }
       }
     } catch (error) {
@@ -153,7 +153,7 @@ export const Category = ({
 
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
-      const currentQuantity = productQuantities[productId] || 0;
+      const currentQuantity = productQuantities[productId]
       let updatedCart;
 
       if (currentQuantity > 0) {
@@ -173,7 +173,6 @@ export const Category = ({
         }
       }
 
-      // Always attempt to remove the item from the cart (it's okay if it's not there)
       if (storedGuestSessionId) {
         updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
         setGuestCart(updatedCart);
@@ -183,10 +182,10 @@ export const Category = ({
       }
 
       // Set inCart to false regardless of the currentQuantity
-      setInCart((prevInCart) => ({
-        ...prevInCart,
-        [productId]: false,
-      }));
+      // setInCart((prevInCart) => ({
+      //   ...prevInCart,
+      //   [productId]: false,
+      // }));
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
     }

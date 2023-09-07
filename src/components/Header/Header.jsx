@@ -110,15 +110,15 @@ export const Header = ({
         <Categories category={category} setCategory={setCategory} />
         {/* <Search /> */}
       </div>
-
+      <Navbar.Brand onClick={handleCart}>Cart</Navbar.Brand>
       {!newUser && isAdmin ? (
         <Nav>
+          
           <NavDropdown title={username} id="basic-nav-dropdown">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
             <NavDropdown.Item onClick={handleWishList}>
               Wishlist
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={handleCart}>Cart</NavDropdown.Item>
             <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
             <NavDropdown.Divider />
@@ -134,7 +134,7 @@ export const Header = ({
             <NavDropdown.Item onClick={handleWishList}>
               Wishlist
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={handleCart}>Cart</NavDropdown.Item>
+           
             <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" onClick={handleLogout}>
@@ -157,7 +157,7 @@ export const Header = ({
             <NavDropdown.Item href="/" onClick={handleRegister}>
               Register
             </NavDropdown.Item>
-            <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+           
           </NavDropdown>
         </Nav>
       )}

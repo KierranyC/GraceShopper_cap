@@ -128,3 +128,9 @@ nav.navbar {
   border: 2px solid grey;
   border-radius: 15px;
 }
+
+.featured {
+  margin: 10px 25px;
+  border-radius: 15px;
+
+}

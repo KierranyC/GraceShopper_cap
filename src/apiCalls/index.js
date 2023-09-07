@@ -165,7 +165,6 @@ export const getProductsByCategory = async (category) => {
       }
     );
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -350,6 +349,26 @@ export const deleteProduct = async (token, productId) => {
     console.error(error);
   }
 };
+
+export const updateCart = async (token, sessionId) => {
+  console.log('TOKEN AND GUEST ID CHECK API CALL:', token, sessionId)
+  try {
+    const response = await fetch(`${BASE_URL}/cart/updateuser`, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        guestId: sessionId
+      })
+    })
+    const result = await response.json()
+    return result;
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export const fetchUserCart = async (token) => {
   try {

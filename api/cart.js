@@ -7,7 +7,8 @@ import {
   removeFromCart,
   createGuestCart,
   createUserCart,
-  getUserCartItems
+  getUserCartItems,
+  updateGuestToUserCart
 } from "../db/models/cart.js";
 import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
@@ -162,6 +163,19 @@ router.patch('/update', requireAuthentication, async (req, res, next) => {
   }
 });
 
+router.patch('/updateuser', requireAuthentication, async (req, res, next) => {
+  console.log('CART OWNER UPDATE ROUTE REQ USER:', req.user)
+  const { guestId } = req.body;
+  console.log('GUEST ID UPDATE CART ROUTE CHECK:', guestId)
+  try {
+    const updatedCart = await updateGuestToUserCart(req.user.id, guestId)
+    res.send(updatedCart)
+  } catch (error) {
+    next(error)
+  }
+
+})
+
 
 router.delete('/remove', requireAuthentication, async (req, res, next) => {
   let userId;
@@ -183,9 +197,11 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
   }
 });
 
-router.post('/checkout', async (req, res) => {
+router.post('/checkout', requireAuthentication, async (req, res) => {
+  console.log('REQ USER AT CHECKOUT:', req.user)
   const { cart, paymentMethod } = req.body;
-  console.log(cart, paymentMethod)
+  console.log('CART:', cart)
+  console.log('PAYMENT METHOD:', paymentMethod)
   try {
     const cost = cart.reduce(
       (total, product) => {
@@ -193,14 +209,19 @@ router.post('/checkout', async (req, res) => {
         return total + productSubtotal;
       }, 0);
 
+    const costInCents = cost * 100;
+
+    console.log('CART COST:', cost)
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: cost,
-      currency: 'usd'
+      amount: costInCents,
+      currency: "usd",
+      payment_method_types: ['card']
     })
 
+    console.log('STRIPE PAYMENT INTENT:', paymentIntent)
     res.send({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
-    console.error(error)
+    console.error('STRIPE BACKEND ERROR:', error)
   }
 })
 

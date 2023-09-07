@@ -20,7 +20,7 @@ async function createGuestCart({ userId }) {
 
 async function createUserCart({ userId }) {
   try {
-    const { rows: cart } = await client.query(
+    await client.query(
       `
       INSERT INTO "cartItems" ("userId")
       VALUES ($1)
@@ -28,7 +28,9 @@ async function createUserCart({ userId }) {
       `,
       [userId]
     );
-    return cart;
+
+    const userCart = await getUserCart(userId, guestId)
+    return userCart;
   } catch (error) {
     console.error(error);
   }
@@ -43,7 +45,8 @@ async function createCartItem({ userId, guestId, productId, quantity }) {
       RETURNING *;
     `, [typeof userId === 'number' ? userId : null, typeof guestId === 'string' ? guestId : null, productId, quantity]);
 
-    return rows;
+    const userCart = await getUserCart(userId, guestId)
+    return userCart;
   } catch (error) {
     console.error(error);
   }
@@ -118,16 +121,9 @@ async function addToCart({ userId, guestId, productId, quantity }) {
       RETURNING *;
     `, [typeof userId === 'number' ? userId : null, typeof guestId === 'string' ? guestId : null, productId, quantity]);
 
-    const { rows: matchingRows } = await client.query(
-      `
-      SELECT * FROM "cartItems"
-      WHERE "userId" = $1 OR "guestId" = $2;
-      `,
-      [userId, guestId]
-    );
+    const cart = await getUserCart(userId, guestId)
 
-    console.log(matchingRows);
-    return matchingRows;
+    return cart;
   } catch (error) {
     console.error(error)
   }
@@ -138,14 +134,21 @@ async function updateCartItemQuantity({ userId, guestId, productId, quantity }) 
   try {
     const condition = userId ? `"userId"` : `"guestId"`;
     const values = userId ? [userId, productId, quantity] : [guestId, productId, quantity];
-
-    await client.query(`
+    const values1 = userId ? [userId, productId] : [guestId, productId]
+    if (quantity === 0) {
+      await client.query(`
+      DELETE FROM "cartItems"
+      WHERE ${condition} = $1
+      AND "productId" = $2;
+      `, values1)
+    } else {
+      await client.query(`
       UPDATE "cartItems" 
       SET quantity = $3
       WHERE ${condition} = $1 AND "productId" = $2
       RETURNING *;
     `, values);
-
+    }
     const updatedCart = await getUserCart(userId, guestId)
     console.log('UPDATED CART DB FUNC:', updatedCart)
     return updatedCart;
@@ -159,16 +162,52 @@ async function removeFromCart(userId, guestId, productId) {
     const condition = userId ? `"userId"` : `"guestId"`;
     const values = userId ? [userId, productId] : [guestId, productId];
 
-    await client.query(`
-      DELETE FROM "cartItems" 
-      WHERE ${condition} = $1 AND "productId" = $2;
-    `, values);
+    // await client.query(`
+    //   DELETE FROM "cartItems" 
+    //   WHERE ${condition} = $1 AND "productId" = $2;
+    // `, values);
+
+    if (userId !== null) {
+      await client.query(`
+      DELETE FROM "cartItems"
+      WHERE "userId" = $1
+      AND "productId" = $2;
+      `, [userId, productId])
+    } else {
+      await client.query(`
+      DELETE FROM "cartItems"
+      WHERE "guestId" = $1
+      AND "productId" = $2;
+      `, [guestId, productId])
+    }
 
     const updatedCart = await getUserCart(userId, guestId);
     console.log('REMOVE ITEM DB FUNCTION UPDATED CART:', updatedCart)
     return updatedCart;
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function updateGuestToUserCart(newUserId, guestId) {
+  try {
+    await client.query(`
+    UPDATE "cartItems"
+    SET "userId" = $1,
+    "guestId" = $2
+    WHERE "guestId" = $3;
+    `, [newUserId, null, guestId])
+
+    const { rows: updatedCart } = await client.query(`
+    SELECT * 
+    FROM "cartItems"
+    WHERE "userId" = $1;
+    `, [newUserId]);
+
+    console.log('UPDATED GUEST TO USER CART', updatedCart)
+    return updatedCart
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -181,5 +220,6 @@ export {
   addToCart,
   updateCartItemQuantity,
   removeFromCart,
-  getUserCartItems
+  getUserCartItems,
+  updateGuestToUserCart
 }
