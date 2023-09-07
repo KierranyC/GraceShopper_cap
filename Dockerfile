@@ -12,27 +12,31 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python
 
-# Install node modules
+# Throw-away build stage to reduce the size of the final image
+FROM base as build
+
+# Create a directory for the React build files
+WORKDIR /build
+
+# Copy and install dependencies for the build
 COPY --link package-lock.json package.json ./
 RUN npm ci
 
-# Copy application code
+# Copy the React application source code
 COPY --link . .
 
+# Build the React application
+RUN npm run build
 
-# Final stage for app image
+# Final stage for the app image
 FROM base
 
-# Copy built application
-COPY --from=build /app /app
+# Copy the built React application from the build stage to the /app directory
+COPY --from=build /build/build /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
