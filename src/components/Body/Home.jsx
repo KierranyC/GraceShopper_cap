@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Featured } from "./Featured.jsx";
 import { Products } from "./AllProducts.jsx";
+import { fetchFeaturedProducts } from "../../apiCalls/index.js";
 
 // This component acts as the main route of our e-commerce application. It should display a list of featured products followed by all of the products.
 export const Home = ({
@@ -12,10 +13,26 @@ export const Home = ({
   guestCart,
   setGuestCart,
   storedGuestSessionId,
-  isLoggedIn
+  isLoggedIn,
+  isAdmin,
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchFeatured() {
+      try {
+        const data = await fetchFeaturedProducts();
+        setFeaturedProducts(data);
+        console.log(featuredProducts);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      }
+    }
+
+    fetchFeatured();
+  }, []);
 
   // const handleSearch = async (category, search) => {
   //   try {
@@ -31,8 +48,9 @@ export const Home = ({
 
   return (
     <div className="home">
-      <Featured />
+      {/* <Featured featuredProducts={featuredProducts} /> */}
       <Products
+        isAdmin={isAdmin}
         filteredProducts={filteredProducts}
         productId={productId}
         setProductId={setProductId}
@@ -43,6 +61,7 @@ export const Home = ({
         setGuestCart={setGuestCart}
         storedGuestSessionId={storedGuestSessionId}
         isLoggedIn={isLoggedIn}
+        featuredProducts={featuredProducts}
       />
     </div>
   );

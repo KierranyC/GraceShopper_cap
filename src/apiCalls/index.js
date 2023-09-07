@@ -17,6 +17,21 @@ export const fetchAllProducts = async () => {
   }
 };
 
+// Get - gets all featured products
+export const fetchFeaturedProducts = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/featured`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // GET - view a single product
 export const fetchProduct = async (productId) => {
   try {
@@ -69,11 +84,30 @@ export const getProductsByCategoryAndSearch = async ({
 };
 
 // GET - getting all users
-export const fetchAllUsers = async () => {
+export const fetchAllUsers = async (token) => {
+  console.log('FETCH ALL USERS TOKEN CHECK:', token)
   try {
     const response = await fetch(`${BASE_URL}/users`, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const fetchAllGuests = async (token) => {
+  console.log('FETCH ALL GUESTS TOKEN CHECK:', token)
+  try {
+    const response = await fetch(`${BASE_URL}/users/guests`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     });
     const result = await response.json();
@@ -120,7 +154,7 @@ export const fetchUserOrders = async (username, token) => {
 
 // GET - Gets all products in a certain category
 export const getProductsByCategory = async (category) => {
-  console.log('CATEGORY API CALL:', category)
+  console.log("CATEGORY API CALL:", category);
   try {
     const response = await fetch(
       `${BASE_URL}/products/categories/${category}`,
@@ -140,6 +174,7 @@ export const getProductsByCategory = async (category) => {
 // ----- All POST requests -----
 // POST - create new product
 export const createProduct = async (
+  token,
   title,
   description,
   price,
@@ -147,11 +182,13 @@ export const createProduct = async (
   category,
   photo
 ) => {
+  console.log(token)
   try {
     const response = await fetch(`${BASE_URL}/products`, {
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
         title,
@@ -200,7 +237,7 @@ export const signUp = async (
     });
     const result = await response.json();
     localStorage.setItem("token", result.token);
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (error) {
     console.error(error);
@@ -293,18 +330,20 @@ export const editUser = async (username, password, email, userId, token) => {
 
 // ----- All DELETE requests -----
 // DELETE - delete a product
-export const deleteProduct = async (id, setDeleted, deleted) => {
+export const deleteProduct = async (token, productId) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/products/${id}`, {
+    const response = await fetch(`${BASE_URL}/products/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
+      body: JSON.stringify({
+        productId
+      })
     });
     const result = await response.json();
-    result.success ? setDeleted(deleted + 1) : null;
+    // result.success ? setDeleted(deleted + 1) : null;
     return result;
   } catch (error) {
     console.error(error);
@@ -355,20 +394,19 @@ export const fetchUserCart = async (token) => {
 export const createNewGuest = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users/newguest`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-      }
-    })
-    const result = await response.json()
+      },
+    });
+    const result = await response.json();
     return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 export const fetchGuestCart = async (guestSessionId) => {
-
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -390,20 +428,22 @@ export const fetchGuestCart = async (guestSessionId) => {
   }
 };
 
-
-
-export const addItemToCart = async (authToken, guestSessionId, productId, quantity) => {
-  // console.log(authToken, guestSessionId)
+export const addItemToCart = async (
+  authToken,
+  guestSessionId,
+  productId,
+  quantity
+) => {
+  console.log(authToken, guestSessionId);
   try {
     const headers = {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
 
     if (authToken) {
       headers["Authorization"] = `Bearer ${authToken}`;
     } else if (guestSessionId) {
       headers["x-guest-session-id"] = guestSessionId;
-
     }
 
     const response = await fetch(`${BASE_URL}/cart/add`, {
@@ -411,8 +451,8 @@ export const addItemToCart = async (authToken, guestSessionId, productId, quanti
       headers,
       body: JSON.stringify({
         productId,
-        quantity
-      })
+        quantity,
+      }),
     });
 
     const result = await response.json();
@@ -423,7 +463,12 @@ export const addItemToCart = async (authToken, guestSessionId, productId, quanti
   }
 };
 
-export const updateCartItem = async (authToken, guestSessionId, productId, quantity) => {
+export const updateCartItem = async (
+  authToken,
+  guestSessionId,
+  productId,
+  quantity
+) => {
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -433,7 +478,6 @@ export const updateCartItem = async (authToken, guestSessionId, productId, quant
       headers["Authorization"] = `Bearer ${authToken}`;
     } else if (guestSessionId) {
       headers["x-guest-session-id"] = guestSessionId;
-
     }
 
     const response = await fetch(`${BASE_URL}/cart/update`, {
@@ -451,7 +495,11 @@ export const updateCartItem = async (authToken, guestSessionId, productId, quant
   }
 };
 
-export const removeItemFromCart = async (authToken, guestSessionId, productId) => {
+export const removeItemFromCart = async (
+  authToken,
+  guestSessionId,
+  productId
+) => {
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -461,14 +509,13 @@ export const removeItemFromCart = async (authToken, guestSessionId, productId) =
       headers["Authorization"] = `Bearer ${authToken}`;
     } else if (guestSessionId) {
       headers["x-guest-session-id"] = guestSessionId;
-
     }
 
     const response = await fetch(`${BASE_URL}/cart/remove`, {
       method: "DELETE",
       headers,
       body: JSON.stringify({
-        productId
+        productId,
       }),
     });
     const result = await response.json();
@@ -478,6 +525,40 @@ export const removeItemFromCart = async (authToken, guestSessionId, productId) =
   };
 }
 
-export const userCheckout = async () => {
+export const deleteUser = async (token, userId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        userId
+      })
+    })
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
 
+export const deleteGuest = async (token, guestId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/guest/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        guestId
+      })
+    })
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+  }
 }

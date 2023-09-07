@@ -60,6 +60,9 @@ export const Register = ({
         if (result.token) {
           navigate("/");
         }
+
+
+
       } catch (error) {
         console.log(error);
       }
