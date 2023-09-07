@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for black-grass-7884 on 2023-09-06T21:44:48-05:00
+# fly.toml app configuration file generated for divine-resonance-9216 on 2023-09-06T22:44:57-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "black-grass-7884"
+app = "divine-resonance-9216"
 primary_region = "dfw"
 
 [build]
