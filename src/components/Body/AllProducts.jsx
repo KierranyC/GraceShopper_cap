@@ -25,26 +25,25 @@ export const Products = ({
   isAdmin,
   setProductId,
   featuredProducts,
+  inCart,
+  setInCart,
+  productQuantities,
+  setProductQuantities
 }) => {
   // UseStates for Products
   // comment!
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [productQuantities, setProductQuantities] = useState({});
-  const [inCart, setInCart] = useState(false);
+  // const [productQuantities, setProductQuantities] = useState({});
+  // const [inCart, setInCart] = useState(false);
+
 
   useEffect(() => {
     const storedQuantities = localStorage.getItem("productQuantities");
-    // const storedInCart = localStorage.getItem("inCart");
-
     if (storedQuantities) {
       setProductQuantities(JSON.parse(storedQuantities));
     }
-
-    // if (storedInCart) {
-    //   setInCart(JSON.parse(storedInCart));
-    // }
   }, []);
 
   // Gets all products once at the startup of this component
@@ -53,7 +52,6 @@ export const Products = ({
       try {
         const data = await fetchAllProducts();
         setProducts(data);
-        console.log(products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -61,27 +59,7 @@ export const Products = ({
     getProducts();
   }, []);
 
-  // comment!
-  // useEffect(() => {
-  //   // Initialize a new 'inCart' object
 
-  //   const newInCart = {};
-
-  //   // Update 'inCart' based on the contents of the user cart
-  //   for (const item of cart) {
-  //     newInCart[item.productId] = true;
-  //   }
-
-  //   // Update 'inCart' based on the contents of the guest cart
-  //   if (storedGuestSessionId) {
-  //     for (const item of guestCart) {
-  //       newInCart[item.productId] = true;
-  //     }
-  //   }
-
-  //   // Set the updated 'inCart' state
-  //   setInCart(newInCart);
-  // }, [cart, guestCart, storedGuestSessionId]);
 
   // comment!
   useEffect(() => {
@@ -89,8 +67,7 @@ export const Products = ({
       "productQuantities",
       JSON.stringify(productQuantities)
     );
-    localStorage.setItem("inCart", JSON.stringify(inCart));
-  }, [productQuantities, inCart]);
+  }, [productQuantities]);
 
   // Filters products depending on the searchTerm
   useEffect(() => {
@@ -116,54 +93,31 @@ export const Products = ({
   };
 
   const handleAddItemToCart = async (productId) => {
-    console.log(storedGuestSessionId);
+    console.log(storedGuestSessionId)
     try {
       let updatedCart;
 
       if (token) {
         updatedCart = await addItemToCart(token, null, productId, 1);
         if (updatedCart) {
-          // console.log('UPDATED CART FRONT END PRODUCTS:', updatedCart)
           setCart(updatedCart);
           setProductQuantities((prevQuantities) => ({
             ...prevQuantities,
             [productId]: (prevQuantities[productId] || 0) + 1,
           }));
-          // setInCart((prevInCart) => ({
-          //   ...prevInCart,
-          //   [productId]: true,
-          // }));
         }
       } else if (storedGuestSessionId) {
-        updatedCart = await addItemToCart(
-          null,
-          storedGuestSessionId,
-          productId,
-          1
-        );
-      } else if (storedGuestSessionId && !token) {
-        updatedCart = await addItemToCart(
-          null,
-          storedGuestSessionId,
-          productId,
-          1
-        );
-        // console.log(updatedCart)
+        updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
         if (updatedCart) {
-          // console.log('UPDATED CART FRONT END PRODUCTS:', updatedCart)
           setGuestCart(updatedCart);
           setProductQuantities((prevQuantities) => ({
             ...prevQuantities,
             [productId]: (prevQuantities[productId] || 0) + 1,
           }));
-          // setInCart((prevInCart) => ({
-          //   ...prevInCart,
-          //   [productId]: true,
-          // }));
         }
       }
     } catch (error) {
-      console.error("Error adding item to cart:", error);
+      console.error('Error adding item to cart:', error);
     }
   };
 
@@ -191,7 +145,7 @@ export const Products = ({
           null,
           productId,
           updatedQuantity
-        ); // Pass productId and updatedQuantity
+        );
         setCart(updatedCart);
       }
     } catch (error) {
@@ -201,8 +155,7 @@ export const Products = ({
 
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
-      const currentQuantity = productQuantities[productId];
-      console.log("CURRENT QUANTITY:", currentQuantity);
+      const currentQuantity = productQuantities[productId] || 0;
       let updatedCart;
 
       if (currentQuantity > 0) {
@@ -214,61 +167,24 @@ export const Products = ({
         }));
 
         if (storedGuestSessionId) {
-          updatedCart = await updateCartItem(
-            null,
-            storedGuestSessionId,
-            productId,
-            updatedQuantity
-          );
+          updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
           setGuestCart(updatedCart);
         } else if (token) {
-          updatedCart = await updateCartItem(
-            token,
-            null,
-            productId,
-            updatedQuantity
-          );
+          updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
           setCart(updatedCart);
         }
       }
+
       // Always attempt to remove the item from the cart (it's okay if it's not there)
       if (storedGuestSessionId) {
-        updatedCart = await removeItemFromCart(
-          null,
-          storedGuestSessionId,
-          productId
-        );
+        updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
         setGuestCart(updatedCart);
-        updatedCart = await removeItemFromCart(
-          null,
-          storedGuestSessionId,
-          productId
-        );
-        console.log(updatedCart);
-        // setGuestCart(updatedCart);
-        // setInCart((prevInCart) => ({
-        //   ...prevInCart,
-        //   [productId]: false,
-        // }));
       } else if (token) {
         updatedCart = await removeItemFromCart(token, null, productId);
         setCart(updatedCart);
-        // setInCart((prevInCart) => ({
-        //   ...prevInCart,
-        //   [productId]: false,
-        // }));
       }
-
-      // Set inCart to false regardless of the currentQuantity
-      setInCart((prevInCart) => ({
-        ...prevInCart,
-        [productId]: false,
-      }));
     } catch (error) {
-      console.error(
-        "Error handling item quantity or removing item from cart:",
-        error
-      );
+      console.error('Error handling item quantity or removing item from cart:', error);
     }
   };
 

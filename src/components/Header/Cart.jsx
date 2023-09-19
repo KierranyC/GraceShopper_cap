@@ -9,6 +9,8 @@ import { Navigate, useNavigate } from "react-router";
 
 
 export const Cart = ({
+  inCart,
+  setInCart,
   token,
   isLoggedIn,
   cart,
@@ -16,13 +18,12 @@ export const Cart = ({
   guestCart,
   setGuestCart,
   storedGuestSessionId,
+  productQuantities,
+  setProductQuantities
 }) => {
   const [totalCost, setTotalCost] = useState(0);
   const [guestTotalCost, setGuestTotalCost] = useState(0);
-  const [productQuantities, setProductQuantities] = useState({});
-  // const [inCart, setInCart] = useState({});
   const navigate = useNavigate()
-  console.log('CART FRONT END CART PAGE:', cart)
   useEffect(() => {
     const storageKey = isLoggedIn ? "cart" : "guestCart";
     localStorage.setItem(
@@ -58,47 +59,15 @@ export const Cart = ({
 
   useEffect(() => {
     const storedQuantities = localStorage.getItem("productQuantities");
-    // const storedInCart = localStorage.getItem("inCart");
-
     if (storedQuantities) {
       setProductQuantities(JSON.parse(storedQuantities));
     }
-
-    // if (storedInCart) {
-    //   setInCart(JSON.parse(storedInCart));
-    // }
   }, []);
 
-  // comment!
-  // useEffect(() => {
-  //   // Initialize a new 'inCart' object
 
-  //   const newInCart = {};
-
-  //   // Update 'inCart' based on the contents of the user cart
-  //   for (const item of cart) {
-  //     newInCart[item.productId] = true;
-  //   }
-
-  //   // Update 'inCart' based on the contents of the guest cart
-  //   if (storedGuestSessionId) {
-  //     for (const item of guestCart) {
-  //       newInCart[item.productId] = true;
-  //     }
-  //   }
-
-  //   // Set the updated 'inCart' state
-  //   setInCart(newInCart);
-  // }, [cart, guestCart, storedGuestSessionId]);
-
-  // comment!
   useEffect(() => {
     localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
   }, [productQuantities]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("inCart", JSON.stringify(inCart));
-  // }, [inCart]);
 
 
   const handleAddOneItemToCart = async (productId) => {
@@ -164,16 +133,6 @@ export const Cart = ({
           );
           setCart(updatedCart);
         }
-
-
-        // If the updated quantity is zero, remove the product from the cart
-        // if (updatedQuantity === 0) {
-        //   setInCart((prevInCart) => {
-        //     const updatedInCart = { ...prevInCart };
-        //     delete updatedInCart[productId];
-        //     return updatedInCart;
-        //   });
-        // }
       }
     } catch (error) {
       console.error(
@@ -213,7 +172,6 @@ export const Cart = ({
                 </h4>
                 <Button
                   onClick={() => {
-                    console.log('Clicked productId:', currentProduct.productId);
                     handleAddOneItemToCart(currentProduct.productId)
                   }}>
                   +

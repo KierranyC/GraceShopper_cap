@@ -15,7 +15,11 @@ export const Home = ({
   storedGuestSessionId,
   isLoggedIn,
   isAdmin,
-  username
+  username,
+  inCart,
+  setInCart,
+  productQuantities,
+  setProductQuantities
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -35,7 +39,7 @@ export const Home = ({
     fetchFeatured();
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log("hello")
   }, [username])
 
@@ -67,6 +71,8 @@ export const Home = ({
         storedGuestSessionId={storedGuestSessionId}
         isLoggedIn={isLoggedIn}
         featuredProducts={featuredProducts}
+        productQuantities={productQuantities}
+        setProductQuantities={setProductQuantities}
       />
     </div>
   );

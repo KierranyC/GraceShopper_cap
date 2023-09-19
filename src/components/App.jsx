@@ -56,6 +56,9 @@ export const App = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [storedGuestSessionId, setStoredGuestSessionId] = useState("");
   const [isAdmin, setIsAdmin] = useState(false)
+  // const [inCart, setInCart] = useState(false);
+  const [productQuantities, setProductQuantities] = useState({});
+
   // Stores a token and username locally and sets a user to Logged in
   useEffect(() => {
     const storedIsAdmin = localStorage.getItem("isAdmin");
@@ -190,6 +193,8 @@ export const App = () => {
                   token={token}
                   setGuestCart={setGuestCart}
                   username={username}
+                  productQuantities={productQuantities}
+                  setProductQuantities={setProductQuantities}
                 />
               </div>
 
@@ -214,6 +219,8 @@ export const App = () => {
               token={token} cart={cart} setCart={setCart}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
+              productQuantities={productQuantities}
+              setProductQuantities={setProductQuantities}
             />}
           ></Route>
 
@@ -305,6 +312,8 @@ export const App = () => {
                 categoryProducts={categoryProducts}
                 setCategoryProducts={setCategoryProducts}
                 isAdmin={isAdmin}
+                productQuantities={productQuantities}
+                setProductQuantities={setProductQuantities}
               />}
           ></Route>
           <Route
