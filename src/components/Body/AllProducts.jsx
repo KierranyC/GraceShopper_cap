@@ -173,15 +173,16 @@ export const Products = ({
           updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
           setCart(updatedCart);
         }
-      }
+      } else {
 
-      // Always attempt to remove the item from the cart (it's okay if it's not there)
-      if (storedGuestSessionId) {
-        updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
-        setGuestCart(updatedCart);
-      } else if (token) {
-        updatedCart = await removeItemFromCart(token, null, productId);
-        setCart(updatedCart);
+        // Always attempt to remove the item from the cart (it's okay if it's not there)
+        if (storedGuestSessionId) {
+          updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
+          setGuestCart(updatedCart);
+        } else if (token) {
+          updatedCart = await removeItemFromCart(token, null, productId);
+          setCart(updatedCart);
+        }
       }
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
