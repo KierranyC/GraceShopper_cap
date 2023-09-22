@@ -85,7 +85,6 @@ export const Category = ({
         }
       } else if (storedGuestSessionId) {
         updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
-        // console.log(updatedCart)
         if (updatedCart) {
           setGuestCart(updatedCart);
           setProductQuantities((prevQuantities) => ({
@@ -110,14 +109,24 @@ export const Category = ({
       let updatedCart;
 
       if (storedGuestSessionId) {
-        updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
+        updatedCart = await updateCartItem(
+          null,
+          storedGuestSessionId,
+          productId,
+          updatedQuantity
+        );
         setGuestCart(updatedCart);
       } else if (token) {
-        updatedCart = await updateCartItem(token, null, productId, updatedQuantity); // Pass productId and updatedQuantity
+        updatedCart = await updateCartItem(
+          token,
+          null,
+          productId,
+          updatedQuantity
+        );
         setCart(updatedCart);
       }
     } catch (error) {
-      console.error('Error updating item quantity in cart:', error);
+      console.error("Error updating item quantity in cart:", error);
     }
   };
 
@@ -141,17 +150,17 @@ export const Category = ({
           updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
           setCart(updatedCart);
         }
-      }
+      } else {
 
-      // Always attempt to remove the item from the cart (it's okay if it's not there)
-      if (storedGuestSessionId) {
-        updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
-        setGuestCart(updatedCart);
-      } else if (token) {
-        updatedCart = await removeItemFromCart(token, null, productId);
-        setCart(updatedCart);
+        // Always attempt to remove the item from the cart (it's okay if it's not there)
+        if (storedGuestSessionId) {
+          updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
+          setGuestCart(updatedCart);
+        } else if (token) {
+          updatedCart = await removeItemFromCart(token, null, productId);
+          setCart(updatedCart);
+        }
       }
-
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
     }

@@ -205,7 +205,15 @@ export const App = () => {
           <Route
             path={`/Product/:productId`}
             element={
-              <Product productId={productId} setProductId={setProductId} />
+              <Product
+                productId={productId}
+                setProductId={setProductId}
+                productQuantities={productQuantities}
+                setProductQuantities={setProductQuantities}
+                setGuestCart={setGuestCart}
+                storedGuestSessionId={storedGuestSessionId}
+                token={token}
+              />
             }
           ></Route>
 
