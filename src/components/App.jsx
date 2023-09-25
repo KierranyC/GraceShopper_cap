@@ -322,6 +322,8 @@ export const App = () => {
                 isAdmin={isAdmin}
                 productQuantities={productQuantities}
                 setProductQuantities={setProductQuantities}
+                productId={productId}
+                setProductId={setProductId}
               />}
           ></Route>
           <Route

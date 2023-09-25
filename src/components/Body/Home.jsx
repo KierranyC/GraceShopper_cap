@@ -40,7 +40,6 @@ export const Home = ({
   }, []);
 
   useEffect(() => {
-    console.log("hello")
   }, [username])
 
   // const handleSearch = async (category, search) => {

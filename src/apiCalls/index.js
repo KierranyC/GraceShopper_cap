@@ -34,6 +34,7 @@ export const fetchFeaturedProducts = async () => {
 
 // GET - view a single product
 export const fetchProduct = async (productId) => {
+  console.log('FETCH PRODUCT API CALL PRODUCTID:', productId)
   try {
     const response = await fetch(`${BASE_URL}/products/${productId}`, {
       method: "GET",
@@ -42,22 +43,11 @@ export const fetchProduct = async (productId) => {
       },
     });
 
-    if (response.status === 404) {
-      return {
-        error: "Product not found",
-        message: `Product with ID ${productId} does not exist`,
-      };
-    }
-
     const result = await response.json();
-    console.log(result);
+    console.log('FETCH PRODUCT API CALL RESULT:', result);
     return result;
   } catch (error) {
-    console.error("Error fetching product:", error);
-    return {
-      error: "Internal server error",
-      message: "An error occurred while fetching the product",
-    };
+    console.error(error);
   }
 };
 

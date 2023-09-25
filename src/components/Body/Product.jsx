@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
 export const Product = ({
+  setProductId,
   productId,
   productQuantities,
   setProductQuantities,
@@ -21,15 +22,10 @@ export const Product = ({
   useEffect(() => {
     async function getProduct() {
       try {
-        console.log(productId);
+        console.log('PRODUCT COMPONENT PRODUCTID:', productId);
         const data = await fetchProduct(productId);
-        console.log(data);
-
-        if (data && typeof data === "object") {
-          setProduct(data);
-        } else {
-          console.error("Invalid API response format");
-        }
+        console.log('PRODUCT COMPONENT PRODUCT DATA:', data);
+        setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -153,7 +149,7 @@ export const Product = ({
         <Card className="product-information">
           <Card.Text>Price: {product.price}</Card.Text>
           <Card.Text>
-            {product.quantity ? <p>In Stock</p> : <p>Out of Stock</p>}
+            {/* {product.quantity ? <p>In Stock</p> : <p>Out of Stock</p>} */}
           </Card.Text>
           <Card.Text>Category: {product.category}</Card.Text>
           <Card.Text>{product.description}</Card.Text>

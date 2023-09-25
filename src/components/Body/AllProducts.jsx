@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   deleteProduct,
   removeItemFromCart,
@@ -11,6 +11,7 @@ import {
   updateCartItem,
 } from "../../apiCalls";
 import { Carousel } from "react-bootstrap/esm";
+import { Product } from "./Product";
 
 // This component displays all products in the database. I thought about adding filters/categories to this component, but found it to be more fitting in the Header via searching with a category or clicking on a specific category(subnav work in progress) and updating the list of products to show only those matching that category
 export const Products = ({
@@ -37,7 +38,7 @@ export const Products = ({
   const [filteredProducts, setFilteredProducts] = useState([]);
   // const [productQuantities, setProductQuantities] = useState({});
   // const [inCart, setInCart] = useState(false);
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const storedQuantities = localStorage.getItem("productQuantities");
@@ -77,7 +78,7 @@ export const Products = ({
   // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
   const handleClick = (productId) => {
     setProductId(productId);
-    console.log(productId);
+    console.log('PRODUCTID HANDLECLICK ALLPRO:', productId);
   };
 
   // A function for filtering based on a string search. Converts the search to lowercase and filters products for matching titles or descriptions in products
