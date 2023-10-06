@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ButtonGroup, Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
-import { fetchProduct } from "../../apiCalls/index.js";
+import { fetchProduct, addItemToCart, updateCartItem, removeItemFromCart } from "../../apiCalls/index.js";
 import { Button } from "react-bootstrap";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
@@ -37,6 +37,13 @@ export const Product = ({
     const storedQuantities = localStorage.getItem("productQuantities");
     if (storedQuantities) {
       setProductQuantities(JSON.parse(storedQuantities));
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedProductId = localStorage.getItem("productId");
+    if (storedProductId) {
+      setProductId(storedProductId);
     }
   }, []);
 

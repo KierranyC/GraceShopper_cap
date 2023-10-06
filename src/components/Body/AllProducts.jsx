@@ -70,6 +70,7 @@ export const Products = ({
     );
   }, [productQuantities]);
 
+
   // Filters products depending on the searchTerm
   useEffect(() => {
     filter();
@@ -78,7 +79,7 @@ export const Products = ({
   // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
   const handleClick = (productId) => {
     setProductId(productId);
-    console.log('PRODUCTID HANDLECLICK ALLPRO:', productId);
+    localStorage.setItem('productId', productId)
   };
 
   // A function for filtering based on a string search. Converts the search to lowercase and filters products for matching titles or descriptions in products

@@ -64,9 +64,9 @@ export const Category = ({
   }, [productQuantities]);
 
   // When clicking a product, sets the productId to the ID of the product clicked and logs that ID
-  const handleClick = (proId) => {
-    setProductId(proId);
-    console.log('PRODUCTID HANDLECLICK CATEGORY:', productId);
+  const handleClick = (productId) => {
+    setProductId(productId);
+    localStorage.setItem('productId', productId)
   };
 
   const handleAddItemToCart = async (productId) => {

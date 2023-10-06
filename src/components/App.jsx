@@ -128,15 +128,33 @@ export const App = () => {
 
   useEffect(() => {
     console.log("category:", category);
+    console.log("productId:", productId)
     localStorage.setItem("selectedCategory", category);
-  }, [category]);
+    localStorage.setItem("productId", productId);
+  }, [category, productId]);
+
+  // useEffect(() => {
+  //   console.log("productId:", productId);
+  //   localStorage.setItem("productId", productId);
+  // }, [productId]);
 
   useEffect(() => {
     const storedCategory = localStorage.getItem("selectedCategory");
+    const storedProductId = localStorage.getItem("productId");
     if (storedCategory) {
       setCategory(storedCategory);
     }
+    if (storedProductId) {
+      setProductId(storedProductId);
+    }
   }, []);
+
+  // useEffect(() => {
+  //   const storedProductId = localStorage.getItem("productId");
+  //   if (storedProductId) {
+  //     setProductId(storedProductId);
+  //   }
+  // }, []);
 
   const setAndStoreToken = (token) => {
     localStorage.setItem("token", token);
