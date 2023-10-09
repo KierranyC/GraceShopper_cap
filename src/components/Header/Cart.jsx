@@ -144,7 +144,7 @@ export const Cart = ({
 
   const handleCheckout = () => {
     if (token) {
-      navigate('/checkout')
+      navigate('/checkout', { state: { cart } })
     } else {
       navigate('/register')
     }

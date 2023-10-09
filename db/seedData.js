@@ -23,6 +23,8 @@ export async function createTables() {
         title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
+        "stripeProductId" TEXT NOT NULL,
+        "stripePriceId" TEXT NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR(255),
         photo VARCHAR(255),
@@ -200,6 +202,8 @@ export async function createInitialProducts() {
         description:
           "Premium moroccan argan oil that brings shine back to dull hair!",
         price: 24,
+        stripeProductId: 'prod_On2hAOYxzJ9a6Q',
+        stripePriceId: 'price_1NzSc8IBy4kJpJhveHlc4ifh',
         quantity: 5000,
         category: "Moisturizing Oils",
         photo:
@@ -210,6 +214,8 @@ export async function createInitialProducts() {
         title: "Coconut and Tea Tree Oil",
         description: "Premium scalp oil!",
         price: 24,
+        stripeProductId: 'prod_On2h26or4CNXZq',
+        stripePriceId: 'price_1NzScTIBy4kJpJhvmKPqrze3',
         quantity: 5000,
         category: "Scalp Oils",
         photo:
@@ -219,6 +225,8 @@ export async function createInitialProducts() {
         title: "Vegan and Non-GMO Oil",
         description: "Premium vegan and non-GMO oil!",
         price: 24,
+        stripeProductId: 'prod_On2Vbbz29Qgt8x',
+        stripePriceId: 'price_1NzSQMIBy4kJpJhvjvXoMo6O',
         quantity: 5000,
         category: "Vegan Oils",
         photo:
@@ -229,6 +237,8 @@ export async function createInitialProducts() {
         description:
           "Revitalize and strengthen your hair with our silky smooth shampoo.",
         price: 12,
+        stripeProductId: 'prod_On2QIqZFMi2DUJ',
+        stripePriceId: 'price_1NzSLZIBy4kJpJhvblqJOb2Z',
         quantity: 2500,
         category: "Shampoo",
         photo:
@@ -239,6 +249,8 @@ export async function createInitialProducts() {
         description:
           "Deeply hydrate and nourish your hair with our premium conditioner.",
         price: 14,
+        stripeProductId: 'prod_On2iyfioihDL0g',
+        stripePriceId: 'price_1NzScvIBy4kJpJhvIxA2KVUw',
         quantity: 2000,
         category: "Conditioner",
         photo:
@@ -250,6 +262,8 @@ export async function createInitialProducts() {
         description:
           "Define and enhance your natural curls with our specialized cream.",
         price: 18,
+        stripeProductId: 'prod_On2iweexkNBLnd',
+        stripePriceId: 'price_1NzSdGIBy4kJpJhvtpYHPfXU',
         quantity: 1800,
         category: "Styling Products",
         photo:
@@ -260,6 +274,8 @@ export async function createInitialProducts() {
         description:
           "Shield your hair from heat damage with our effective heat protectant spray.",
         price: 16,
+        stripeProductId: 'prod_On2i4vNQSAE5Y5',
+        stripePriceId: 'price_1NzSdWIBy4kJpJhv1dqQsm2X',
         quantity: 2200,
         category: "Styling Products",
         photo:
@@ -270,6 +286,8 @@ export async function createInitialProducts() {
         description:
           "Extend the life of your hair color with our color care shampoo.",
         price: 13,
+        stripeProductId: 'prod_On2jOFERJkaK69',
+        stripePriceId: 'price_1NzSdmIBy4kJpJhvTBIGIZRR',
         quantity: 2100,
         category: "Shampoo",
         photo:
@@ -280,6 +298,8 @@ export async function createInitialProducts() {
         description:
           "Repair and restore damaged hair with our rejuvenating hair mask.",
         price: 20,
+        stripeProductId: 'prod_On2ju7tWu7jtYD',
+        stripePriceId: 'price_1NzSe9IBy4kJpJhvDgNBIeX0',
         quantity: 1700,
         category: "Hair Masks",
         photo:

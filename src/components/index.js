@@ -13,6 +13,8 @@ export { Search } from "./Header/Search.jsx";
 export { Wishlist } from "./Header/Wishlist.jsx";
 export { Checkout } from './Header/Checkout.jsx';
 export { AdminDashboard } from './Header/AdminInfo/Dashboard.jsx'
+export { Return } from './Header/Return.jsx'
+
 // Export Body components
 export { Products } from "./Body/AllProducts.jsx";
 export { Contacts } from "./Body/Contacts.jsx";

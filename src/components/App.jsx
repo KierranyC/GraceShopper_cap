@@ -20,8 +20,8 @@ import {
   AccountForm,
   Category,
   Checkout,
-  AdminDashboard
-  // Sidebar,
+  AdminDashboard,
+  Return,
 } from "../components/index";
 
 import { fetchUserCart, fetchGuestCart, createNewGuest } from "../apiCalls";
@@ -354,6 +354,7 @@ export const App = () => {
             }
           >
           </Route>
+          <Route path='/return' element={<Return />}></Route>
           <Route
             path={'/AdminDashboard'}
             element={

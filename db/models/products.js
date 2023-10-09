@@ -6,6 +6,8 @@ async function createProduct({
   title,
   description,
   price,
+  stripeProductId,
+  stripePriceId,
   quantity,
   category,
   photo,
@@ -15,11 +17,11 @@ async function createProduct({
       rows: [product],
     } = await client.query(
       `
-  INSERT INTO products (title, description, price, quantity, category, photo)
-  VALUES ($1, $2, $3, $4, $5, $6)
+  INSERT INTO products (title, description, price, "stripeProductId", "stripePriceId", quantity, category, photo)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
   RETURNING *;
   `,
-      [title, description, price, quantity, category, photo]
+      [title, description, price, stripeProductId, stripePriceId, quantity, category, photo]
     );
     return product;
   } catch (error) {
@@ -104,7 +106,7 @@ async function getProductsBySearch(searchTerm) {
       WHERE title 
       `
     );
-  } catch (error) {}
+  } catch (error) { }
 }
 
 async function updateProduct({ id, ...fields }) {

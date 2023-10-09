@@ -1,3 +1,5 @@
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig();
 import express, { response } from "express";
 import {
   createUser,
@@ -165,6 +167,7 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
+  console.log('REQUEST BODY:', req.body)
   const specialAdminPassword = '87654321';
 
   try {
@@ -208,6 +211,7 @@ router.post("/register", async (req, res, next) => {
         })
       } else {
         const user = await createUser({ email, username, password })
+        console.log('NEW USER:', user)
         const token = jwt.sign({
           id: user.id,
           username
@@ -226,8 +230,8 @@ router.post("/register", async (req, res, next) => {
         })
       }
     }
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch (error) {
+    next(error);
   }
 });
 

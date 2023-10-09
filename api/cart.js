@@ -12,8 +12,9 @@ import {
 } from "../db/models/cart.js";
 import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
-const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
+const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc4QtWkS3soLW5bZnTWJddjGZpx9q2I4bg9UjaUKGzG8uK00PsNGohtJ');
 const router = express.Router();
+const YOUR_DOMAIN = 'http://localhost:4000';
 
 router.get('/', requireAuthentication, async (req, res, next) => {
   console.log('GET CART ROUTE:', req.user)
@@ -197,33 +198,70 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
   }
 });
 
-router.post('/checkout', requireAuthentication, async (req, res) => {
-  console.log('REQ USER AT CHECKOUT:', req.user)
-  const { cart, paymentMethod } = req.body;
-  console.log('CART:', cart)
-  console.log('PAYMENT METHOD:', paymentMethod)
+router.post('/create-checkout-session', requireAuthentication, async (req, res) => {
+  const { cart } = req.body;
+  console.log('CART CHECKOUT ROUTE:', cart)
   try {
-    const cost = cart.reduce(
-      (total, product) => {
-        const productSubtotal = product.productInfo.price * product.quantity;
-        return total + productSubtotal;
-      }, 0);
+    const lineItems = cart.map((item) => ({
+      price: item.stripePriceId, // Replace with the actual Stripe Price ID for this item
+      quantity: item.quantity,
+      // Add the product field with the Product ID
+      product: item.stripeProductId, // Replace with the actual Stripe Product ID for this item
+    }));
 
-    const costInCents = cost * 100;
+    const session = await stripe.checkout.sessions.create({
+      line_items: lineItems, // Use the constructed line_items array
+      mode: 'payment',
+      automatic_tax: { enabled: true },
+    });
 
-    console.log('CART COST:', cost)
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: costInCents,
-      currency: "usd",
-      payment_method_types: ['card']
-    })
-
-    console.log('STRIPE PAYMENT INTENT:', paymentIntent)
-    res.send({ clientSecret: paymentIntent.client_secret })
+    res.send({ clientSecret: session.client_secret });
   } catch (error) {
-    console.error('STRIPE BACKEND ERROR:', error)
+    console.error('Error creating checkout session:', error);
+    res.status(500).send({ error: 'Failed to create checkout session' });
   }
-})
+});
+
+
+router.get('/session-status', async (req, res) => {
+  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+
+  res.send({
+    status: session.status,
+    customer_email: session.customer_details.email
+  });
+});
+
+
+// router.post('/checkout', requireAuthentication, async (req, res) => {
+//   console.log('REQ USER AT CHECKOUT:', req.user)
+//   const { cart, paymentMethod } = req.body;
+//   console.log('CART:', cart)
+//   console.log('PAYMENT METHOD:', paymentMethod)
+//   try {
+//     const cost = cart.reduce(
+//       (total, product) => {
+//         const productSubtotal = product.productInfo.price * product.quantity;
+//         return total + productSubtotal;
+//       }, 0);
+
+//     const costInCents = cost * 100;
+
+//     console.log('CART COST:', cost)
+//     const paymentIntent = await stripe.paymentIntents.create({
+//       amount: costInCents,
+//       currency: "usd",
+//       payment_method_types: ['card']
+//     })
+
+//     console.log('STRIPE PAYMENT INTENT:', paymentIntent)
+//     res.send({ clientSecret: paymentIntent.client_secret })
+//   } catch (error) {
+//     console.error('STRIPE BACKEND ERROR:', error)
+//   }
+// })
+
+
 
 
 export default router;
