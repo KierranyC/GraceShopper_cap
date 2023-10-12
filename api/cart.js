@@ -201,27 +201,27 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
 
 
 router.post("/checkout-session", async (req, res) => {
-  const { cart } = req.body; // Get the cart items from the request body
-
+  const { cartItems } = req.body; // Get the cart items from the request body
+  console.log('CART CHECKOUT ROUTE:', cartItems)
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
-      cart: JSON.stringify(cart)
+      cart: JSON.stringify(cartItems)
     }
   })
 
-  const line_items = cart.map((item) => {
+  const line_items = cartItems.map((item) => {
     return {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.title,
-          description: item.description,
+          name: item.productInfo.title,
+          description: item.productInfo.description,
           metadata: {
-            id: item.id,
+            id: item.id
           },
         },
-        unit_amount: item.price * 100,
+        unit_amount: item.productInfo.price * 100,
       },
       quantity: item.quantity
     };

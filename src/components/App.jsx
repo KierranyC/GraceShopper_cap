@@ -61,33 +61,33 @@ export const App = () => {
   const [clientSecret, setClientSecret] = useState(null);
 
 
-  const fetchClientSecret = async () => {
-    try {
-      // Replace with your API endpoint to create a PaymentIntent
-      const response = await fetch("http://localhost:4000/api/cart/create-payment-intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items: cart }), // Include your cart items
-      });
+  // const fetchClientSecret = async () => {
+  //   try {
+  //     // Replace with your API endpoint to create a PaymentIntent
+  //     const response = await fetch("http://localhost:4000/api/cart/create-payment-intent", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ items: cart }), // Include your cart items
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('CLIENT SECRET:', data.clientSecret)
-        setClientSecret(data.clientSecret);
-      } else {
-        // Handle error
-        console.error("Error fetching clientSecret");
-      }
-    } catch (error) {
-      console.error("Error fetching clientSecret:", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log('CLIENT SECRET:', data.clientSecret)
+  //       setClientSecret(data.clientSecret);
+  //     } else {
+  //       // Handle error
+  //       console.error("Error fetching clientSecret");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching clientSecret:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchClientSecret();
-  }, [cart]); // Fetch clientSecret whenever the cart changes
+  // useEffect(() => {
+  //   fetchClientSecret();
+  // }, [cart]); // Fetch clientSecret whenever the cart changes
 
 
 
