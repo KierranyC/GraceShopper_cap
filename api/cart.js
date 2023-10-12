@@ -246,7 +246,7 @@ router.post("/checkout-session", async (req, res) => {
 
 let endpointSecret;
 
-endpointSecret = "whsec_12e967dd94414e611ee8554c62628d04d17ec2a630b04e4d132cbdbd4ea29162";
+endpointSecret = process.env.WEBHOOK_SECRET;
 
 router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
 
