@@ -22,6 +22,7 @@ import {
   Checkout,
   AdminDashboard,
   Return,
+  CheckoutSuccess,
 } from "../components/index";
 
 import { fetchUserCart, fetchGuestCart, createNewGuest } from "../apiCalls";
@@ -278,6 +279,7 @@ export const App = () => {
               setGuestCart={setGuestCart}
               productQuantities={productQuantities}
               setProductQuantities={setProductQuantities}
+              userId={userId}
             />}
           ></Route>
 
@@ -387,6 +389,7 @@ export const App = () => {
           >
           </Route>
           <Route path='/return' element={<Return />}></Route>
+          <Route path='/checkout-success' element={<CheckoutSuccess />}></Route>
           <Route
             path={'/AdminDashboard'}
             element={

@@ -200,65 +200,96 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
 });
 
 
-router.post("/create-payment-intent", async (req, res) => {
+router.post("/checkout-session", async (req, res) => {
   const { cart } = req.body; // Get the cart items from the request body
 
-  // Calculate the total order amount based on the items
-  const calculateOrderAmount = cart.reduce(
-    (total, product) => {
-      const productSubtotal = product.productInfo.price * product.quantity;
-      return total + productSubtotal;
-    }, 0);
+  const customer = await stripe.customers.create({
+    metadata: {
+      userId: req.body.userId,
+      cart: JSON.stringify(cart)
+    }
+  })
 
-  const amount = calculateOrderAmount(items);
-
-  // Create a PaymentIntent
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
+  const line_items = cart.map((item) => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.title,
+          description: item.description,
+          metadata: {
+            id: item.id,
+          },
+        },
+        unit_amount: item.price * 100,
+      },
+      quantity: item.quantity
+    };
   });
 
-  res.send({
-    clientSecret: paymentIntent.client_secret,
+  const session = await stripe.checkout.sessions.create({
+    customer: customer.id,
+    line_items,
+    mode: "payment",
+    success_url: `${YOUR_DOMAIN}/checkout-success`,
+    cancel_url: `${YOUR_DOMAIN}/cart`
   });
+
+  res.send({ url: session.url })
 });
 
+// Stripe Webhook
 
+// This is your Stripe CLI webhook secret for testing your endpoint locally.
 
+// To listen, type stripe listen --forward-to localhost:4000/api/cart/webhook in the command line
 
+let endpointSecret;
 
-// router.post('/checkout', requireAuthentication, async (req, res) => {
-//   console.log('REQ USER AT CHECKOUT:', req.user)
-//   const { cart, paymentMethod } = req.body;
-//   console.log('CART:', cart)
-//   console.log('PAYMENT METHOD:', paymentMethod)
-//   try {
-// const cost = cart.reduce(
-//   (total, product) => {
-//     const productSubtotal = product.productInfo.price * product.quantity;
-//     return total + productSubtotal;
-//   }, 0);
+endpointSecret = "whsec_12e967dd94414e611ee8554c62628d04d17ec2a630b04e4d132cbdbd4ea29162";
 
-//     const costInCents = cost * 100;
+router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
 
-//     console.log('CART COST:', cost)
-//     const paymentIntent = await stripe.paymentIntents.create({
-//       amount: costInCents,
-//       currency: "usd",
-//       payment_method_types: ['card']
-//     })
+  // Verifies that these events are coming from Stripe
 
-//     console.log('STRIPE PAYMENT INTENT:', paymentIntent)
-//     res.send({ clientSecret: paymentIntent.client_secret })
-//   } catch (error) {
-//     console.error('STRIPE BACKEND ERROR:', error)
-//   }
-// })
+  const sig = request.headers['stripe-signature'];
 
+  let data;
+  let eventType;
 
+  if (endpointSecret) {
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+      console.log('WEBHOOK VERIFIED.')
+    } catch (err) {
+      console.log(`Webhook Error: ${err.message}`)
+      response.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    data = event.data.object;
+    eventType = event.type;
+  } else {
+    data = request.body.data.object;
+    eventType = request.body.type;
+  }
+
+  // Handle the event
+  if (eventType === "checkout.session.completed") {
+    stripe.customers.retrieve(data.customer).then(
+      (customer) => {
+        console.log(customer)
+        console.log("DATA:", data)
+      }
+    ).catch(err => console.log(err.message))
+  };
+
+  // Return a 200 response to acknowledge receipt of the event
+  response.send().end();
+});
 
 
 export default router;

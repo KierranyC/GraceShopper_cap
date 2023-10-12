@@ -6,7 +6,7 @@ import {
   updateCartItem,
 } from "../../apiCalls";
 import { Navigate, useNavigate } from "react-router";
-
+import { PayButton } from '../Body/PayButton.jsx'
 
 export const Cart = ({
   inCart,
@@ -19,7 +19,8 @@ export const Cart = ({
   setGuestCart,
   storedGuestSessionId,
   productQuantities,
-  setProductQuantities
+  setProductQuantities,
+  userId
 }) => {
   const [totalCost, setTotalCost] = useState(0);
   const [guestTotalCost, setGuestTotalCost] = useState(0);
@@ -234,7 +235,8 @@ export const Cart = ({
         guestCart.length > 0 && (
           <h1>Total: ${guestTotalCost}</h1>
         )}
-      <Button variant="primary" onClick={(handleCheckout)}>Checkout</Button>
+      {/* <Button variant="primary" onClick={(handleCheckout)}>Checkout</Button> */}
+      <PayButton cartItems={cart} userId={userId} />
     </div>
   );
 };

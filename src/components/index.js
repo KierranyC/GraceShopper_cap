@@ -11,9 +11,10 @@ export { Orders } from "./Header/Orders.jsx";
 export { Register } from "./Header/Register.jsx";
 export { Search } from "./Header/Search.jsx";
 export { Wishlist } from "./Header/Wishlist.jsx";
-export { Checkout } from './Header/Checkout.jsx';
+export { Checkout } from './Body/Checkout.jsx';
 export { AdminDashboard } from './Header/AdminInfo/Dashboard.jsx'
 export { Return } from './Header/Return.jsx'
+export { CheckoutSuccess } from './Body/CheckoutSuccess.jsx'
 
 // Export Body components
 export { Products } from "./Body/AllProducts.jsx";
