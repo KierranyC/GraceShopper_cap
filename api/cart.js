@@ -16,6 +16,7 @@ const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc
 const router = express.Router();
 const YOUR_DOMAIN = 'http://localhost:4000';
 
+
 router.get('/', requireAuthentication, async (req, res, next) => {
   console.log('GET CART ROUTE:', req.user)
   let userId;
@@ -198,39 +199,35 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
   }
 });
 
-router.post('/create-checkout-session', requireAuthentication, async (req, res) => {
-  const { cart } = req.body;
-  console.log('CART CHECKOUT ROUTE:', cart)
-  try {
-    const lineItems = cart.map((item) => ({
-      price: item.stripePriceId, // Replace with the actual Stripe Price ID for this item
-      quantity: item.quantity,
-      // Add the product field with the Product ID
-      product: item.stripeProductId, // Replace with the actual Stripe Product ID for this item
-    }));
 
-    const session = await stripe.checkout.sessions.create({
-      line_items: lineItems, // Use the constructed line_items array
-      mode: 'payment',
-      automatic_tax: { enabled: true },
-    });
+router.post("/create-payment-intent", async (req, res) => {
+  const { cart } = req.body; // Get the cart items from the request body
 
-    res.send({ clientSecret: session.client_secret });
-  } catch (error) {
-    console.error('Error creating checkout session:', error);
-    res.status(500).send({ error: 'Failed to create checkout session' });
-  }
-});
+  // Calculate the total order amount based on the items
+  const calculateOrderAmount = cart.reduce(
+    (total, product) => {
+      const productSubtotal = product.productInfo.price * product.quantity;
+      return total + productSubtotal;
+    }, 0);
 
+  const amount = calculateOrderAmount(items);
 
-router.get('/session-status', async (req, res) => {
-  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+  // Create a PaymentIntent
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount,
+    currency: "usd",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
 
   res.send({
-    status: session.status,
-    customer_email: session.customer_details.email
+    clientSecret: paymentIntent.client_secret,
   });
 });
+
+
+
 
 
 // router.post('/checkout', requireAuthentication, async (req, res) => {
@@ -239,11 +236,11 @@ router.get('/session-status', async (req, res) => {
 //   console.log('CART:', cart)
 //   console.log('PAYMENT METHOD:', paymentMethod)
 //   try {
-//     const cost = cart.reduce(
-//       (total, product) => {
-//         const productSubtotal = product.productInfo.price * product.quantity;
-//         return total + productSubtotal;
-//       }, 0);
+// const cost = cart.reduce(
+//   (total, product) => {
+//     const productSubtotal = product.productInfo.price * product.quantity;
+//     return total + productSubtotal;
+//   }, 0);
 
 //     const costInCents = cost * 100;
 

@@ -27,7 +27,7 @@ import {
 import { fetchUserCart, fetchGuestCart, createNewGuest } from "../apiCalls";
 
 import { loadStripe } from '@stripe/stripe-js'
-const stripePromise = loadStripe('pk_test_51NioUWB9h1tasC0ykIAyg7SJbGfRNzDb559q33iMjua0tFBflE1PxXUskslPBws3LAq6f91Ft28FbWV6ngJJszvF004IsSpnXR')
+const stripePromise = loadStripe('pk_live_51NyLPaIBy4kJpJhvJgIFMYvcqTWfctWpXRoeozfjY2NQDn2DIPwl9MxZDLfz2UzonMyIcPr4A4EYYwu4RhJDJHJ500jNN38Zch')
 
 // This is the Mother of all components. This is what will house all of the other components to render on screen.
 export const App = () => {
@@ -56,8 +56,39 @@ export const App = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [storedGuestSessionId, setStoredGuestSessionId] = useState("");
   const [isAdmin, setIsAdmin] = useState(false)
-  // const [inCart, setInCart] = useState(false);
   const [productQuantities, setProductQuantities] = useState({});
+  const [clientSecret, setClientSecret] = useState(null);
+
+
+  const fetchClientSecret = async () => {
+    try {
+      // Replace with your API endpoint to create a PaymentIntent
+      const response = await fetch("http://localhost:4000/api/cart/create-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: cart }), // Include your cart items
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('CLIENT SECRET:', data.clientSecret)
+        setClientSecret(data.clientSecret);
+      } else {
+        // Handle error
+        console.error("Error fetching clientSecret");
+      }
+    } catch (error) {
+      console.error("Error fetching clientSecret:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClientSecret();
+  }, [cart]); // Fetch clientSecret whenever the cart changes
+
+
 
   // Stores a token and username locally and sets a user to Logged in
   useEffect(() => {
@@ -168,7 +199,7 @@ export const App = () => {
 
   return (
     <BrowserRouter className="app-container">
-      <Elements stripe={stripePromise}>
+      <Elements clientSecret={clientSecret} stripe={stripePromise}>
         {/* Header for the App. This components is responsible for Navigation as well as managing user actions such as logging in/out, checking their cart or wishlist, or accessing the admin dashboard for Admins */}
         <Header
 
@@ -350,7 +381,8 @@ export const App = () => {
               <Checkout
                 cart={cart}
                 token={token}
-                setCart={setCart} />
+                setCart={setCart}
+                clientSecret={clientSecret} />
             }
           >
           </Route>
