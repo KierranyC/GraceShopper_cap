@@ -73,7 +73,7 @@ async function getUserCartItems(condition, values) {
 async function getProductInfo(productId) {
   try {
     const { rows } = await client.query(`
-      SELECT products.title, products.price
+      SELECT products.title, products.description, products.price, products.photo
       FROM products
       WHERE id = $1;
     `, [productId]);
