@@ -221,5 +221,6 @@ export {
   updateCartItemQuantity,
   removeFromCart,
   getUserCartItems,
-  updateGuestToUserCart
+  updateGuestToUserCart,
+  getProductInfo
 }

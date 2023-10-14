@@ -1,4 +1,6 @@
 import client from "../client.js";
+import { getProductInfo } from "./cart.js";
+
 async function createOrder({ userId, guestId, date, totalAmount, orderStatus }) {
   try {
     const {
