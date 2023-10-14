@@ -206,7 +206,7 @@ router.post("/checkout-session", async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
       userId: userId,
-      cart: JSON.stringify(cartItems)
+      cartItems: cartItems.toString()
     }
   })
 
@@ -247,54 +247,43 @@ router.post("/checkout-session", async (req, res) => {
 
 let endpointSecret;
 
-endpointSecret = process.env.WEBHOOK_SECRET;
+// endpointSecret = process.env.WEBHOOK_SECRET;
 
-router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
-  // console.log('REQUEST HEADERS:', request.headers)
-  // console.log('REQUEST BODY:', request.body)
-  // // Verifies that these events are coming from Stripe
-
-  // const sig = request.headers['stripe-signature'];
-  // console.log('STRIPE SIGNATURE', sig)
-  // const rawBody = request.body
-  // console.log('REQUEST BODY:', rawBody)
-  // let data;
-  // let eventType;
-
-  // if (endpointSecret) {
-  //   console.log('ENDPOINT SECRET:', endpointSecret)
-  //   let event;
-
-  //   try {
-  //     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  //     console.log('EVENT:', event)
-  //     console.log('WEBHOOK VERIFIED.')
-  //   } catch (err) {
-  //     console.log(`Webhook Error: ${err.message}`)
-  //     response.status(400).send(`Webhook Error: ${err.message}`);
-  //     return;
-  //   }
-
-  //   data = event.data.object;
-  //   eventType = event.type;
-  // } else {
-  //   data = request.body.data.object;
-  //   eventType = request.body.type;
-  // }
+router.post('/webhook', express.raw({ type: 'application/json' }), async (request, response) => {
+  console.log('REQUEST HEADERS:', request.headers)
+  console.log('REQUEST BODY:', request.body)
+  // Verifies that these events are coming from Stripe
 
   const sig = request.headers['stripe-signature'];
+  console.log('STRIPE SIGNATURE', sig)
+  const rawBody = JSON.stringify(request.body)
+  console.log('REQUEST BODY:', rawBody)
+  let data;
+  let eventType;
 
-  let event;
+  if (endpointSecret) {
+    console.log('ENDPOINT SECRET:', endpointSecret)
+    let event;
 
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  } catch (err) {
-    response.status(400).send(`Webhook Error: ${err.message}`);
-    return;
+    try {
+      event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+      console.log('EVENT:', event)
+      console.log('WEBHOOK VERIFIED.')
+    } catch (err) {
+      console.log(`Webhook Error: ${err.message}`)
+      response.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    data = event.data.object;
+    eventType = event.type;
+  } else {
+    data = request.body.data.object;
+    eventType = request.body.type;
   }
 
   // Handle the event
-  if (event.type === "checkout.session.completed") {
+  if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer).then(
       (customer) => {
         console.log(customer)
