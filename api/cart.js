@@ -287,6 +287,8 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
 
     const order = await createOrder({
       userId: customer.metadata.userId,
+      date: customer.created,
+      totalAmount
     })
   };
 

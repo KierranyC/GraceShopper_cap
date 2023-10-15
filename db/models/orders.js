@@ -1,17 +1,17 @@
 import client from "../client.js";
 import { getProductInfo } from "./cart.js";
 
-async function createOrder({ userId, guestId, date, totalAmount, orderStatus }) {
+async function createOrder({ userId, date, totalAmount, orderStatus }) {
   try {
     const {
       rows: [order],
     } = await client.query(
       `
-            INSERT INTO orders( "userId", "guestId", date, "totalAmount", "orderStatus" )
-            VALUES($1, $2, $3, $4, $5)
+            INSERT INTO orders( "userId", date, "totalAmount", "orderStatus" )
+            VALUES($1, $2, $3, $4)
             RETURNING *;
         `,
-      [userId, guestId, date, totalAmount, orderStatus]
+      [userId, date, totalAmount, orderStatus]
     );
 
     return order;
