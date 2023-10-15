@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 const { Button } = require("react-bootstrap");
 
 // This component renders all relevant information to a specific user. This should display their username, password(hidden) with the ability to change their password, past orders, wishlist(s), and their cart. I am unsure if I want payment methods to be on account or something else more secure
-export const Account = ({ username, setToken, token, userId, setUserId }) => {
+export const Account = ({ username, setToken, token, userId, setUserId, userOrders }) => {
   // UseStates for Account
-  const [userOrders, setUserOrders] = useState([]);
+  // const [userOrders, setUserOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
@@ -15,18 +15,18 @@ export const Account = ({ username, setToken, token, userId, setUserId }) => {
     navigate("/User/Edit");
   };
 
-  // Gets a users information once on startup
-  useEffect(() => {
-    async function getUserInfo() {
-      const token = localStorage.getItem("token");
-      const user = await fetchUserData(token);
-      setUserId(user.id);
-      const orders = await fetchUserOrders(user.username, token);
-      setUserOrders(orders);
-      console.log("my orders:", orders);
-    }
-    getUserInfo();
-  }, []);
+  // // Gets a users information once on startup
+  // useEffect(() => {
+  //   async function getUserInfo() {
+  //     const token = localStorage.getItem("token");
+  //     const user = await fetchUserData(token);
+  //     setUserId(user.id);
+  //     const orders = await fetchUserOrders(user.username, token);
+  //     setUserOrders(orders);
+  //     console.log("my orders:", orders);
+  //   }
+  //   getUserInfo();
+  // }, []);
 
   return (
     <div>

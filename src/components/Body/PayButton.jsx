@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 export const PayButton = ({ cartItems, userId }) => {
   console.log('CART PAYBUTTON:', cartItems)
+  console.log('USER ID PAYBUTTON:', userId)
   const handleCheckout = () => {
     // Define the request body
     const requestBody = JSON.stringify({

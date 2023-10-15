@@ -25,7 +25,7 @@ import {
   CheckoutSuccess,
 } from "../components/index";
 
-import { fetchUserCart, fetchGuestCart, createNewGuest } from "../apiCalls";
+import { fetchUserCart, fetchGuestCart, createNewGuest, fetchUserOrders, fetchUserData } from "../apiCalls";
 
 import { loadStripe } from '@stripe/stripe-js'
 const stripePromise = loadStripe('pk_live_51NyLPaIBy4kJpJhvJgIFMYvcqTWfctWpXRoeozfjY2NQDn2DIPwl9MxZDLfz2UzonMyIcPr4A4EYYwu4RhJDJHJ500jNN38Zch')
@@ -59,95 +59,64 @@ export const App = () => {
   const [isAdmin, setIsAdmin] = useState(false)
   const [productQuantities, setProductQuantities] = useState({});
   const [clientSecret, setClientSecret] = useState(null);
+  const [userOrders, setUserOrders] = useState([]);
 
-
-  // const fetchClientSecret = async () => {
-  //   try {
-  //     // Replace with your API endpoint to create a PaymentIntent
-  //     const response = await fetch("http://localhost:4000/api/cart/create-payment-intent", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ items: cart }), // Include your cart items
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log('CLIENT SECRET:', data.clientSecret)
-  //       setClientSecret(data.clientSecret);
-  //     } else {
-  //       // Handle error
-  //       console.error("Error fetching clientSecret");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching clientSecret:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchClientSecret();
-  // }, [cart]); // Fetch clientSecret whenever the cart changes
-
-
-
-  // Stores a token and username locally and sets a user to Logged in
   useEffect(() => {
     const storedIsAdmin = localStorage.getItem("isAdmin");
     if (storedIsAdmin === "true") {
       setIsAdmin(true);
     } else {
-      setIsAdmin(false)
+      setIsAdmin(false);
     }
     const storedToken = localStorage.getItem("token");
     const storedGuestSessionId = localStorage.getItem("guestSessionId");
-    // console.log('APP COMP STORED TOKEN:', storedToken)
+
     if (storedToken) {
-      console.log('IS ADMIN CHECK APP:', isAdmin)
+      console.log('IS ADMIN CHECK APP:', isAdmin);
       setToken(storedToken);
       setIsLoggedIn(true);
-      setStoredGuestSessionId('')
+      setStoredGuestSessionId('');
+
+      let userData;
       fetchUserCart(storedToken)
         .then((cartData) => {
           setCart(cartData);
           localStorage.setItem("cart", JSON.stringify(cartData));
+          return fetchUserData(storedToken);
+        })
+        .then((data) => {
+          userData = data;
+          return fetchUserOrders(userData.username, storedToken);
+        })
+        .then((orders) => {
+          setUserId(userData.id);
+          setUserOrders(orders);
+          console.log("User orders:", orders);
         })
         .catch((error) => {
-          console.error("Error fetching user cart:", error);
+          console.error("Error fetching user data and orders:", error);
         });
     } else if (storedGuestSessionId && !storedToken) {
       setStoredGuestSessionId(storedGuestSessionId);
       fetchGuestCart(storedGuestSessionId)
         .then((cartData) => {
-          // console.log('FETCHED GUEST CART FROM BACKEND:', cartData)
           if (cartData) {
             setGuestCart(cartData);
             localStorage.setItem("guestCart", JSON.stringify(cartData));
-            // console.log(guestCart)
           }
         })
         .catch((error) => {
           console.error('Error fetching guest cart:', error);
         });
     } else {
-      // if no user or guest is present, create new guest
       if (!token && !storedGuestSessionId) {
         createNewGuest()
           .then((newGuest) => {
-            // console.log('NEW GUEST RETURNED FROM BACKEND:', newGuest);
             setStoredGuestSessionId(newGuest.sessionId);
             localStorage.setItem('guestSessionId', newGuest.sessionId);
-            // fetchOrCreateGuestCart(newGuest.sessionId)
-            //   .then((cartData) => {
-            //     setGuestCart(cartData);
-            //     localStorage.setItem("guestCart", JSON.stringify(cartData));
-            //   })
-            //   .catch((error) => {
-            //     console.error('Error fetching guest cart:', error);
-            //   });
           })
           .catch((error) => {
-            console.error('Error creating new guest:', error);
+            console.error('Error creating a new guest:', error);
           });
       }
     }
@@ -157,6 +126,78 @@ export const App = () => {
       setUsername(storedUsername);
     }
   }, []);
+
+  // useEffect(() => {
+  //   const storedIsAdmin = localStorage.getItem("isAdmin");
+  //   if (storedIsAdmin === "true") {
+  //     setIsAdmin(true);
+  //   } else {
+  //     setIsAdmin(false);
+  //   }
+  //   const storedToken = localStorage.getItem("token");
+  //   const storedGuestSessionId = localStorage.getItem("guestSessionId");
+
+  //   if (storedToken) {
+  //     console.log('IS ADMIN CHECK APP:', isAdmin);
+  //     setToken(storedToken);
+  //     setIsLoggedIn(true);
+  //     setStoredGuestSessionId('');
+  //     fetchUserCart(storedToken)
+  //       .then((cartData) => {
+  //         setCart(cartData);
+  //         localStorage.setItem("cart", JSON.stringify(cartData));
+  //         return Promise.all([fetchUserData(storedToken), fetchUserOrders(storedToken)]);
+  //       })
+  //       .then(([userData, orders]) => {
+  //         setUserId(userData.id);
+  //         setUserOrders(orders);
+  //         console.log("User orders:", orders);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching user data and orders:", error);
+  //       });
+  //   } else if (storedGuestSessionId && !storedToken) {
+  //     setStoredGuestSessionId(storedGuestSessionId);
+  //     fetchGuestCart(storedGuestSessionId)
+  //       .then((cartData) => {
+  //         // console.log('FETCHED GUEST CART FROM BACKEND:', cartData)
+  //         if (cartData) {
+  //           setGuestCart(cartData);
+  //           localStorage.setItem("guestCart", JSON.stringify(cartData));
+  //           // console.log(guestCart)
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error fetching guest cart:', error);
+  //       });
+  //   } else {
+  //     // if no user or guest is present, create a new guest
+  //     if (!token && !storedGuestSessionId) {
+  //       createNewGuest()
+  //         .then((newGuest) => {
+  //           // console.log('NEW GUEST RETURNED FROM BACKEND:', newGuest);
+  //           setStoredGuestSessionId(newGuest.sessionId);
+  //           localStorage.setItem('guestSessionId', newGuest.sessionId);
+  //           // fetchOrCreateGuestCart(newGuest.sessionId)
+  //           //   .then((cartData) => {
+  //           //     setGuestCart(cartData);
+  //           //     localStorage.setItem("guestCart", JSON.stringify(cartData));
+  //           //   })
+  //           //   .catch((error) => {
+  //           //     console.error('Error fetching guest cart:', error);
+  //           //   });
+  //         })
+  //         .catch((error) => {
+  //           console.error('Error creating a new guest:', error);
+  //         });
+  //     }
+  //   }
+
+  //   const storedUsername = localStorage.getItem("username");
+  //   if (storedUsername) {
+  //     setUsername(storedUsername);
+  //   }
+  // }, []);
 
   useEffect(() => {
     console.log("category:", category);
@@ -296,6 +337,7 @@ export const App = () => {
                 token={token}
                 userId={userId}
                 setUserId={setUserId}
+                userOrders={userOrders}
               />
             }
           ></Route>

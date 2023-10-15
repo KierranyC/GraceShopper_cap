@@ -25,6 +25,7 @@ export const Cart = ({
   const [totalCost, setTotalCost] = useState(0);
   const [guestTotalCost, setGuestTotalCost] = useState(0);
   const navigate = useNavigate()
+  console.log('USER ID CART FRONT END:', userId)
   useEffect(() => {
     const storageKey = isLoggedIn ? "cart" : "guestCart";
     localStorage.setItem(

@@ -203,6 +203,7 @@ router.delete('/remove', requireAuthentication, async (req, res, next) => {
 router.post("/checkout-session", async (req, res) => {
   const { cartItems, userId } = req.body; // Get the cart items from the request body
   console.log('CART CHECKOUT ROUTE:', cartItems)
+  console.log('USER ID CHECKOUT ROUTE:', userId)
   const customer = await stripe.customers.create({
     metadata: {
       userId: userId,
@@ -232,8 +233,8 @@ router.post("/checkout-session", async (req, res) => {
     customer: customer.id,
     line_items,
     mode: "payment",
-    success_url: `${YOUR_DOMAIN}/checkout-success`,
-    cancel_url: `${YOUR_DOMAIN}/cart`
+    success_url: `http://localhost:3000/checkout-success`,
+    cancel_url: `http://localhost:3000/cart`
   });
 
   res.send({ url: session.url })
@@ -256,8 +257,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
 
   const sig = request.headers['stripe-signature'];
   console.log('STRIPE SIGNATURE', sig)
-  const rawBody = JSON.stringify(request.body)
-  console.log('REQUEST BODY:', rawBody)
   let data;
   let eventType;
 
@@ -284,12 +283,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
 
   // Handle the event
   if (eventType === "checkout.session.completed") {
-    stripe.customers.retrieve(data.customer).then(
-      (customer) => {
-        console.log(customer)
-        console.log("DATA:", data)
-      }
-    ).catch(err => console.log(err.message))
+    const customer = await stripe.customers.retrieve(data.customer)
+
+    const order = await createOrder({
+      userId: customer.metadata.userId,
+    })
   };
 
   // Return a 200 response to acknowledge receipt of the event
