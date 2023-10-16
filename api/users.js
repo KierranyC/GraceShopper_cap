@@ -77,8 +77,9 @@ router.get("/:username/orders", async (req, res, next) => {
   try {
     const bearerHeader = req.headers.authorization.split(' ')[1]
     const decoded = jwt.verify(bearerHeader, process.env.JWT_SECRET)
-
-    const orders = await getOrdersByUsername(decoded.username);
+    console.log(decoded)
+    const orders = await getOrdersByUsername({ username: decoded.username });
+    console.log('ORDERS!!!!!!', orders)
     if (orders) {
       res.send(orders);
     } else {
@@ -88,6 +89,7 @@ router.get("/:username/orders", async (req, res, next) => {
         message: `${username}'s orders is NOT found.`,
       });
     }
+    console.log('USER ORDERS ROUTE:', orders)
   } catch (error) {
     next(error);
   }

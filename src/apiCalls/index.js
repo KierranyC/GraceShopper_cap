@@ -136,6 +136,7 @@ export const fetchUserOrders = async (username, token) => {
       },
     });
     const result = await response.json();
+    console.log('USER ORDERS API CALL:', result)
     return result;
   } catch (err) {
     console.error(err);

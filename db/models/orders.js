@@ -21,13 +21,18 @@ async function createOrder({ userId, date, totalAmount, orderStatus }) {
 }
 
 async function createOrderItem({ orderId, productId, quantity, itemPrice }) {
+  console.log('ORDER ID:', orderId)
+  console.log('PRODUCT ID:', productId)
+  console.log('QUANTITY:', quantity)
+  console.log('ITEM PRICE:', itemPrice)
   try {
     const { rows: [orderItem] } = await client.query(`
-    INSERT INTO "orderItems"("orderId", "productId", quantity, "itemPrice") 
+    INSERT INTO "orderItems"("orderId", "productId", quantity, price) 
     VALUES ($1, $2, $3, $4)
     RETURNING *;
-    `[orderId, productId, quantity, itemPrice]);
+    `, [orderId, productId, quantity, itemPrice]);
 
+    console.log('ORDER ITEM IN DB:', orderItem)
     return orderItem;
   } catch (error) {
     console.error(error)
@@ -41,19 +46,17 @@ async function getOrderById(orderId) {
     } = await client.query(`
             SELECT *
             FROM orders
-            WHERE id=${orderId};
-        `);
+            WHERE id=$1;
+        `, [orderId]);
 
     const { rows: orderItems } = await client.query(`
     SELECT * 
     FROM "orderItems"
-    WHERE "orderId"=${orderId};
-    `)
+    WHERE "orderId"=$1;
+    `, [orderId])
 
-    order.items = orderItems.filter(item => {
-      item.orderId === order.id
-    })
-
+    order.items = orderItems
+    console.log('ORDER ITEMS:', order.items)
     return order;
   } catch (error) {
     console.error(error);
@@ -98,6 +101,7 @@ async function getOrdersByProductId({ productId }) {
 }
 
 async function getOrdersByUsername({ username }) {
+  console.log('GETORDERSBYUSERNAME USERNAME:', username)
   try {
     // const {
     //   rows: [users],
@@ -127,6 +131,7 @@ async function getOrdersByUsername({ username }) {
     const orders = await Promise.all(
       ids.map((order) => getOrderById(order.id)))
 
+    console.log('GETORDERSBYUSERNAME ORDERS:', orders)
     return orders;
   } catch (error) {
     console.error(error);

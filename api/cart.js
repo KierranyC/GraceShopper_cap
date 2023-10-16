@@ -208,7 +208,7 @@ router.post("/checkout-session", async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
       userId: userId,
-      cartItems: cartItems.toString()
+      cartItems: JSON.stringify(cartItems)
     }
   })
 
@@ -285,23 +285,31 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
   // Handle the event
   if (eventType === "checkout.session.completed") {
     const customer = await stripe.customers.retrieve(data.customer)
+    console.log('CUSTOMER METADATA:', customer.metadata)
     const order = await createOrder({
       userId: customer.metadata.userId,
       totalAmount: data.amount_total
     })
     console.log('RETRIEVED ORDER:', order)
 
-    const cartItems = customer.metadata.cartItems.toString()
+    const cartItems = JSON.parse(customer.metadata.cartItems)
     console.log('RETRIEVED ORDER ITEMS:', cartItems)
     for (const cartItem of cartItems) {
       await createOrderItem({
         orderId: order.id,
-        productId: cartItem.productInfo.id,
+        productId: cartItem.productId,
         quantity: cartItem.quantity,
-        itemPrice: cartItem.productInfo.price
+        itemPrice: parseFloat(parseInt(cartItem.productInfo.price))
       })
     }
   };
+
+  // if (eventType === "checkout.session.completed") {
+  //   const customer = await stripe.customers.retrieve(data.customer)
+
+  //   console.log('CUSTOMER:', customer)
+  //   console.log('DATA:', data)
+  // }
 
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();
