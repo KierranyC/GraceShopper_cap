@@ -12,6 +12,7 @@ import {
 } from "../db/models/cart.js";
 import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
+import { createOrderItem, createOrder } from '../db/models/orders.js';
 const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc4QtWkS3soLW5bZnTWJddjGZpx9q2I4bg9UjaUKGzG8uK00PsNGohtJ');
 const router = express.Router();
 const YOUR_DOMAIN = 'http://localhost:4000';
@@ -284,12 +285,22 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
   // Handle the event
   if (eventType === "checkout.session.completed") {
     const customer = await stripe.customers.retrieve(data.customer)
-
     const order = await createOrder({
       userId: customer.metadata.userId,
-      date: customer.created,
-      totalAmount
+      totalAmount: data.amount_total
     })
+    console.log('RETRIEVED ORDER:', order)
+
+    const cartItems = customer.metadata.cartItems.toString()
+    console.log('RETRIEVED ORDER ITEMS:', cartItems)
+    for (const cartItem of cartItems) {
+      await createOrderItem({
+        orderId: order.id,
+        productId: cartItem.productInfo.id,
+        quantity: cartItem.quantity,
+        itemPrice: cartItem.productInfo.price
+      })
+    }
   };
 
   // Return a 200 response to acknowledge receipt of the event
