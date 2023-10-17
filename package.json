@@ -59,7 +59,8 @@
     "react-stripe-checkout": "^2.6.3",
     "stripe": "^13.4.0",
     "tslib": "^2.6.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.4.8",

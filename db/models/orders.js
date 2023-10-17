@@ -53,9 +53,12 @@ async function getOrderById(orderId) {
     SELECT * 
     FROM "orderItems"
     WHERE "orderId"=$1;
-    `, [orderId])
+    `, [orderId]);
 
-    order.items = orderItems
+    order.items = await Promise.all(orderItems.map(async (item) => {
+      item.productInfo = await getProductInfo(item.productId);
+      return item;
+    }));
     console.log('ORDER ITEMS:', order.items)
     return order;
   } catch (error) {
@@ -103,24 +106,6 @@ async function getOrdersByProductId({ productId }) {
 async function getOrdersByUsername({ username }) {
   console.log('GETORDERSBYUSERNAME USERNAME:', username)
   try {
-    // const {
-    //   rows: [users],
-    // } = await client.query(
-    //   `
-    //   SELECT id 
-    //   FROM users
-    //   WHERE username = ${username};
-    //   `);
-
-    // const {
-    //   rows: [orders],
-    // } = await client.query(`
-    //   SELECT username
-    //   FROM users
-    //   JOIN orders ON users.id = orders."userId"
-    //   WHERE orders."userId"= ${users.id};
-    //   `);
-
     const { rows: ids } = await client.query(`
     SELECT orders.id
     FROM orders

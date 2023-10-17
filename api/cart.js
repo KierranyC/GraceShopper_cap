@@ -13,6 +13,7 @@ import {
 import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
 import { createOrderItem, createOrder } from '../db/models/orders.js';
+import zlib from 'zlib';
 const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc4QtWkS3soLW5bZnTWJddjGZpx9q2I4bg9UjaUKGzG8uK00PsNGohtJ');
 const router = express.Router();
 const YOUR_DOMAIN = 'http://localhost:4000';
@@ -208,9 +209,18 @@ router.post("/checkout-session", async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
       userId: userId,
-      cartItems: JSON.stringify(cartItems)
+      cartItems: cartItems.toString()
     }
   })
+
+  // const cartItemsJSON = JSON.stringify(cartItems);
+  // const compressedCartItems = zlib.deflateSync(cartItemsJSON).toString('base64');
+  // const customer = await stripe.customers.create({
+  //   metadata: {
+  //     userId: userId,
+  //     cartItems: compressedCartItems
+  //   }
+  // })
 
   const line_items = cartItems.map((item) => {
     return {
@@ -292,8 +302,13 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
     })
     console.log('RETRIEVED ORDER:', order)
 
-    const cartItems = JSON.parse(customer.metadata.cartItems)
+    // const compressedCartItems = customer.metadata.cartItems;
+    // const cartItemsJSON = zlib.inflateSync(Buffer.from(compressedCartItems, 'base64')).toString();
+
+    const retrievedCartItems = JSON.stringify(customer.metadata.cartItems)
+    const cartItems = JSON.parse(retrievedCartItems)
     console.log('RETRIEVED ORDER ITEMS:', cartItems)
+
     for (const cartItem of cartItems) {
       await createOrderItem({
         orderId: order.id,

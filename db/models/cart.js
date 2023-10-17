@@ -72,13 +72,14 @@ async function getUserCartItems(condition, values) {
 
 async function getProductInfo(productId) {
   try {
-    const { rows } = await client.query(`
+    const { rows: [productInfo] } = await client.query(`
       SELECT products.title, products.description, products.price, products.photo
       FROM products
       WHERE id = $1;
     `, [productId]);
 
-    return rows[0];
+    console.log('GET PRODUCT INFO FUNC:', productInfo)
+    return productInfo
   } catch (error) {
     console.error(error);
   }
