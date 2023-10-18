@@ -303,47 +303,46 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
   // Handle the event
   if (eventType === "checkout.session.completed") {
 
-    // // const customer = await stripe.customers.retrieve(data.customer)
-    // // console.log('CUSTOMER METADATA:', customer.metadata)
+    const items = await stripe.checkout.sessions.listLineItems(
+      data.id,
+      { expand: ["data.price.product"] }
+    )
 
-    // const session = data;
-    // console.log('SESSION METADATA:', session.metadata)
+    console.log("ITEMS:", items)
+  }
 
-    // const userId = session.metadata.userId;
-    // const cartItems = JSON.parse(session.metadata.cartItems);
-    // console.log('USER ID:', userId);
-    // console.log('CART ITEMS:', cartItems);
+  // // const customer = await stripe.customers.retrieve(data.customer)
+  // // console.log('CUSTOMER METADATA:', customer.metadata)
+
+  // const session = data;
+  // console.log('SESSION METADATA:', session.metadata)
+
+  // const userId = session.metadata.userId;
+  // const cartItems = JSON.parse(session.metadata.cartItems);
+  // console.log('USER ID:', userId);
+  // console.log('CART ITEMS:', cartItems);
 
 
 
-    // const order = await createOrder({
-    //   userId: userId,
-    //   totalAmount: session.amount_total / 100
-    // })
-    // console.log('CREATED ORDER:', order)
+  // const order = await createOrder({
+  //   userId: userId,
+  //   totalAmount: session.amount_total / 100
+  // })
+  // console.log('CREATED ORDER:', order)
 
-    // // const cartItems = JSON.parse(retrievedCartItems)
-    // // const cartItems = customer.metadata.cartItems
-    // // console.log('RETRIEVED ORDER ITEMS:', cartItems)
+  // // const cartItems = JSON.parse(retrievedCartItems)
+  // // const cartItems = customer.metadata.cartItems
+  // // console.log('RETRIEVED ORDER ITEMS:', cartItems)
 
-    // for (const cartItem of cartItems) {
-    //   await createOrderItem({
-    //     orderId: order.id,
-    //     productId: cartItem.productId,
-    //     quantity: cartItem.quantity,
-    //     itemPrice: parseFloat(parseInt(cartItem.productInfo.price))
-    //   })
-    // }
+  // for (const cartItem of cartItems) {
+  //   await createOrderItem({
+  //     orderId: order.id,
+  //     productId: cartItem.productId,
+  //     quantity: cartItem.quantity,
+  //     itemPrice: parseFloat(parseInt(cartItem.productInfo.price))
+  //   })
+  // }
 
-    const session = data;
-
-    const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
-    const charges = paymentIntent.charges.data;
-    const invoice = paymentIntent.invoice;
-    const lineItems = invoice.lines.data;
-    console.log('SESSION:', data)
-    console.log('LINE ITEMS:', lineItems)
-  };
 
   // if (eventType === "checkout.session.completed") {
   //   const customer = await stripe.customers.retrieve(data.customer)
