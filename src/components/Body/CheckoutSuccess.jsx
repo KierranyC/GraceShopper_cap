@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-export const CheckoutSuccess = () => {
+export const CheckoutSuccess = ({ setProductQuantities, productQuantities }) => {
+
+  useEffect(() => {
+    setProductQuantities({})
+    localStorage.setItem(
+      "productQuantities",
+      JSON.stringify(productQuantities)
+    );
+  }, []);
+
   return (
     <>
       <h2>Checkout Success!</h2>

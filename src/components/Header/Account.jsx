@@ -27,10 +27,11 @@ export const Account = ({ username, setToken, token, userId, setUserId, userOrde
             <Card.Body>
               <Card.Text>Order Summary:</Card.Text>
               {order.items.map((item) =>
-                <>
+                <div key={item.id} >
                   <Card.Text> {item.productInfo.title} </Card.Text>
-                  {/* <Card.Text> {item.productInfo.title} </Card.Text> */}
-                </>
+                  <Card.Text> {item.quantity} </Card.Text>
+                  <Card.Text> {item.productInfo.price} </Card.Text>
+                </div>
               )}
             </Card.Body>
           </Card>

@@ -119,7 +119,7 @@ export const fetchUserData = async (token) => {
     });
     const result = await response.json();
     delete result.password;
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -136,7 +136,7 @@ export const fetchUserOrders = async (username, token) => {
       },
     });
     const result = await response.json();
-    console.log('USER ORDERS API CALL:', result)
+    // console.log('USER ORDERS API CALL:', result)
     return result;
   } catch (err) {
     console.error(err);

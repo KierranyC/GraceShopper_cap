@@ -8,7 +8,8 @@ import {
   createGuestCart,
   createUserCart,
   getUserCartItems,
-  updateGuestToUserCart
+  updateGuestToUserCart,
+  clearUserCart
 } from "../db/models/cart.js";
 import { requireAuthentication } from './utils.js';
 import Stripe from "stripe";
@@ -20,7 +21,7 @@ const YOUR_DOMAIN = 'http://localhost:4000';
 
 
 router.get('/', requireAuthentication, async (req, res, next) => {
-  console.log('GET CART ROUTE:', req.user)
+  // console.log('GET CART ROUTE:', req.user)
   let userId;
 
   if (req.user.sessionId) {
@@ -31,7 +32,7 @@ router.get('/', requireAuthentication, async (req, res, next) => {
 
   try {
     const cart = await getUserCart(userId, req.user.sessionId)
-    console.log('UPDATED CART SETUP:', cart)
+    console.log('USER CART:', cart)
     res.send(cart)
   } catch (error) {
     next(error)
@@ -333,13 +334,9 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (reques
       })
     }
 
+    await clearUserCart({ userId: customer.metadata.userId })
 
-    // if (eventType === "checkout.session.completed") {
-    //   const customer = await stripe.customers.retrieve(data.customer)
 
-    //   console.log('CUSTOMER:', customer)
-    //   console.log('DATA:', data)
-    // }
   }
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();

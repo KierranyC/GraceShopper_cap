@@ -59,7 +59,7 @@ async function getOrderById(orderId) {
       item.productInfo = await getProductInfo(item.productId);
       return item;
     }));
-    console.log('ORDER ITEMS:', order.items)
+    // console.log('ORDER ITEMS:', order.items)
     return order;
   } catch (error) {
     console.error(error);
@@ -104,7 +104,7 @@ async function getOrdersByProductId({ productId }) {
 }
 
 async function getOrdersByUsername({ username }) {
-  console.log('GETORDERSBYUSERNAME USERNAME:', username)
+  // console.log('GETORDERSBYUSERNAME USERNAME:', username)
   try {
     const { rows: ids } = await client.query(`
     SELECT orders.id
@@ -116,7 +116,7 @@ async function getOrdersByUsername({ username }) {
     const orders = await Promise.all(
       ids.map((order) => getOrderById(order.id)))
 
-    console.log('GETORDERSBYUSERNAME ORDERS:', orders)
+    // console.log('GETORDERSBYUSERNAME ORDERS:', orders)
     return orders;
   } catch (error) {
     console.error(error);

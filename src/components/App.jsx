@@ -431,7 +431,11 @@ export const App = () => {
           >
           </Route>
           <Route path='/return' element={<Return />}></Route>
-          <Route path='/checkout-success' element={<CheckoutSuccess />}></Route>
+          <Route path='/checkout-success'
+            element={<CheckoutSuccess
+              productQuantities={productQuantities}
+              setProductQuantities={setProductQuantities}
+            />}></Route>
           <Route
             path={'/AdminDashboard'}
             element={

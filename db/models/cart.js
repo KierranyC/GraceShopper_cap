@@ -78,7 +78,7 @@ async function getProductInfo(productId) {
       WHERE id = $1;
     `, [productId]);
 
-    console.log('GET PRODUCT INFO FUNC:', productInfo)
+    // console.log('GET PRODUCT INFO FUNC:', productInfo)
     return productInfo
   } catch (error) {
     console.error(error);
@@ -212,6 +212,21 @@ async function updateGuestToUserCart(newUserId, guestId) {
   }
 }
 
+async function clearUserCart({ userId }) {
+  try {
+
+    await client.query(`
+    DELETE 
+    FROM "cartItems" 
+    WHERE "userId"=$1;
+    `, [userId]);
+
+
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 
 export {
   createGuestCart,
@@ -223,5 +238,6 @@ export {
   removeFromCart,
   getUserCartItems,
   updateGuestToUserCart,
-  getProductInfo
+  getProductInfo,
+  clearUserCart
 }
