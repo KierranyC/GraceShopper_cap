@@ -127,78 +127,6 @@ export const App = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const storedIsAdmin = localStorage.getItem("isAdmin");
-  //   if (storedIsAdmin === "true") {
-  //     setIsAdmin(true);
-  //   } else {
-  //     setIsAdmin(false);
-  //   }
-  //   const storedToken = localStorage.getItem("token");
-  //   const storedGuestSessionId = localStorage.getItem("guestSessionId");
-
-  //   if (storedToken) {
-  //     console.log('IS ADMIN CHECK APP:', isAdmin);
-  //     setToken(storedToken);
-  //     setIsLoggedIn(true);
-  //     setStoredGuestSessionId('');
-  //     fetchUserCart(storedToken)
-  //       .then((cartData) => {
-  //         setCart(cartData);
-  //         localStorage.setItem("cart", JSON.stringify(cartData));
-  //         return Promise.all([fetchUserData(storedToken), fetchUserOrders(storedToken)]);
-  //       })
-  //       .then(([userData, orders]) => {
-  //         setUserId(userData.id);
-  //         setUserOrders(orders);
-  //         console.log("User orders:", orders);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching user data and orders:", error);
-  //       });
-  //   } else if (storedGuestSessionId && !storedToken) {
-  //     setStoredGuestSessionId(storedGuestSessionId);
-  //     fetchGuestCart(storedGuestSessionId)
-  //       .then((cartData) => {
-  //         // console.log('FETCHED GUEST CART FROM BACKEND:', cartData)
-  //         if (cartData) {
-  //           setGuestCart(cartData);
-  //           localStorage.setItem("guestCart", JSON.stringify(cartData));
-  //           // console.log(guestCart)
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching guest cart:', error);
-  //       });
-  //   } else {
-  //     // if no user or guest is present, create a new guest
-  //     if (!token && !storedGuestSessionId) {
-  //       createNewGuest()
-  //         .then((newGuest) => {
-  //           // console.log('NEW GUEST RETURNED FROM BACKEND:', newGuest);
-  //           setStoredGuestSessionId(newGuest.sessionId);
-  //           localStorage.setItem('guestSessionId', newGuest.sessionId);
-  //           // fetchOrCreateGuestCart(newGuest.sessionId)
-  //           //   .then((cartData) => {
-  //           //     setGuestCart(cartData);
-  //           //     localStorage.setItem("guestCart", JSON.stringify(cartData));
-  //           //   })
-  //           //   .catch((error) => {
-  //           //     console.error('Error fetching guest cart:', error);
-  //           //   });
-  //         })
-  //         .catch((error) => {
-  //           console.error('Error creating a new guest:', error);
-  //         });
-  //     }
-  //   }
-
-  //   const storedUsername = localStorage.getItem("username");
-  //   if (storedUsername) {
-  //     setUsername(storedUsername);
-  //   }
-  // }, []);
-
   useEffect(() => {
     console.log("category:", category);
     console.log("productId:", productId)
@@ -206,10 +134,6 @@ export const App = () => {
     localStorage.setItem("productId", productId);
   }, [category, productId]);
 
-  // useEffect(() => {
-  //   console.log("productId:", productId);
-  //   localStorage.setItem("productId", productId);
-  // }, [productId]);
 
   useEffect(() => {
     const storedCategory = localStorage.getItem("selectedCategory");
@@ -222,12 +146,6 @@ export const App = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const storedProductId = localStorage.getItem("productId");
-  //   if (storedProductId) {
-  //     setProductId(storedProductId);
-  //   }
-  // }, []);
 
   const setAndStoreToken = (token) => {
     localStorage.setItem("token", token);
@@ -244,13 +162,14 @@ export const App = () => {
       <Elements clientSecret={clientSecret} stripe={stripePromise}>
         {/* Header for the App. This components is responsible for Navigation as well as managing user actions such as logging in/out, checking their cart or wishlist, or accessing the admin dashboard for Admins */}
         <Header
-
+          productQuantities={productQuantities}
+          setProductQuantities={setProductQuantities}
           token={token}
           isAdmin={isAdmin}
           setToken={setToken}
           setIsAdmin={setIsAdmin}
           username={username}
-
+          setUsername={setUsername}
           setIsLoggedIn={setIsLoggedIn}
 
           category={category}

@@ -274,7 +274,7 @@ export const Products = ({
                   Delete
                 </Button>
               )}
-              <Button>Add to Wishlist</Button>
+              {/* <Button>Add to Wishlist</Button> */}
             </Card.Body>
           </Col>
         ))}

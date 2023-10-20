@@ -152,6 +152,10 @@ export const Cart = ({
     }
   }
 
+  const guestRegister = () => {
+    navigate('/register')
+  }
+
   return (
     <div>
       {isLoggedIn ? (
@@ -237,7 +241,12 @@ export const Cart = ({
           <h1>Total: ${guestTotalCost}</h1>
         )}
       {/* <Button variant="primary" onClick={(handleCheckout)}>Checkout</Button> */}
-      <PayButton cartItems={cart} userId={userId} />
+      {isLoggedIn && cart.length > 0 && (
+        <PayButton cartItems={cart} userId={userId} />
+      )}
+      {!isLoggedIn && guestCart.length > 0 && (
+        <Button variant="primary" onClick={(guestRegister)}>Please register or log in to check out</Button>
+      )}
     </div>
   );
 };

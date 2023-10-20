@@ -14,7 +14,10 @@ export const Header = ({
   setIsLoggedIn,
   category,
   setCategory,
-  setIsAdmin
+  setIsAdmin,
+  setUsername,
+  setProductQuantities,
+  productQuantities
 }) => {
   // UseStates for Header
   const [newUser, setNewUser] = useState(true);
@@ -32,6 +35,12 @@ export const Header = ({
     localStorage.removeItem("username");
     setNewUser(true);
     navigate('/login')
+    setUsername('')
+    setProductQuantities({})
+    localStorage.setItem(
+      "productQuantities",
+      JSON.stringify({})
+    );
   };
 
   // A function that directs a user to the Login route
@@ -113,12 +122,12 @@ export const Header = ({
       <Navbar.Brand onClick={handleCart}>Cart</Navbar.Brand>
       {!newUser && isAdmin ? (
         <Nav>
-          
+
           <NavDropdown title={username} id="basic-nav-dropdown">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
-            <NavDropdown.Item onClick={handleWishList}>
+            {/* <NavDropdown.Item onClick={handleWishList}>
               Wishlist
-            </NavDropdown.Item>
+            </NavDropdown.Item> */}
             <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
             <NavDropdown.Divider />
@@ -131,10 +140,10 @@ export const Header = ({
         <Nav>
           <NavDropdown title={username} id="basic-nav-dropdown">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
-            <NavDropdown.Item onClick={handleWishList}>
+            {/* <NavDropdown.Item onClick={handleWishList}>
               Wishlist
-            </NavDropdown.Item>
-           
+            </NavDropdown.Item> */}
+
             <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" onClick={handleLogout}>
@@ -157,7 +166,7 @@ export const Header = ({
             <NavDropdown.Item href="/" onClick={handleRegister}>
               Register
             </NavDropdown.Item>
-           
+
           </NavDropdown>
         </Nav>
       )}

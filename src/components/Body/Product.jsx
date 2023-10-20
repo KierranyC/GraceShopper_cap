@@ -170,7 +170,7 @@ export const Product = ({
             ) : (
               <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
             )}
-            <Button>Add to Wishlist</Button>
+            {/* <Button>Add to Wishlist</Button> */}
           </ButtonGroup>
         </Card>
       </div>
