@@ -34,7 +34,7 @@ COPY . .
 FROM base
 
 # Copy build application
-COPY --from=build /app/public
+COPY --from=build /app /app/public
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
