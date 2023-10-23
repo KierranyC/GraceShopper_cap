@@ -21,7 +21,7 @@ COPY package-lock.json package.json /
 RUN npm ci --production
 
 # Copy application code
-COPY  ./public/index.html
+COPY  . ./
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
