@@ -20,21 +20,17 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python
 
 # Install node modules
-COPY package-lock.json package.json ./
+COPY --link package-lock.json package.json /
 RUN npm ci
 
-# Create the 'public' directory and copy its contents
-RUN mkdir -p public
-COPY public/ public/
-
 # Copy application code
-COPY . .
+COPY --link . .
 
 # Final stage for app image 
 FROM base
 
 # Copy build application
-COPY --from=build /app /app/public
+COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
