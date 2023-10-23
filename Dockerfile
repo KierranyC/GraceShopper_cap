@@ -23,5 +23,5 @@ COPY --link package-lock.json package.json ./
 COPY  . .
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
+EXPOSE 4000
 CMD [ "npm", "run", "start" ]
