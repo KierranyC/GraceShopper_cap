@@ -23,7 +23,7 @@ import {
   AdminDashboard,
   Return,
   CheckoutSuccess,
-} from "../components/index";
+} from "./index";
 
 import { fetchUserCart, fetchGuestCart, createNewGuest, fetchUserOrders, fetchUserData } from "../apiCalls";
 
