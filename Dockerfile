@@ -19,12 +19,14 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python
 
-# Install node modules
+# Copy node modules
 COPY --link package-lock.json package.json /
-RUN npm ci
 
 # Copy application code
 COPY --link . .
+
+# Install node_modules
+RUN npm ci
 
 # Final stage for app image 
 FROM base
