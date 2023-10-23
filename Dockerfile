@@ -23,6 +23,10 @@ RUN apt-get update -qq && \
 COPY package-lock.json package.json ./
 RUN npm ci
 
+# Create the 'public' directory and copy its contents
+RUN mkdir -p public
+COPY public/ public/
+
 # Copy application code
 COPY . .
 
