@@ -7,7 +7,7 @@ FROM node:${NODE_VERSION}-slim as base
 LABEL fly_launch_runtime="Node.js"
 
 # Node.js app lives here
-WORKDIR /app
+WORKDIR /
 
 # Set production environment
 ENV NODE_ENV="production"
@@ -34,7 +34,7 @@ COPY . .
 FROM base
 
 # Copy build application
-COPY --from=build /app /app
+COPY --from=build / /
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
