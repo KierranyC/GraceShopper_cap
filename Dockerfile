@@ -21,7 +21,7 @@ COPY --link package-lock.json package.json ./
 RUN npm install
 
 # Copy application code
-COPY  . .
+COPY  ./ /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
