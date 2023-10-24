@@ -38,4 +38,3 @@ COPY --from=build /app /app
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 4000
 CMD [ "npm", "run", "start:dev" ]
-```
