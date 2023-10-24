@@ -19,7 +19,7 @@ server.use(cors()); // Enable CORS first
 server.use(morgan("dev")); // Logging
 server.use(express.json()); // JSON parsing
 
-server.use("/static", express.static(path.join(__dirname, "./build"))); // Static files
+// server.use("/static", express.static(path.join(__dirname, "./build"))); // Static files
 
 // here's our API
 server.use("/api", apiRouter);
@@ -27,10 +27,10 @@ server.use("/api", apiRouter);
 // adminJs
 // server.use("admin", adminRouter)
 
-// by default serve up the react app if we don't recognize the route
-server.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "./build", "index.html"));
-});
+// // by default serve up the react app if we don't recognize the route
+// server.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, "./build", "index.html"));
+// });
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
