@@ -21,10 +21,10 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python
 
 # Copy node modules
-COPY --link package-lock.json package.json ./
+COPY --chown=0:0 package-lock.json package.json ./
 
 # Copy application code
-COPY --link . .
+COPY --chown=0:0 . .
 
 # Install node modules
 RUN npm ci
