@@ -171,7 +171,7 @@ router.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
   console.log('REQUEST BODY:', req.body)
   const specialAdminPassword = '87654321';
-
+  console.log('JWT SECRET:', process.env.JWT_SECRET)
   try {
     const _user = await getUserByUsername(username);
 
@@ -193,7 +193,6 @@ router.post("/register", async (req, res, next) => {
 
       if (isAdmin) {
         const user = await createUser({ email, username, password, isAdmin })
-        console.log('JWT SECRET:', process.env.JWT_SECRET)
         const token = jwt.sign({
           id: user.id,
           username,
