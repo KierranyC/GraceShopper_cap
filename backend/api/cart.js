@@ -17,7 +17,7 @@ import { createOrderItem, createOrder } from '../db/models/orders.js';
 import zlib from 'zlib';
 const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc4QtWkS3soLW5bZnTWJddjGZpx9q2I4bg9UjaUKGzG8uK00PsNGohtJ');
 const router = express.Router();
-const YOUR_DOMAIN = 'http://localhost:4000';
+const YOUR_DOMAIN = 'http://localhost:3000';
 
 
 router.get('/', requireAuthentication, async (req, res, next) => {
@@ -264,7 +264,7 @@ router.post("/checkout-session", async (req, res) => {
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
-// To listen, type stripe listen --forward-to localhost:4000/api/cart/webhook in the command line
+// To listen, type stripe listen --forward-to localhost:3000/api/cart/webhook in the command line
 
 let endpointSecret;
 

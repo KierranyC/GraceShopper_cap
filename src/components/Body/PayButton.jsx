@@ -21,7 +21,7 @@ export const PayButton = ({ cartItems, userId }) => {
     };
 
     // Make the fetch request
-    fetch(`http://localhost:4000/api/cart/checkout-session`, requestOptions)
+    fetch(`http://localhost:3000/api/cart/checkout-session`, requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
