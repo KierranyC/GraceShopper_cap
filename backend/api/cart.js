@@ -264,7 +264,7 @@ router.post("/checkout-session", async (req, res) => {
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
-// To listen, type stripe listen --forward-to localhost:3000/api/cart/webhook in the command line
+// To listen, type stripe listen --forward-to localhost:4000/api/cart/webhook in the command line
 
 let endpointSecret;
 
