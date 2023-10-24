@@ -17,7 +17,7 @@ import { createOrderItem, createOrder } from '../db/models/orders.js';
 import zlib from 'zlib';
 const stripe = new Stripe('sk_test_51NyLPaIBy4kJpJhvcJi6rNo2t1dYH2G6E6NZlraMTMRc4QtWkS3soLW5bZnTWJddjGZpx9q2I4bg9UjaUKGzG8uK00PsNGohtJ');
 const router = express.Router();
-const YOUR_DOMAIN = 'http://localhost:3000';
+const YOUR_DOMAIN = 'http://localhost:4000';
 
 
 router.get('/', requireAuthentication, async (req, res, next) => {
@@ -250,8 +250,8 @@ router.post("/checkout-session", async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: "payment",
-      success_url: `http://localhost:3000/checkout-success`,
-      cancel_url: `http://localhost:3000/cart`
+      success_url: `http://localhost:4000/checkout-success`,
+      cancel_url: `http://localhost:4000/cart`
     });
 
     res.send({ url: session.url })
