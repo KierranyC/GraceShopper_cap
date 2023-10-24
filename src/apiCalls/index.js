@@ -1,5 +1,5 @@
 // A base url for making CRUD calls to the API server
-export const BASE_URL = "http://localhost:3000/api";
+export const BASE_URL = "http://localhost:4000/api";
 
 // ----- All GET requests -----
 // GET - get all products
