@@ -1,5 +1,5 @@
-import pkg from "q";
-const { query } = pkg;
+// import pkg from "q";
+// const { query } = pkg;
 import client from "../client.js";
 
 async function createProduct({
