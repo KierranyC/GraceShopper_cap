@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:1
+```# syntax = docker/dockerfile:1
 
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=16.17.1
@@ -21,10 +21,10 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python
 
 # Copy node modules
-COPY --link package-lock.json package.json ./
+COPY --chown=0:0 package-lock.json package.json ./
 
 # Copy application code
-COPY --link . .
+COPY --chown=0:0 . .
 
 # Install node modules
 RUN npm ci
@@ -38,3 +38,4 @@ COPY --from=build /app /app
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 4000
 CMD [ "npm", "run", "start:dev" ]
+```
