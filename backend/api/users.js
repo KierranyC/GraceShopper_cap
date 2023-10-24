@@ -1,6 +1,5 @@
 import { config as dotenvConfig } from "dotenv";
 dotenvConfig();
-require("dotenv").config();
 import express, { response } from "express";
 import {
   createUser,
