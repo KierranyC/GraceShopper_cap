@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import apiRouter from "./backend/api/index.js";
+import apiRouter from "./api/index.js";
 import path from "path";
-import client from "./backend/db/client.js";
+import client from "./db/client.js";
 // import { admin, adminRouter } from './App.js';
 import Stripe from 'stripe';
 const stripe = new Stripe('sk_test_51NioUWB9h1tasC0ynwIfN6UfPnghz51GPnbWtbY5flyQZJ1x6yV0Rrcw1fE570OjqlNYCLBu6h1alrxWG5dAARU900mhyvNpTz')
