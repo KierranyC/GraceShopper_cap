@@ -1,5 +1,5 @@
-import { config as dotenvConfig } from "dotenv";
-dotenvConfig();
+// import { config as dotenvConfig } from "dotenv";
+// dotenvConfig();
 import express, { response } from "express";
 import {
   createUser,
