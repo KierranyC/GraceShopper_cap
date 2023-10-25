@@ -200,7 +200,7 @@ router.post("/register", async (req, res, next) => {
           username,
           isAdmin
         },
-          JWT_SECRET, {
+          process.env.JWT_SECRET, {
           expiresIn: "1w"
         })
 
