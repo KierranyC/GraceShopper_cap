@@ -167,6 +167,8 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+let JWT_SECRET;
+
 router.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
   console.log('REQUEST BODY:', req.body)
@@ -198,7 +200,7 @@ router.post("/register", async (req, res, next) => {
           username,
           isAdmin
         },
-          process.env.JWT_SECRET, {
+          JWT_SECRET, {
           expiresIn: "1w"
         })
 
