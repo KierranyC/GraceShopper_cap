@@ -39,6 +39,7 @@ export const Products = ({
   // const [productQuantities, setProductQuantities] = useState({});
   // const [inCart, setInCart] = useState(false);
   const navigate = useNavigate()
+  // COMMENT
 
   useEffect(() => {
     const storedQuantities = localStorage.getItem("productQuantities");
