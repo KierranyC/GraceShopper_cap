@@ -11,6 +11,7 @@ export const ProductForm = ({ token }) => {
   const [quantity, setQuantity] = useState('')
   const [productCategory, setProductCategory] = useState('')
   const [photo, setPhoto] = useState('')
+  const [featured, setFeatured] = useState(false)
 
 
   const handleCreateNewProduct = async () => {
@@ -23,7 +24,8 @@ export const ProductForm = ({ token }) => {
         price,
         quantity,
         productCategory,
-        photo
+        photo,
+        featured
       )
       setTitle('')
       setDescription('')
@@ -31,6 +33,7 @@ export const ProductForm = ({ token }) => {
       setQuantity('')
       setProductCategory('')
       setPhoto('')
+      setFeatured(false)
     } catch (error) {
       console.error(error)
     }
@@ -97,6 +100,15 @@ export const ProductForm = ({ token }) => {
             placeholder="Enter photo"
             value={photo}
             onChange={(e) => setPhoto(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="featured">
+          <Form.Check
+            type="checkbox"
+            label="Featured Product"
+            checked={featured}
+            onChange={() => setFeatured(!featured)}
           />
         </Form.Group>
 

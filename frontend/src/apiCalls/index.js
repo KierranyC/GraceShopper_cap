@@ -171,7 +171,8 @@ export const createProduct = async (
   price,
   quantity,
   category,
-  photo
+  photo,
+  featured
 ) => {
   console.log(token)
   try {
@@ -188,6 +189,7 @@ export const createProduct = async (
         quantity,
         category,
         photo,
+        featured
       }),
     });
     const result = await response.json();
