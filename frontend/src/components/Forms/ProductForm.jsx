@@ -10,6 +10,7 @@ export const ProductForm = ({ token }) => {
   const [price, setPrice] = useState('')
   const [quantity, setQuantity] = useState('')
   const [productCategory, setProductCategory] = useState('')
+  const [photo, setPhoto] = useState('')
 
 
   const handleCreateNewProduct = async () => {
@@ -21,13 +22,15 @@ export const ProductForm = ({ token }) => {
         description,
         price,
         quantity,
-        productCategory
+        productCategory,
+        photo
       )
       setTitle('')
       setDescription('')
       setPrice('')
       setQuantity('')
       setProductCategory('')
+      setPhoto('')
     } catch (error) {
       console.error(error)
     }
@@ -84,6 +87,16 @@ export const ProductForm = ({ token }) => {
             placeholder="Enter product category"
             value={productCategory}
             onChange={(e) => setProductCategory(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="photo">
+          <Form.Label>Photo</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter photo"
+            value={photo}
+            onChange={(e) => setPhoto(e.target.value)}
           />
         </Form.Group>
 
