@@ -198,7 +198,7 @@ export const Product = ({
         </Card>
       </div>
       {/* <Featured /> */}
-      <Reviews />
+      {/* <Reviews /> */}
     </div>
   );
 };
