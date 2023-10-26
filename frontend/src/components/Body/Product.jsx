@@ -14,7 +14,9 @@ export const Product = ({
   setGuestCart,
   storedGuestSessionId,
   token,
-  setCart }) => {
+  setCart,
+  isAdmin
+}) => {
   // UseStates for Product
   const [product, setProduct] = useState({});
 
