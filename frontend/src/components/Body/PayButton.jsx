@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 export const PayButton = ({ cartItems, userId }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   console.log('CART PAYBUTTON:', cartItems)
   console.log('USER ID PAYBUTTON:', userId)
   const handleCheckout = () => {
@@ -26,14 +26,11 @@ export const PayButton = ({ cartItems, userId }) => {
     fetch(`https://restless-butterfly-4927.fly.dev/api/cart/checkout-session`, requestOptions)
       .then((response) => {
         if (response.ok) {
-          // return response.json().then((data) => {
-          //   if (data.url) {
-          //     window.location.href = data.url;
-          //   }
-          // });
-          navigate('/checkout-success')
-        } else {
-          navigate('/Cart')
+          return response.json().then((data) => {
+            if (data.url) {
+              window.location.href = data.url;
+            }
+          });
         }
       })
       .catch((error) => {
