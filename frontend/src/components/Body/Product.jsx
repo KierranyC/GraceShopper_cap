@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ButtonGroup, Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
-import { fetchProduct, addItemToCart, updateCartItem, removeItemFromCart } from "../../apiCalls/index.js";
+import { deleteProduct, fetchProduct, addItemToCart, updateCartItem, removeItemFromCart } from "../../apiCalls/index.js";
 import { Button } from "react-bootstrap";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
@@ -148,6 +148,19 @@ export const Product = ({
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+      // Make an API call to delete the product by productId
+      const updatedProducts = await deleteProduct(token, productId);
+
+      // Update the products list by removing the deleted product
+      // setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+      setCategoryProducts(updatedProducts)
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
+
   return (
     <div className="product-page m-3">
       <h2 className="text-center">{product.title}</h2>
@@ -171,6 +184,14 @@ export const Product = ({
               <Button onClick={() => handleAddItemToCart(product.id)}>Add to Cart</Button>
             )}
             {/* <Button>Add to Wishlist</Button> */}
+            {isAdmin && (
+              <Button
+                variant="danger"
+                onClick={() => handleDeleteProduct(product.id)}
+              >
+                Delete
+              </Button>
+            )}
           </ButtonGroup>
         </Card>
       </div>

@@ -195,6 +195,19 @@ export const Products = ({
   // A variable for updating the products displayed on screen. If there is no searchTerm, shows all products
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+      // Make an API call to delete the product by productId
+      const updatedProducts = await deleteProduct(token, productId);
+
+      // Update the products list by removing the deleted product
+      // setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+      setCategoryProducts(updatedProducts)
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
+
   return (
     <div className="container-fluid">
       <div className="text-center">
