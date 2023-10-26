@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/", requireAuthentication, requireAdminAuthorization, async (req, res, next) => {
 
 
-  const { title, description, price, quantity, category, photo } = req.body;
+  const { title, description, price, quantity, category, photo, featured } = req.body;
   try {
     const newProduct = await createProduct({
       title,
@@ -25,6 +25,7 @@ router.post("/", requireAuthentication, requireAdminAuthorization, async (req, r
       quantity: parseInt(quantity),
       category,
       photo,
+      featured
     });
     console.log('NEW PRODUCT', newProduct)
     res.send(newProduct);
