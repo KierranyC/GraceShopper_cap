@@ -250,7 +250,7 @@ router.post("/checkout-session", async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: "payment",
-      success_url: `https://oilay.netlify.app/success?session_id={CHECOUT_SESSION_ID}`,
+      success_url: `https://oilay.netlify.app/checkout-success`,
       cancel_url: `https://oilay.netlify.app/Cart`
     });
 
