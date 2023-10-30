@@ -17,8 +17,7 @@ const server = express();
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-// server.use(cors()); // Enable CORS first
-server.use(cors({ origin: 'https://oilay.netlify.app' }));
+server.use(cors()); // Enable CORS first
 server.use(morgan("dev")); // Logging
 server.use(express.json()); // JSON parsing
 
