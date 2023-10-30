@@ -208,14 +208,13 @@ export const signUp = async (
   setToken,
   setIsLoggedIn
 ) => {
-  const maxLength = 8;
-  const minLength = 7;
-  if (username.length < maxLength) {
-    alert(`Username must be at least ${maxLength} characters long.`);
-  }
-  if (password.length < minLength) {
-    alert(`Password must be at least ${minLength} characters long.`);
-  }
+  // const minLength = 8;
+  // if (username.length < minLength) {
+  //   alert(`Username must be at least ${minLength} characters long.`);
+  // }
+  // if (password.length < minLength) {
+  //   alert(`Password must be at least ${minLength} characters long.`);
+  // }
   try {
     const response = await fetch(`${BASE_URL}/users/register`, {
       method: "POST",

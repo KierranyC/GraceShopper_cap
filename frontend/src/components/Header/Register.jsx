@@ -30,45 +30,52 @@ export const Register = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const fetchAndUpdateUserCart = async (userToken) => {
-      try {
-        const userCart = await fetchUserCart(userToken)
-        setCart(userCart)
-        localStorage.setItem("cart", JSON.stringify(userCart))
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    if (username.length < 8) {
+      alert('Username must be at least 8 characters!')
+    } else if (password.length < 8) {
+      alert('Password must be at least 8 characters!')
+    } else {
 
-    const registerUser = async () => {
-      try {
-        const result = await signUp(email, username, password);
-        console.log("NEW USER:", result);
-        // localStorage.setItem("token", result.token);
-        setToken(result.token);
-        setIsLoggedIn(true)
-        setAndStoreUsername(username);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setPassConfirm("");
-        if (guestCart.length > 0) {
-          // console.log('STORED GUEST ID FRONT END CHECK:', storedGuestSessionId)
-          await updateCart(result.token, storedGuestSessionId)
-          fetchAndUpdateUserCart(result.token)
+      const fetchAndUpdateUserCart = async (userToken) => {
+        try {
+          const userCart = await fetchUserCart(userToken)
+          setCart(userCart)
+          localStorage.setItem("cart", JSON.stringify(userCart))
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      const registerUser = async () => {
+        try {
+          const result = await signUp(email, username, password);
+          console.log("NEW USER:", result);
+          // localStorage.setItem("token", result.token);
+          setToken(result.token);
           setIsLoggedIn(true)
+          setAndStoreUsername(username);
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setPassConfirm("");
+          if (guestCart.length > 0) {
+            // console.log('STORED GUEST ID FRONT END CHECK:', storedGuestSessionId)
+            await updateCart(result.token, storedGuestSessionId)
+            fetchAndUpdateUserCart(result.token)
+            setIsLoggedIn(true)
+          }
+          if (result.token) {
+            navigate("/");
+          }
+
+
+
+        } catch (error) {
+          console.log(error);
         }
-        if (result.token) {
-          navigate("/");
-        }
-
-
-
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    registerUser();
+      };
+      registerUser();
+    }
   };
 
   return (
@@ -82,7 +89,7 @@ export const Register = ({
             required
             value={username}
             placeholder="Enter a username"
-            minLength={3}
+            minLength={8}
             maxLength={20}
             onChange={(e) => setUsername(e.target.value)}
           />
