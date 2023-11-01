@@ -23,17 +23,17 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 //   credentials: true, // Allow credentials (cookies, HTTP authentication) to be sent
 // }));
-// server.use(cors({
-//   origin: 'https://oilay.netlify.app', // use your actual domain name (or localhost), using * is not recommended
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-//   credentials: true
-// }))
-server.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://oilay.netlify.app"); // Update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, x-guest-session-id, Content-Type, Accept");
-  next();
+server.use((req, res, next) => {
+  console.log("Incoming request headers:", req.headers);
+  next()
 });
+server.use(cors({
+  origin: 'https://oilay.netlify.app', // use your actual domain name (or localhost), using * is not recommended
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'x-guest-session-id', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials: true
+}))
+
 server.use(morgan("dev")); // Logging
 server.use(express.json()); // JSON parsing
 
