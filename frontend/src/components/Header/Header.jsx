@@ -24,6 +24,15 @@ export const Header = ({
   const navigate = useNavigate();
   console.log('IS ADMIN CHECK HEADER:', isAdmin)
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setNewUser(false);
+    } else {
+      setNewUser(true);
+    }
+  }, [token]);
+
   // A function for logging out a user
   const handleLogout = (event) => {
     event.preventDefault();
@@ -34,13 +43,13 @@ export const Header = ({
     setIsAdmin(false)
     localStorage.removeItem("username");
     setNewUser(true);
-    navigate('/login')
     setUsername('')
     setProductQuantities({})
     localStorage.setItem(
       "productQuantities",
       JSON.stringify({})
     );
+    navigate('/login')
   };
 
   // A function that directs a user to the Login route
