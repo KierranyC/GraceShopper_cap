@@ -23,10 +23,6 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 //   credentials: true, // Allow credentials (cookies, HTTP authentication) to be sent
 // }));
-server.use((req, res, next) => {
-  console.log("Incoming request headers:", req.headers);
-  next()
-});
 server.use(cors({
   origin: 'https://oilay.netlify.app', // use your actual domain name (or localhost), using * is not recommended
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
