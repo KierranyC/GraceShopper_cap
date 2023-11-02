@@ -19,7 +19,9 @@ export const Home = ({
   inCart,
   setInCart,
   productQuantities,
-  setProductQuantities
+  setProductQuantities,
+  isLoading,
+  setIsLoading
 }) => {
   // UseStates for Home
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -30,7 +32,7 @@ export const Home = ({
       try {
         const data = await fetchFeaturedProducts();
         setFeaturedProducts(data);
-        console.log(featuredProducts);
+        setIsLoading(false)
       } catch (error) {
         console.error("Error fetching featured products:", error);
       }
@@ -72,6 +74,8 @@ export const Home = ({
         featuredProducts={featuredProducts}
         productQuantities={productQuantities}
         setProductQuantities={setProductQuantities}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
     </div>
   );

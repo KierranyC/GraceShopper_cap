@@ -29,7 +29,9 @@ export const Products = ({
   inCart,
   setInCart,
   productQuantities,
-  setProductQuantities
+  setProductQuantities,
+  isLoading,
+  setIsLoading
 }) => {
   // UseStates for Products
   // comment!
@@ -54,6 +56,7 @@ export const Products = ({
       try {
         const data = await fetchAllProducts();
         setProducts(data);
+        setIsLoading(false)
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -208,91 +211,96 @@ export const Products = ({
     }
   }
 
-  return (
-    <div className="container-fluid">
-      <div className="text-center">
-        <h2>Featured Products</h2>
-        {featuredProducts.length > 0 ? (
-          <Carousel>
-            {featuredProducts.map((product) => (
-              <Carousel.Item key={product.id}>
+  if (isLoading) {
+    return <h1>Loading...</h1>
+  } else {
+
+    return (
+      <div className="container-fluid">
+        <div className="text-center">
+          <h2>Featured Products</h2>
+          {featuredProducts.length > 0 ? (
+            <Carousel>
+              {featuredProducts.map((product) => (
+                <Carousel.Item key={product.id}>
+                  <Link
+                    to={`/Product/${product.id}`}
+                    onClick={() => handleClick(product.id)}
+                    className="text-decoration-none"
+                  >
+                    <img
+                      src={product.photo}
+                      alt={product.title}
+                      className="featured"
+                    />
+                    <Carousel.Caption>
+                      <h3>{product.title}</h3>
+                    </Carousel.Caption>
+                  </Link>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          ) : (
+            <p>No featured products available.</p>
+          )}
+        </div>
+        <h1 className="text-center">Products</h1>
+        <Row className="products ">
+          {products.map((product) => (
+            <Col
+              key={product.id}
+              value={product}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              xl={2}
+            >
+              <Card.Body className="product-card">
+                <Card.Img
+                  className="product-image"
+                  variant="top"
+                  src={product.photo}
+                />
                 <Link
+                  className="text-decoration-none"
                   to={`/Product/${product.id}`}
                   onClick={() => handleClick(product.id)}
-                  className="text-decoration-none"
                 >
-                  <img
-                    src={product.photo}
-                    alt={product.title}
-                    className="featured"
-                  />
-                  <Carousel.Caption>
-                    <h3>{product.title}</h3>
-                  </Carousel.Caption>
+                  <Card.Title>{product.title}</Card.Title>
                 </Link>
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        ) : (
-          <p>No featured products available.</p>
-        )}
-      </div>
-      <h1 className="text-center">Products</h1>
-      <Row className="products ">
-        {products.map((product) => (
-          <Col
-            key={product.id}
-            value={product}
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            xl={2}
-          >
-            <Card.Body className="product-card">
-              <Card.Img
-                className="product-image"
-                variant="top"
-                src={product.photo}
-              />
-              <Link
-                className="text-decoration-none"
-                to={`/Product/${product.id}`}
-                onClick={() => handleClick(product.id)}
-              >
-                <Card.Title>{product.title}</Card.Title>
-              </Link>
-              <Card.Subtitle>${product.price}</Card.Subtitle>
-              {productQuantities[product.id] > 0 ? (
-                <>
-                  <Button onClick={() => handleAddOneItemToCart(product.id)}>
-                    +
+                <Card.Subtitle>${product.price}</Card.Subtitle>
+                {productQuantities[product.id] > 0 ? (
+                  <>
+                    <Button onClick={() => handleAddOneItemToCart(product.id)}>
+                      +
+                    </Button>
+                    <Button
+                      onClick={() => handleDeleteOneItemFromCart(product.id)}
+                    >
+                      -
+                    </Button>
+                    {/* <Button onClick={() => handleRemoveFromCart(product.id)}>Remove</Button> */}
+                  </>
+                ) : (
+                  <Button onClick={() => handleAddItemToCart(product.id)}>
+                    Add to Cart
                   </Button>
+                )}
+                {isAdmin && (
                   <Button
-                    onClick={() => handleDeleteOneItemFromCart(product.id)}
+                    variant="danger"
+                    onClick={() => handleDeleteProduct(product.id)}
                   >
-                    -
+                    Delete
                   </Button>
-                  {/* <Button onClick={() => handleRemoveFromCart(product.id)}>Remove</Button> */}
-                </>
-              ) : (
-                <Button onClick={() => handleAddItemToCart(product.id)}>
-                  Add to Cart
-                </Button>
-              )}
-              {isAdmin && (
-                <Button
-                  variant="danger"
-                  onClick={() => handleDeleteProduct(product.id)}
-                >
-                  Delete
-                </Button>
-              )}
-              {/* <Button>Add to Wishlist</Button> */}
-            </Card.Body>
-          </Col>
-        ))}
-      </Row>
-    </div>
-  );
+                )}
+                {/* <Button>Add to Wishlist</Button> */}
+              </Card.Body>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    );
+  }
 };

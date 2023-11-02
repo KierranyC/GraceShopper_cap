@@ -205,6 +205,8 @@ export const App = () => {
                   username={username}
                   productQuantities={productQuantities}
                   setProductQuantities={setProductQuantities}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                 />
               </div>
 
