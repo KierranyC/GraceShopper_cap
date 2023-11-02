@@ -61,9 +61,9 @@ export const App = () => {
   const [clientSecret, setClientSecret] = useState(null);
   const [userOrders, setUserOrders] = useState([]);
 
-  useEffect(() => {
-    localStorage.setItem("token", token);
-  }, [token]);
+  // useEffect(() => {
+  //   localStorage.setItem("token", token);
+  // }, [token]);
 
   useEffect(() => {
     const storedIsAdmin = localStorage.getItem("isAdmin");
