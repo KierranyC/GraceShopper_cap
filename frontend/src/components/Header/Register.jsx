@@ -53,7 +53,6 @@ export const Register = ({
           setToken(result.token);
           setIsLoggedIn(true)
           setAndStoreUsername(username);
-          // localStorage.setItem("token", result.token)
           setUsername("");
           setEmail("");
           setPassword("");

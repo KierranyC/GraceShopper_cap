@@ -51,7 +51,7 @@ export const App = () => {
   const [cart, setCart] = useState([]);
   const [productId, setProductId] = useState("");
   const [userId, setUserId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState("");
   const [guestCart, setGuestCart] = useState([]);
   const [categoryProducts, setCategoryProducts] = useState([]);
@@ -61,9 +61,7 @@ export const App = () => {
   const [clientSecret, setClientSecret] = useState(null);
   const [userOrders, setUserOrders] = useState([]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("token", token);
-  // }, [token]);
+
 
   useEffect(() => {
     const storedIsAdmin = localStorage.getItem("isAdmin");
