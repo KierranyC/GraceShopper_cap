@@ -50,16 +50,15 @@ export const Register = ({
         try {
           const result = await signUp(email, username, password);
           console.log("NEW USER:", result);
-          // localStorage.setItem("token", result.token);
           setToken(result.token);
           setIsLoggedIn(true)
           setAndStoreUsername(username);
+          localStorage.setItem("token", result.token)
           setUsername("");
           setEmail("");
           setPassword("");
           setPassConfirm("");
           if (guestCart.length > 0) {
-            // console.log('STORED GUEST ID FRONT END CHECK:', storedGuestSessionId)
             await updateCart(result.token, storedGuestSessionId)
             fetchAndUpdateUserCart(result.token)
             setIsLoggedIn(true)
