@@ -62,6 +62,10 @@ export const App = () => {
   const [userOrders, setUserOrders] = useState([]);
 
   useEffect(() => {
+    localStorage.setItem("token", token);
+  }, [token]);
+
+  useEffect(() => {
     const storedIsAdmin = localStorage.getItem("isAdmin");
     if (storedIsAdmin === "true") {
       setIsAdmin(true);
