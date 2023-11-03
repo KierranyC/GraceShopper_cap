@@ -180,4 +180,9 @@ nav.navbar {
     flex-direction: column;
     /* Stack elements in a column on mobile */
   }
+
+  .carousel {
+    margin: 20px;
+    /* Adjust margin for better spacing on mobile */
+  }
 }

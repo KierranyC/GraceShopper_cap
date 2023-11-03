@@ -220,7 +220,7 @@ export const Products = ({
         <div className="text-center">
           <h2>Featured Products</h2>
           {featuredProducts.length > 0 ? (
-            <Carousel>
+            <Carousel className="carousel">
               {featuredProducts.map((product) => (
                 <Carousel.Item key={product.id}>
                   <Link
