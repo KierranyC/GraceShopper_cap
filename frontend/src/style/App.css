@@ -187,7 +187,7 @@ nav.navbar {
   }
 
   .featured {
-    width: 100%;
+    width: 90%;
     /* Make the featured images take up the full width on mobile */
   }
 }
