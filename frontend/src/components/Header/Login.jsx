@@ -10,7 +10,8 @@ export const Login = ({
   setAndStoreUsername,
   cart,
   setCart,
-  setIsAdmin
+  setIsAdmin,
+  setIsLoggedIn
 }) => {
   // UseStates for Login
   const [password, setPassword] = useState("");
@@ -33,6 +34,7 @@ export const Login = ({
           setAndStoreUsername(username);
           // setUsername("");
           setPassword("");
+          setIsLoggedIn(true)
           console.log('IS ADMIN CHECK LOGIN:', result.user.isAdmin)
           if (result.user.isAdmin) {
             localStorage.setItem("isAdmin", "true");

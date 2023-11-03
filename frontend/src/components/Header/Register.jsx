@@ -53,7 +53,7 @@ export const Register = ({
           setToken(result.token);
           setIsLoggedIn(true)
           setAndStoreUsername(username);
-          setUsername("");
+          // setUsername("");
           setEmail("");
           setPassword("");
           setPassConfirm("");
