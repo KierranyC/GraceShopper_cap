@@ -33,6 +33,7 @@ export const Login = ({
           setToken(result.token);
           setAndStoreUsername(username);
           // setUsername("");
+          setUserId(result.user.id)
           setPassword("");
           setIsLoggedIn(true)
           console.log('IS ADMIN CHECK LOGIN:', result.user.isAdmin)
