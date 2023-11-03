@@ -320,6 +320,7 @@ export const App = () => {
                 setIsAdmin={setIsAdmin}
                 setIsLoggedIn={setIsLoggedIn}
                 setUserId={setUserId}
+                setUserOrders={setUserOrders}
               />
             }
           ></Route>

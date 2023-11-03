@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchUserCart, userLogin } from "../../apiCalls";
+import { fetchUserCart, userLogin, fetchUserOrders } from "../../apiCalls";
 // This component logs in users
 export const Login = ({
   setToken,
@@ -12,7 +12,8 @@ export const Login = ({
   setCart,
   setIsAdmin,
   setIsLoggedIn,
-  setUserId
+  setUserId,
+  setUserOrders
 }) => {
   // UseStates for Login
   const [password, setPassword] = useState("");
@@ -34,6 +35,8 @@ export const Login = ({
           setToken(result.token);
           setAndStoreUsername(username);
           // setUsername("");
+          const orders = await fetchUserOrders(result.user.username, result.token)
+          setUserOrders(orders)
           setUserId(result.user.id)
           setPassword("");
           setIsLoggedIn(true)
