@@ -185,4 +185,9 @@ nav.navbar {
     margin: 20px;
     /* Adjust margin for better spacing on mobile */
   }
+
+  .featured {
+    width: 100%;
+    /* Make the featured images take up the full width on mobile */
+  }
 }
