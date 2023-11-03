@@ -37,6 +37,8 @@ export const Login = ({
           // setUsername("");
           const orders = await fetchUserOrders(result.user.username, result.token)
           setUserOrders(orders)
+          const userCart = await fetchUserCart(result.token)
+          setCart(userCart)
           setUserId(result.user.id)
           setPassword("");
           setIsLoggedIn(true)
