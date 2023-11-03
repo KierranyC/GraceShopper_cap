@@ -17,7 +17,8 @@ export const Header = ({
   setIsAdmin,
   setUsername,
   setProductQuantities,
-  productQuantities
+  productQuantities,
+  setUserId
 }) => {
   // UseStates for Header
   const [newUser, setNewUser] = useState(true);
@@ -44,6 +45,7 @@ export const Header = ({
     localStorage.removeItem("username");
     setNewUser(true);
     setUsername('')
+    setUserId('')
     setProductQuantities({})
     localStorage.setItem(
       "productQuantities",

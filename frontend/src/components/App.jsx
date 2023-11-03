@@ -173,7 +173,7 @@ export const App = () => {
           username={username}
           setUsername={setUsername}
           setIsLoggedIn={setIsLoggedIn}
-
+          setUserId={setUserId}
           category={category}
           setCategory={setCategory}
         />
