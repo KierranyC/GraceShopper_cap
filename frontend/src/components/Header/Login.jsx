@@ -11,7 +11,8 @@ export const Login = ({
   cart,
   setCart,
   setIsAdmin,
-  setIsLoggedIn
+  setIsLoggedIn,
+  setUserId
 }) => {
   // UseStates for Login
   const [password, setPassword] = useState("");
