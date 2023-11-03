@@ -319,6 +319,7 @@ export const App = () => {
                 setCart={setCart}
                 setIsAdmin={setIsAdmin}
                 setIsLoggedIn={setIsLoggedIn}
+                setUserId={setUserId}
               />
             }
           ></Route>
