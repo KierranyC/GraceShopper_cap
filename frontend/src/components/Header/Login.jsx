@@ -31,7 +31,7 @@ export const Login = ({
           localStorage.removeItem("guestCart");
           setToken(result.token);
           setAndStoreUsername(username);
-          setUsername("");
+          // setUsername("");
           setPassword("");
           console.log('IS ADMIN CHECK LOGIN:', result.user.isAdmin)
           if (result.user.isAdmin) {
