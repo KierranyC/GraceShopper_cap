@@ -30,9 +30,10 @@ export const Account = ({ username, setToken, token, userId, setUserId, userOrde
                 <div key={item.id} >
                   <Card.Text> {item.productInfo.title} </Card.Text>
                   <Card.Text> {item.quantity} </Card.Text>
-                  <Card.Text> {item.productInfo.price} </Card.Text>
+                  <Card.Text> ${item.productInfo.price} </Card.Text>
                 </div>
               )}
+              <p>Order Total: {order.totalAmount}</p>
             </Card.Body>
           </Card>
         ))
