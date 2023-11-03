@@ -139,7 +139,7 @@ export const Header = ({
             {/* <NavDropdown.Item onClick={handleWishList}>
               Wishlist
             </NavDropdown.Item> */}
-            <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
+            {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
             <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" onClick={handleLogout}>
@@ -155,7 +155,7 @@ export const Header = ({
               Wishlist
             </NavDropdown.Item> */}
 
-            <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item>
+            {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" onClick={handleLogout}>
               Logout
