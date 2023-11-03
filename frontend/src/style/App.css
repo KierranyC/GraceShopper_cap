@@ -160,4 +160,24 @@ nav.navbar {
     margin-bottom: 20px;
     /* Increase margin for better spacing on small screens */
   }
+
+  .product-information {
+    text-align: center;
+    /* Center align product information on mobile */
+  }
+
+  .product-image {
+    width: 100%;
+    /* Make the product image take up the full width on mobile */
+  }
+
+  .product-page {
+    padding: 10px;
+    /* Add some padding for better spacing on mobile */
+  }
+
+  .single-product {
+    flex-direction: column;
+    /* Stack elements in a column on mobile */
+  }
 }
