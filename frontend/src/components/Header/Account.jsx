@@ -33,7 +33,7 @@ export const Account = ({ username, setToken, token, userId, setUserId, userOrde
                   <Card.Text> ${item.productInfo.price} </Card.Text>
                 </div>
               )}
-              <p>Order Total: {order.totalAmount}</p>
+              <p>Order Total: ${order.totalAmount}</p>
             </Card.Body>
           </Card>
         ))
