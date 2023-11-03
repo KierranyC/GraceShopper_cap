@@ -16,7 +16,8 @@ export const Register = ({
   storedGuestSessionId,
   guestCart,
   setIsLoggedIn,
-  setIsAdmin
+  setIsAdmin,
+  setUserId
 }) => {
   // UseStates for Register
   const [password, setPassword] = useState("");
@@ -53,6 +54,7 @@ export const Register = ({
           setToken(result.token);
           setIsLoggedIn(true)
           setAndStoreUsername(username);
+          setUserId(result.id)
           // setUsername("");
           setEmail("");
           setPassword("");

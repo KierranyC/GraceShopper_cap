@@ -300,6 +300,7 @@ export const App = () => {
                 storedGuestSessionId={storedGuestSessionId}
                 guestCart={guestCart}
                 setIsLoggedIn={setIsLoggedIn}
+                setUserId={setUserId}
               />
             }
           ></Route>
