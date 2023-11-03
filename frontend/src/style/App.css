@@ -132,5 +132,32 @@ nav.navbar {
 .featured {
   margin: 10px 25px;
   border-radius: 15px;
+}
 
+/* Media Query for Mobile View */
+@media (max-width: 768px) {
+  .app-container {
+    align-items: flex-start;
+    /* Change alignment for small screens */
+  }
+
+  .home-container {
+    flex-direction: column;
+    /* Stack elements in a column */
+  }
+
+  .sidebar {
+    margin-right: 0;
+    /* Remove margin for small screens */
+  }
+
+  .search-bar-container {
+    flex: 1;
+    /* Take up the full width for small screens */
+  }
+
+  .product-card {
+    margin-bottom: 20px;
+    /* Increase margin for better spacing on small screens */
+  }
 }
