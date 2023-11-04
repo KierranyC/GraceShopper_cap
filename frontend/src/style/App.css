@@ -82,6 +82,7 @@ nav.navbar {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  position: sticky;
 }
 
 .products-grid {
