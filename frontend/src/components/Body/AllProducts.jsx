@@ -205,9 +205,9 @@ export const Products = ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Button variant="primary" onClick={handleSearch} className="search-bar-container button">
+              {/* <Button variant="primary" onClick={handleSearch} className="search-bar-container button">
                 Search
-              </Button>
+              </Button> */}
             </InputGroup>
           </div>
 
