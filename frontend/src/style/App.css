@@ -22,7 +22,7 @@ html {
 
 .home-container {
   flex: 1;
-  display: flex;
+  display: block;
   flex-direction: row;
 }
 
