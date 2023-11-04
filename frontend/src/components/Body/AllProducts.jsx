@@ -197,7 +197,19 @@ export const Products = ({
     return (
       <div className="container-fluid">
         <div className="text-center">
-
+          {/* Search bar */}
+          <div className="search-bar-container">
+            <InputGroup className="search-bar-container input">
+              <FormControl
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {/* <Button variant="primary" onClick={handleSearch} className="search-bar-container button">
+                Search
+              </Button> */}
+            </InputGroup>
+          </div>
           <h2>Featured Products</h2>
           {featuredProducts.length > 0 ? (
             <Carousel className="carousel">
@@ -226,19 +238,6 @@ export const Products = ({
         </div>
 
         <h1 className="text-center">Products</h1>
-        {/* Search bar */}
-        <div className="search-bar-container">
-          <InputGroup className="search-bar-container input">
-            <FormControl
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {/* <Button variant="primary" onClick={handleSearch} className="search-bar-container button">
-                Search
-              </Button> */}
-          </InputGroup>
-        </div>
         <Row className="products">
           {productsToDisplay.map((product) => (
             <Col
