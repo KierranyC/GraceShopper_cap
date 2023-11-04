@@ -202,6 +202,7 @@ nav.navbar {
 
   .home-container {
     flex-direction: column;
+    display: block;
     /* Stack elements in a column */
   }
 
