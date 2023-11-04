@@ -212,7 +212,6 @@ nav.navbar {
   .account-dropdown {
     /* margin-top: 10px; */
     /* Adjust margin for better spacing in mobile view */
-    display: none;
     transition: display 0.3s;
   }
 
