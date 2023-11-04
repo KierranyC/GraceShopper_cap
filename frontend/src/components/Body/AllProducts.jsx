@@ -203,7 +203,7 @@ export const Products = ({
               <FormControl
                 placeholder="Search products..."
                 value={searchTerm}
-                onChange={handleSearchInputChange}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <Button variant="primary" onClick={handleSearch}>
                 Search
