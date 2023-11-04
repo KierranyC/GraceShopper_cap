@@ -177,6 +177,11 @@ export const Products = ({
 
   const productsToDisplay = searchTerm.length ? filteredProducts : products;
 
+  const handleSearch = () => {
+    // Trigger the search logic here based on the `searchTerm`
+    filter(); // You may use your existing filter logic here
+  };
+
   const handleDeleteProduct = async (productId) => {
     try {
       const updatedProducts = await deleteProduct(token, productId);
