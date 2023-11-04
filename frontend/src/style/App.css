@@ -247,8 +247,8 @@ nav.navbar {
   }
 
   .carousel {
-    margin: 100px;
-    max-width: 100%;
+    margin: 0;
+    max-width: none;
     /* Adjust margin for better spacing on mobile */
   }
 
