@@ -63,6 +63,11 @@ nav.navbar {
   width: 80px;
 }
 
+.carousel {
+  max-width: 100%;
+  margin: 0;
+}
+
 .sidebar {
   background-color: lightgrey;
   padding: 15px;
@@ -232,7 +237,7 @@ nav.navbar {
   }
 
   .carousel {
-    margin: 0;
+    margin: 100;
     max-width: 100%;
     /* Adjust margin for better spacing on mobile */
   }
