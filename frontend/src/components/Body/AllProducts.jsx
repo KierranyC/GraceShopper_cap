@@ -199,13 +199,16 @@ export const Products = ({
         <div className="text-center">
           {/* Search bar */}
           <div className="d-flex justify-content-center my-3">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button onClick={handleSearch}>Search</button>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={handleSearchInputChange}
+              />
+              <Button variant="primary" onClick={handleSearch}>
+                Search
+              </Button>
+            </InputGroup>
           </div>
 
           <h2>Featured Products</h2>
