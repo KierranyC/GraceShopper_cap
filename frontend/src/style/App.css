@@ -200,8 +200,6 @@ nav.navbar {
   }
 
   .mobile-nav {
-    display: flex;
-    /* Show mobile navigation in mobile view */
     flex-direction: column;
     /* Stack mobile navigation items */
   }
