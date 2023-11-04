@@ -72,7 +72,7 @@ nav.navbar {
 .products {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .products-grid {
