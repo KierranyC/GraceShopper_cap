@@ -197,7 +197,7 @@ nav.navbar {
   }
 
   .search-bar-container {
-    flex: 1;
+    display: flex;
     /* Take up the full width for small screens */
   }
 
