@@ -40,11 +40,11 @@ nav.navbar {
   align-items: center;
   justify-content: center;
   margin: 20px 0;
-  /* Adjust the margin as needed to position the search bar */
+  min-width: 320px;
 }
 
 .search-bar-container input {
-  width: 80%;
+  width: 200%;
   /* Adjust the width as needed */
   padding: 10px;
   font-size: 16px;
@@ -60,6 +60,7 @@ nav.navbar {
   padding: 10px 20px;
   margin-left: 10px;
   cursor: pointer;
+  width: 80px;
 }
 
 .sidebar {
@@ -88,6 +89,8 @@ nav.navbar {
 
 .product-image {
   border-radius: 15px;
+  height: 200px;
+  overflow: hidden;
 }
 
 .product-information {
@@ -203,7 +206,8 @@ nav.navbar {
   }
 
   .carousel {
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 100%;
     /* Adjust margin for better spacing on mobile */
   }
 
