@@ -198,7 +198,12 @@ nav.navbar {
 
   .search-bar-container {
     display: flex;
-    /* Take up the full width for small screens */
+    justify-content: center;
+    margin: 20px 0;
+    min-width: 320px;
+    position: sticky;
+    /* Add this property to make it stick to its position */
+    top: 0;
   }
 
   .product-card {
@@ -227,7 +232,7 @@ nav.navbar {
   }
 
   .carousel {
-    margin: 20px auto;
+    margin: 0;
     max-width: 100%;
     /* Adjust margin for better spacing on mobile */
   }
