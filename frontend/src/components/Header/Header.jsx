@@ -121,8 +121,70 @@ export const Header = ({
     checkToken();
   }, [token]);
 
+  // return (
+  //   <Navbar bg="dark" variant="dark" expand="lg">
+  //     <Navbar.Brand as={Link} to="/" className="company-name">
+  //       Oilay
+  //     </Navbar.Brand>
+  //     <div className="d-flex align-items-center justify-content-center">
+  //       <Categories category={category} setCategory={setCategory} />
+  //       {/* <Search /> */}
+  //     </div>
+  //     <Navbar.Brand onClick={handleCart}>Cart</Navbar.Brand>
+  //     {!newUser && isAdmin ? (
+  //       <Nav>
+
+  //         <NavDropdown title={username} id="basic-nav-dropdown">
+  //           <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
+  //           {/* <NavDropdown.Item onClick={handleWishList}>
+  //             Wishlist
+  //           </NavDropdown.Item> */}
+  //           {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
+  //           <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
+  //           <NavDropdown.Divider />
+  //           <NavDropdown.Item href="/" onClick={handleLogout}>
+  //             Logout
+  //           </NavDropdown.Item>
+  //         </NavDropdown>
+  //       </Nav>
+  //     ) : !newUser && (
+  //       <Nav>
+  //         <NavDropdown title={username} id="basic-nav-dropdown">
+  //           <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
+  //           {/* <NavDropdown.Item onClick={handleWishList}>
+  //             Wishlist
+  //           </NavDropdown.Item> */}
+
+  //           {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
+  //           <NavDropdown.Divider />
+  //           <NavDropdown.Item href="/" onClick={handleLogout}>
+  //             Logout
+  //           </NavDropdown.Item>
+  //         </NavDropdown>
+  //       </Nav>
+  //     )}
+  //     {newUser === true && (
+  //       <Nav className="ms-auto">
+  //         <NavDropdown
+  //           align="flex-end"
+  //           title="Sign Up Here!"
+  //           id="basic-nav-dropdown"
+  //           className="account-dropdown dropdown-menu-end"
+  //         >
+  //           <NavDropdown.Item href="/" onClick={handleLogin}>
+  //             Login
+  //           </NavDropdown.Item>
+  //           <NavDropdown.Item href="/" onClick={handleRegister}>
+  //             Register
+  //           </NavDropdown.Item>
+
+  //         </NavDropdown>
+  //       </Nav>
+  //     )}
+  //   </Navbar>
+  // );
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" className="navbar">
       <Navbar.Brand as={Link} to="/" className="company-name">
         Oilay
       </Navbar.Brand>
@@ -130,15 +192,16 @@ export const Header = ({
         <Categories category={category} setCategory={setCategory} />
         {/* <Search /> */}
       </div>
-      <Navbar.Brand onClick={handleCart}>Cart</Navbar.Brand>
+      <Navbar.Brand onClick={handleCart} className="nav-dropdown-title">
+        Cart
+      </Navbar.Brand>
       {!newUser && isAdmin ? (
         <Nav>
-
-          <NavDropdown title={username} id="basic-nav-dropdown">
+          <NavDropdown title={username} id="basic-nav-dropdown" className="nav-dropdown-title">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
             {/* <NavDropdown.Item onClick={handleWishList}>
-              Wishlist
-            </NavDropdown.Item> */}
+            Wishlist
+          </NavDropdown.Item> */}
             {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
             <NavDropdown.Item onClick={handleAdmin}>AdminDash</NavDropdown.Item>
             <NavDropdown.Divider />
@@ -149,12 +212,11 @@ export const Header = ({
         </Nav>
       ) : !newUser && (
         <Nav>
-          <NavDropdown title={username} id="basic-nav-dropdown">
+          <NavDropdown title={username} id="basic-nav-dropdown" className="nav-dropdown-title">
             <NavDropdown.Item onClick={handleAccount}>Account</NavDropdown.Item>
             {/* <NavDropdown.Item onClick={handleWishList}>
-              Wishlist
-            </NavDropdown.Item> */}
-
+            Wishlist
+          </NavDropdown.Item> */}
             {/* <NavDropdown.Item onClick={handleOrders}>Orders</NavDropdown.Item> */}
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" onClick={handleLogout}>
@@ -177,10 +239,11 @@ export const Header = ({
             <NavDropdown.Item href="/" onClick={handleRegister}>
               Register
             </NavDropdown.Item>
-
           </NavDropdown>
         </Nav>
-      )}
+      )
+      }
     </Navbar>
   );
+
 };
