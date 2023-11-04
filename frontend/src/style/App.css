@@ -57,7 +57,7 @@ nav.navbar {
 }
 
 .container-fluid {
-  display: flex;
+  display: block;
 }
 
 .search-bar-container button {
