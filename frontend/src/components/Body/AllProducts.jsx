@@ -198,14 +198,14 @@ export const Products = ({
       <div className="container-fluid">
         <div className="text-center">
           {/* Search bar */}
-          <div className="d-flex justify-content-center my-3">
-            <InputGroup className="mb-3">
+          <div className="search-bar-container">
+            <InputGroup className="search-bar-container input">
               <FormControl
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Button variant="primary" onClick={handleSearch}>
+              <Button variant="primary" onClick={handleSearch} className="search-bar-container button">
                 Search
               </Button>
             </InputGroup>
