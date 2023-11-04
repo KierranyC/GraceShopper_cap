@@ -196,8 +196,7 @@ nav.navbar {
   }
 
   .cart-link {
-    display: none;
-    /* Hide cart link in mobile view */
+    display: block;
   }
 
   .mobile-nav {
