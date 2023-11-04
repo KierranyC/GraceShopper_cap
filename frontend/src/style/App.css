@@ -56,6 +56,10 @@ nav.navbar {
   border-radius: 5px;
 }
 
+.container-fluid {
+  display: flex;
+}
+
 .search-bar-container button {
   background-color: #007bff;
   color: white;
