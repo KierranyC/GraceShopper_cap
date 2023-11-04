@@ -190,4 +190,39 @@ nav.navbar {
     width: 90%;
     /* Make the featured images take up the full width on mobile */
   }
+
+  .navbar {
+    /* Adjust padding to increase spacing for better mobile view */
+    padding: 0.5rem;
+  }
+
+  .company-name {
+    font-size: 24px;
+    /* Reduce font size for mobile view */
+  }
+
+  .nav-dropdown-title {
+    display: none;
+    /* Hide the username in the dropdown for mobile view */
+  }
+
+  .navbar-toggler-icon {
+    color: white;
+    /* Set the color of the mobile menu icon */
+  }
+
+  .navbar-collapse {
+    background-color: #333;
+    /* Set the background color of the mobile menu */
+  }
+
+  /* Adjust other styles as needed for better mobile display */
+
+  /* For centering the categories and cart on mobile */
+  .d-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
 }
