@@ -53,37 +53,6 @@ export const Product = ({
     localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
   }, [productQuantities]);
 
-
-
-  // const handleAddItemToCart = async (productId) => {
-  //   console.log(storedGuestSessionId)
-  //   try {
-  //     let updatedCart;
-
-  //     if (token) {
-  //       updatedCart = await addItemToCart(token, null, productId, 1);
-  //       if (updatedCart) {
-  //         setCart(updatedCart);
-  //         setProductQuantities((prevQuantities) => ({
-  //           ...prevQuantities,
-  //           [productId]: (prevQuantities[productId] || 0) + 1,
-  //         }));
-  //       }
-  //     } else if (storedGuestSessionId) {
-  //       updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
-  //       if (updatedCart) {
-  //         setGuestCart(updatedCart);
-  //         setProductQuantities((prevQuantities) => ({
-  //           ...prevQuantities,
-  //           [productId]: (prevQuantities[productId] || 0) + 1,
-  //         }));
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error adding item to cart:', error);
-  //   }
-  // };
-
   const handleAddItemToCart = async (productId) => {
     console.log(storedGuestSessionId);
     try {
@@ -143,48 +112,13 @@ export const Product = ({
           productId,
           updatedQuantity
         );
+        console.log('UPDATED CART ADD ONE:', updatedCart)
         setCart(updatedCart);
       }
     } catch (error) {
       console.error("Error updating item quantity in cart:", error);
     }
   };
-
-  // const handleDeleteOneItemFromCart = async (productId) => {
-  //   try {
-  //     const currentQuantity = productQuantities[productId] || 0;
-  //     let updatedCart;
-
-  //     if (currentQuantity > 0) {
-  //       const updatedQuantity = currentQuantity - 1;
-
-  //       setProductQuantities((prevQuantities) => ({
-  //         ...prevQuantities,
-  //         [productId]: updatedQuantity,
-  //       }));
-
-  //       if (storedGuestSessionId) {
-  //         updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
-  //         setGuestCart(updatedCart);
-  //       } else if (token) {
-  //         updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
-  //         setCart(updatedCart);
-  //       }
-  //     } else {
-
-  //       // Always attempt to remove the item from the cart (it's okay if it's not there)
-  //       if (storedGuestSessionId) {
-  //         updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
-  //         setGuestCart(updatedCart);
-  //       } else if (token) {
-  //         updatedCart = await removeItemFromCart(token, null, productId);
-  //         setCart(updatedCart);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error handling item quantity or removing item from cart:', error);
-  //   }
-  // };
 
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
@@ -206,6 +140,7 @@ export const Product = ({
           setGuestCart(updatedCart);
         } else if (token) {
           updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
+          console.log('UPDATED CART DELETE ONE:', updatedCart)
           setCart(updatedCart);
         }
       } else if (currentQuantity === 1) {
