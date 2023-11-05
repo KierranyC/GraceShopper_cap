@@ -1,15 +1,14 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-export const Loading = ({ isLoading }) => {
+// This component displays a Loading Spinner, letting the user know that the website is fetching data
+export const Loading = () => {
   return (
-    <div className={`loading-modal${isLoading ? " active" : ""}`}>
+    <div className="loading-modal active">
       <div className="loading-content">
         <h2 className="loading-message">Searching...</h2>
-        {isLoading && <Spinner animation="border" variant="primary" />}
+        <Spinner animation="border" variant="primary" />
       </div>
     </div>
   );
 };
-
-export default Loading;
