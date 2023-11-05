@@ -81,7 +81,36 @@ export const Products = ({
     setFilteredProducts(filtered);
   };
 
+  // const handleAddItemToCart = async (productId) => {
+  //   try {
+  //     let updatedCart;
+
+  //     if (token) {
+  //       updatedCart = await addItemToCart(token, null, productId, 1);
+  //       if (updatedCart) {
+  //         setCart(updatedCart);
+  //         setProductQuantities((prevQuantities) => ({
+  //           ...prevQuantities,
+  //           [productId]: (prevQuantities[productId] || 0) + 1,
+  //         }));
+  //       }
+  //     } else if (storedGuestSessionId) {
+  //       updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
+  //       if (updatedCart) {
+  //         setGuestCart(updatedCart);
+  //         setProductQuantities((prevQuantities) => ({
+  //           ...prevQuantities,
+  //           [productId]: (prevQuantities[productId] || 0) + 1,
+  //         }));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error adding item to cart:', error);
+  //   }
+  // };
+
   const handleAddItemToCart = async (productId) => {
+    console.log(storedGuestSessionId);
     try {
       let updatedCart;
 
@@ -89,19 +118,23 @@ export const Products = ({
         updatedCart = await addItemToCart(token, null, productId, 1);
         if (updatedCart) {
           setCart(updatedCart);
-          setProductQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [productId]: (prevQuantities[productId] || 0) + 1,
-          }));
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
         }
       } else if (storedGuestSessionId) {
         updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
         if (updatedCart) {
           setGuestCart(updatedCart);
-          setProductQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [productId]: (prevQuantities[productId] || 0) + 1,
-          }));
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
         }
       }
     } catch (error) {
@@ -141,18 +174,54 @@ export const Products = ({
     }
   };
 
+  // const handleDeleteOneItemFromCart = async (productId) => {
+  //   try {
+  //     const currentQuantity = productQuantities[productId] || 0;
+  //     let updatedCart;
+
+  //     if (currentQuantity > 0) {
+  //       const updatedQuantity = currentQuantity - 1;
+
+  //       setProductQuantities((prevQuantities) => ({
+  //         ...prevQuantities,
+  //         [productId]: updatedQuantity,
+  //       }));
+
+  //       if (storedGuestSessionId) {
+  //         updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
+  //         setGuestCart(updatedCart);
+  //       } else if (token) {
+  //         updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
+  //         setCart(updatedCart);
+  //       }
+  //     } else {
+  //       if (storedGuestSessionId) {
+  //         updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
+  //         setGuestCart(updatedCart);
+  //       } else if (token) {
+  //         updatedCart = await removeItemFromCart(token, null, productId);
+  //         setCart(updatedCart);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error handling item quantity or removing item from cart:', error);
+  //   }
+  // };
+
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
       const currentQuantity = productQuantities[productId] || 0;
       let updatedCart;
 
-      if (currentQuantity > 0) {
+      if (currentQuantity > 1) {
         const updatedQuantity = currentQuantity - 1;
 
-        setProductQuantities((prevQuantities) => ({
-          ...prevQuantities,
-          [productId]: updatedQuantity,
-        }));
+        setProductQuantities((prevQuantities) => {
+          return {
+            ...prevQuantities,
+            [productId]: updatedQuantity,
+          };
+        });
 
         if (storedGuestSessionId) {
           updatedCart = await updateCartItem(null, storedGuestSessionId, productId, updatedQuantity);
@@ -161,7 +230,8 @@ export const Products = ({
           updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
           setCart(updatedCart);
         }
-      } else {
+      } else if (currentQuantity === 1) {
+        // Remove the item from the cart
         if (storedGuestSessionId) {
           updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
           setGuestCart(updatedCart);
@@ -169,6 +239,13 @@ export const Products = ({
           updatedCart = await removeItemFromCart(token, null, productId);
           setCart(updatedCart);
         }
+
+        // Also reset the quantity in local state to 0
+        setProductQuantities((prevQuantities) => {
+          const newQuantities = { ...prevQuantities };
+          delete newQuantities[productId];
+          return newQuantities;
+        });
       }
     } catch (error) {
       console.error('Error handling item quantity or removing item from cart:', error);
