@@ -270,7 +270,7 @@ export const Products = ({
   };
 
   if (isLoading) {
-    <Loading />
+    return <Loading />
   } else {
     return (
       <div className="container-fluid">
