@@ -52,6 +52,7 @@ export const AccountForm = ({
     setError("");
 
     try {
+      console.log('username to update', username)
       const userInfo = await fetchUserData(token);
       console.log(userInfo);
       const newUserInfo = await editUser(
