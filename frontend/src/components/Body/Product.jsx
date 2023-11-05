@@ -84,6 +84,40 @@ export const Product = ({
   //   }
   // };
 
+  const handleAddItemToCart = async (productId) => {
+    console.log(storedGuestSessionId);
+    try {
+      let updatedCart;
+
+      if (token) {
+        updatedCart = await addItemToCart(token, null, productId, 1);
+        if (updatedCart) {
+          setCart(updatedCart);
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
+        }
+      } else if (storedGuestSessionId) {
+        updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
+        if (updatedCart) {
+          setGuestCart(updatedCart);
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+    }
+  };
+
+
   const handleAddOneItemToCart = async (productId) => {
     const updatedQuantity = (productQuantities[productId] || 1) + 1; // Start with a default of 1
     setProductQuantities((prevQuantities) => ({
