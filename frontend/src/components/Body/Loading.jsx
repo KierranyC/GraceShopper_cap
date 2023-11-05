@@ -6,7 +6,7 @@ export const Loading = () => {
   return (
     <div className="loading-modal active">
       <div className="loading-content">
-        <h2 className="loading-message">Searching...</h2>
+        <h2 className="loading-message">Loading...</h2>
         <Spinner animation="border" variant="primary" />
       </div>
     </div>
