@@ -1,7 +1,7 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-const Loading = ({ isLoading }) => {
+export const Loading = ({ isLoading }) => {
   return (
     <div className={`loading-modal${isLoading ? " active" : ""}`}>
       <div className="loading-content">
