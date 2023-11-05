@@ -89,92 +89,52 @@ router.post('/create', requireAuthentication, async (req, res, next) => {
   }
 });
 
-// router.post('/add', requireAuthentication, async (req, res, next) => {
-//   // console.log('REQUEST LOGGED IN USER ADD:', req.user)
-//   let userId;
-
-//   if (req.user.sessionId) {
-//     userId = null
-//   } else {
-//     userId = req.user.id;
-//   }
-
-//   const { productId, quantity } = req.body;
-
-//   try {
-//     const existingCart = await getUserCart(userId, req.user.sessionId);
-//     // console.log('EXISTING CART:', existingCart)
-//     if (existingCart.length === 0) {
-//       const initializedCart = await createCartItem({
-//         userId: userId,
-//         guestId: req.user.sessionId,
-//         productId,
-//         quantity,
-//       });
-//       console.log('INITIALIZED CART:', initializedCart)
-//       res.send(initializedCart);
-//     } else {
-//       const checkForProductInCart = existingCart.some((product) => product.productId === productId);
-//       console.log(checkForProductInCart)
-//       if (!checkForProductInCart) {
-//         const updatedCart = await addToCart({
-//           userId: userId,
-//           guestId: req.user.sessionId,
-//           productId,
-//           quantity,
-//         });
-//         console.log('UPDATED CART:', updatedCart)
-//         res.send(updatedCart);
-//       } else {
-//         // Product is already in the cart; you can send a message or status code here if needed.
-//         res.status(400).send({ message: 'Product is already in the cart.' });
-//       }
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 router.post('/add', requireAuthentication, async (req, res, next) => {
-  let userId = req.user.id || null;
+  // console.log('REQUEST LOGGED IN USER ADD:', req.user)
+  let userId;
+
+  if (req.user.sessionId) {
+    userId = null
+  } else {
+    userId = req.user.id;
+  }
+
   const { productId, quantity } = req.body;
 
   try {
     const existingCart = await getUserCart(userId, req.user.sessionId);
-
-    const existingCartItem = existingCart.find((product) => product.productId === productId);
-
-    if (existingCartItem) {
-      // Product is already in the cart
-      res.status(400).send({ message: 'Product is already in the cart.' });
+    // console.log('EXISTING CART:', existingCart)
+    if (existingCart.length === 0) {
+      const initializedCart = await createCartItem({
+        userId: userId,
+        guestId: req.user.sessionId,
+        productId,
+        quantity,
+      });
+      console.log('INITIALIZED CART:', initializedCart)
+      res.send(initializedCart);
     } else {
-      let updatedCart;
-
-      if (existingCart.length === 0) {
-        // Initialize the cart if it's empty
-        updatedCart = await createCartItem({
-          userId,
+      const checkForProductInCart = existingCart.some((product) => product.productId === productId);
+      console.log(checkForProductInCart)
+      if (!checkForProductInCart) {
+        const updatedCart = await addToCart({
+          userId: userId,
           guestId: req.user.sessionId,
           productId,
           quantity,
         });
+        console.log('UPDATED CART:', updatedCart)
+        res.send(updatedCart);
       } else {
-        // Add the product to the existing cart
-        updatedCart = await addToCart({
-          userId,
-          guestId: req.user.sessionId,
-          productId,
-          quantity,
-        });
+        // Product is already in the cart; you can send a message or status code here if needed.
+        res.status(400).send({ message: 'Product is already in the cart.' });
       }
-
-      console.log('UPDATED CART:', updatedCart);
-      res.send(updatedCart);
     }
   } catch (error) {
     next(error);
   }
 });
+
 
 
 
