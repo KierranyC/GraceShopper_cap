@@ -12,6 +12,7 @@ import {
 } from "../../apiCalls";
 import { Carousel } from "react-bootstrap/esm";
 import { Product } from "./Product";
+import { Loading } from "./Loading";
 
 export const Products = ({
   guestCart,
@@ -269,7 +270,7 @@ export const Products = ({
   };
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    <Loading />
   } else {
     return (
       <div className="container-fluid">
