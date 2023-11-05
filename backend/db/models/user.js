@@ -172,6 +172,7 @@ async function getUserByUsername(username) {
 }
 
 async function updateUser(id, fields = {}) {
+  console.log('UPDATE USER FIELDS DB FUNC:', fields)
   const hashedPassword = await bcrypt.hash(fields.password, SALT_COUNT);
   fields.password = hashedPassword;
 

@@ -242,9 +242,9 @@ router.post("/register", async (req, res, next) => {
 router.patch("/:userId", requireAuthentication, async (req, res, next) => {
   const { userId } = req.params;
   const { username, password, email } = req.body;
-  console.log('UPDATE USERNAME BACKED:', username)
-  console.log('UPDATE USERNAME BACKED:', password)
-  console.log('UPDATE USERNAME BACKED:', email)
+  console.log('UPDATE USERNAME BACKEND:', username)
+  console.log('UPDATE USERNAME BACKEND:', password)
+  console.log('UPDATE USERNAME BACKEND:', email)
   const updatedFields = {}
 
   if (username.length > 0) {
