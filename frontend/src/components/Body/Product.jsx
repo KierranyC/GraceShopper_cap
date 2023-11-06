@@ -24,9 +24,9 @@ export const Product = ({
   useEffect(() => {
     async function getProduct() {
       try {
-        console.log('PRODUCT COMPONENT PRODUCTID:', productId);
+        // console.log('PRODUCT COMPONENT PRODUCTID:', productId);
         const data = await fetchProduct(productId);
-        console.log('PRODUCT COMPONENT PRODUCT DATA:', data);
+        // console.log('PRODUCT COMPONENT PRODUCT DATA:', data);
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -61,7 +61,7 @@ export const Product = ({
   //       updatedCart = await addItemToCart(token, null, productId, 1);
   //       console.log('UPDATED CART ADD ONE')
   //       if (updatedCart) {
-  //         const userCart = await fetchUserCart(token)
+  // const userCart = await fetchUserCart(token)
   //         console.log(userCart)
   //         setCart(userCart);
   //         // Update the product quantity in the state
@@ -94,7 +94,8 @@ export const Product = ({
       if (token) {
         updatedCart = await addItemToCart(token, null, productId, 1);
         if (updatedCart) {
-          setCart(updatedCart);
+          const userCart = await fetchUserCart(token)
+          setCart(userCart);
           setProductQuantities((prevQuantities) => {
             return {
               ...prevQuantities,
