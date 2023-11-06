@@ -53,30 +53,65 @@ export const Product = ({
     localStorage.setItem("productQuantities", JSON.stringify(productQuantities));
   }, [productQuantities]);
 
+  // const handleAddItemToCart = async (productId) => {
+  //   try {
+  //     let updatedCart;
+
+  //     if (token) {
+  //       updatedCart = await addItemToCart(token, null, productId, 1);
+  //       console.log('UPDATED CART ADD ONE')
+  //       if (updatedCart) {
+  //         const userCart = await fetchUserCart(token)
+  //         console.log(userCart)
+  //         setCart(userCart);
+  //         // Update the product quantity in the state
+  //         setProductQuantities((prevQuantities) => ({
+  //           ...prevQuantities,
+  //           [productId]: 1, // Set the quantity to 1 when adding to the cart
+  //         }));
+  //       }
+  //     } else if (storedGuestSessionId) {
+  //       updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
+  //       if (updatedCart) {
+  //         setGuestCart(updatedCart);
+  //         // Update the product quantity in the state
+  //         setProductQuantities((prevQuantities) => ({
+  //           ...prevQuantities,
+  //           [productId]: 1, // Set the quantity to 1 when adding to the cart
+  //         }));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error adding item to cart:', error);
+  //   }
+  // };
+
   const handleAddItemToCart = async (productId) => {
+    console.log(storedGuestSessionId);
     try {
       let updatedCart;
 
       if (token) {
         updatedCart = await addItemToCart(token, null, productId, 1);
         if (updatedCart) {
-          const userCart = await fetchUserCart(token)
-          setCart(userCart);
-          // Update the product quantity in the state
-          setProductQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [productId]: 1, // Set the quantity to 1 when adding to the cart
-          }));
+          setCart(updatedCart);
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
         }
       } else if (storedGuestSessionId) {
         updatedCart = await addItemToCart(null, storedGuestSessionId, productId, 1);
         if (updatedCart) {
           setGuestCart(updatedCart);
-          // Update the product quantity in the state
-          setProductQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [productId]: 1, // Set the quantity to 1 when adding to the cart
-          }));
+          setProductQuantities((prevQuantities) => {
+            return {
+              ...prevQuantities,
+              [productId]: (prevQuantities[productId] || 0) + 1,
+            };
+          });
         }
       }
     } catch (error) {
