@@ -135,6 +135,7 @@ export const Product = ({
         setGuestCart(updatedCart);
       } else if (token) {
         updatedCart = await updateCartItem(token, null, productId, updatedQuantity);
+        console.log('UPDATED CART ADD ONE:', updatedCart)
         setCart(updatedCart);
       }
     } catch (error) {
