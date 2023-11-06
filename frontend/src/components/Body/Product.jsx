@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ButtonGroup, Card } from "react-bootstrap/esm";
 import { Reviews } from "./Reviews.jsx";
 import { Featured } from "./Featured.jsx";
-import { deleteProduct, fetchProduct, addItemToCart, updateCartItem, removeItemFromCart } from "../../apiCalls/index.js";
+import { deleteProduct, fetchProduct, addItemToCart, updateCartItem, removeItemFromCart, fetchUserCart } from "../../apiCalls/index.js";
 import { Button } from "react-bootstrap";
 
 // This component renders a single Product based on its ID. It should also display the corresponding reviews with that product, as well as render the products information
@@ -60,7 +60,8 @@ export const Product = ({
       if (token) {
         updatedCart = await addItemToCart(token, null, productId, 1);
         if (updatedCart) {
-          setCart(updatedCart);
+          const userCart = await fetchUserCart(token)
+          setCart(userCart);
           // Update the product quantity in the state
           setProductQuantities((prevQuantities) => ({
             ...prevQuantities,
