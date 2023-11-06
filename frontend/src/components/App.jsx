@@ -228,6 +228,7 @@ export const App = () => {
                 storedGuestSessionId={storedGuestSessionId}
                 token={token}
                 isAdmin={isAdmin}
+                setCart={setCart}
               />
             }
           ></Route>
