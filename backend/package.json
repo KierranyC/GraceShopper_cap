@@ -1,6 +1,9 @@
 {
   "name": "starting_code",
   "version": "1.0.0",
+  "engines": {
+    "node": "20.x"
+  },
   "description": "## Database",
   "main": "index.js",
   "type": "module",
