@@ -11,7 +11,10 @@
     "server:dev": "nodemon index.js",
     "start": "node index.js",
     "seed:dev": "nodemon ./db/seed.js",
-    "migrate": "node-pg-migrate -m migrations"
+    "migrate": "node-pg-migrate -m migrations",
+    "client": "react-scripts start",
+    "server": "node index.js",
+    "build": "react-scripts build"
   },
   "keywords": [],
   "author": "",
