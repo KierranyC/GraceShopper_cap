@@ -1,5 +1,5 @@
 // A base url for making CRUD calls to the API server
-export const BASE_URL = "https://restless-butterfly-4927.fly.dev/api";
+export const BASE_URL = "http://localhost:5001/api";
 
 // ----- All GET requests -----
 // GET - get all products
