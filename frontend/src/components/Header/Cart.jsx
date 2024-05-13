@@ -4,7 +4,7 @@ import {
   removeItemFromCart,
   addItemToCart,
   updateCartItem,
-} from "../../apiCalls";
+} from "../../apiCalls/index.js";
 import { Navigate, useNavigate } from "react-router";
 import { PayButton } from '../Body/PayButton.jsx'
 
