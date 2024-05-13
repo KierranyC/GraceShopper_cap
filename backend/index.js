@@ -17,12 +17,8 @@ const server = express();
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-// server.use(cors()); // Enable CORS first
-// server.use(cors({
-//   origin: "https://oilay.netlify.app",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true, // Allow credentials (cookies, HTTP authentication) to be sent
-// }));
+server.use(express.static(path.join(__dirname, "./public")));
+
 server.use(cors({
   origin: 'https://oilay.netlify.app', // use your actual domain name (or localhost), using * is not recommended
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
@@ -33,18 +29,13 @@ server.use(cors({
 server.use(morgan("dev")); // Logging
 server.use(express.json()); // JSON parsing
 
-// server.use("/static", express.static(path.join(__dirname, "./build"))); // Static files
 
 // here's our API
 server.use("/api", apiRouter);
 
-// adminJs
-// server.use("admin", adminRouter)
-
-// // by default serve up the react app if we don't recognize the route
-// server.use((req, res, next) => {
-//   res.sendFile(path.join(__dirname, "./build", "index.html"));
-// });
+server.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // connect to the server
 const PORT = process.env.PORT || 4000;
