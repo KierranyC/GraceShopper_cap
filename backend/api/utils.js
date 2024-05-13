@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from 'uuid';
-import { getUserById, createGuest, findGuestBySessionId } from '../../db/models/user.js';
+import { getUserById, createGuest, findGuestBySessionId } from '../db/models/user.js';
 
 export const requireAuthentication = async (req, res, next) => {
   // console.log('REQUIREAUTH HEADERS LOG:', req.headers)
