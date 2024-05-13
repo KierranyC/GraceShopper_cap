@@ -17,7 +17,7 @@ const server = express();
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-server.use(express.static(path.join(__dirname, "./public/build/index.html")));
+server.use(express.static(path.join(__dirname, "./public")));
 
 server.use(cors({
   origin: 'https://oilay.netlify.app', // use your actual domain name (or localhost), using * is not recommended
