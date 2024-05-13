@@ -27,12 +27,17 @@ let client;
 // Check if running in Heroku environment
 if (DB_URL) {
   // Heroku environment
-  client = new Client({
-    connectionString: DB_URL,
-    ssl: {
-      rejectUnauthorized: false // This is to allow self-signed certificates on Heroku PostgreSQL
-    }
-  });
+
+  // local / heroku client config
+  client = new Client(DB_URL);
+
+  //or 
+  // client = new Client({
+  //   connectionString: DB_URL,
+  //   ssl: {
+  //     rejectUnauthorized: false // This is to allow self-signed certificates on Heroku PostgreSQL
+  //   }
+  // });
 } else {
   // Local environment
   client = new Client({
