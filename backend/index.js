@@ -34,7 +34,7 @@ server.use(express.json()); // JSON parsing
 server.use("/api", apiRouter);
 
 server.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "public", "build/index.html"));
+  res.sendFile(path.join(__dirname, "./public", "build/index.html"));
 });
 
 // connect to the server

@@ -10,7 +10,7 @@
   "scripts": {
     "server:dev": "nodemon index.js",
     "start": "node index.js",
-    "seed:dev": "nodemon ./db/seed.js",
+    "seed:heroku": "nodemon backend/db/seed.js",
     "migrate": "node-pg-migrate -m migrations"
   },
   "keywords": [],
