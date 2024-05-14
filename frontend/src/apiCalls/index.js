@@ -1,5 +1,5 @@
 // A base url for making CRUD calls to the API server
-export const BASE_URL = "https://mysterious-scrubland-27439-ed1873500f23.herokuapp.com/api";
+export const BASE_URL = "https://oilay.herokuapp.com/api";
 
 // ----- All GET requests -----
 // GET - get all products
