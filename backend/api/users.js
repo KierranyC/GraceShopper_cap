@@ -173,7 +173,7 @@ router.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
   console.log('REQUEST BODY:', req.body);
   const specialAdminPassword = process.env.ADMIN_PASSWORD;
-  console.log('JWT SECRET:', process.env.JWT_SECRET)
+  console.log('ADMIN PASSWORD:', process.env.ADMIN_PASSWORD)
   try {
     const _user = await getUserByUsername(username);
 
