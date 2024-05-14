@@ -31,9 +31,8 @@ if (DB_URL) {
   client = new Client({
     connectionString: DB_URL,
     ssl: {
-      // rejectUnauthorized: false // This is to allow self-signed certificates on Heroku PostgreSQL
       require: true,
-      ca: fs.readFileSync('/path/to/server-certificates/root.crt').toString()
+      rejectUnauthorized: false // This is to allow self-signed certificates on Heroku PostgreSQL
     }
   });
 } else {
