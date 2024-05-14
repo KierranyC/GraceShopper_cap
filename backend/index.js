@@ -20,7 +20,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 server.use(express.static(path.join(__dirname, "public")));
 
 server.use(cors({
-  origin: 'https://oilay.herokuapp.com/', // use your actual domain name (or localhost), using * is not recommended
+  origin: 'https://oilay-8613463ee0be.herokuapp.com//', // use your actual domain name (or localhost), using * is not recommended
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Origin', 'x-guest-session-id', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
   credentials: true
