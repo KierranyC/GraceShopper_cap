@@ -171,8 +171,8 @@ let JWT_SECRET;
 
 router.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
-  console.log('REQUEST BODY:', req.body)
-  const specialAdminPassword = '87654321';
+  console.log('REQUEST BODY:', req.body);
+  const specialAdminPassword = process.env.ADMIN_PASSWORD;
   console.log('JWT SECRET:', process.env.JWT_SECRET)
   try {
     const _user = await getUserByUsername(username);
