@@ -11,7 +11,7 @@
     "server:dev": "nodemon index.js",
     "start": "node backend/index.js",
     "seed:heroku": "node backend/db/seed.js",
-    "migrate": "node-pg-migrate -m migrations",
+    "migrate": "node-pg-migrate -m backend/migrations",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "keywords": [],
