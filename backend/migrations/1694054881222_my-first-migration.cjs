@@ -62,11 +62,11 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('cartItems');
-  pgm.dropTable('reviews');
-  pgm.dropTable('orderItems');
-  pgm.dropTable('orders');
-  pgm.dropTable('products');
-  pgm.dropTable('guests');
   pgm.dropTable('users');
+  pgm.dropTable('guests');
+  pgm.dropTable('products');
+  pgm.dropTable('orders');
+  pgm.dropTable('orderItems');
+  pgm.dropTable('reviews');
+  pgm.dropTable('cartItems');
 };
