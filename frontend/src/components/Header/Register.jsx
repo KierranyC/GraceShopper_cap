@@ -26,8 +26,7 @@ export const Register = ({
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  // console.log('CURRENT GUEST ID AND GUEST CART:', storedGuestSessionId, guestCart)
-  // A function that submits data entered into the fields and empties the fields
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -63,6 +62,11 @@ export const Register = ({
             await updateCart(result.token, storedGuestSessionId)
             fetchAndUpdateUserCart(result.token)
             setIsLoggedIn(true)
+          }
+          console.log('IS ADMIN CHECK REGISTER:', result.user.isAdmin)
+          if (result.user.isAdmin) {
+            localStorage.setItem("isAdmin", "true");
+            setIsAdmin(true);
           }
           if (result.token) {
             navigate("/");
