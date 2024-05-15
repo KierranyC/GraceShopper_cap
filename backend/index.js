@@ -17,7 +17,7 @@ const server = express();
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-server.use(express.static(path.join(__dirname, "/frontend/public")));
+server.use(express.static(path.join(__dirname, "../frontend/build")));
 
 server.use(cors({
   origin: 'https://oilay-8613463ee0be.herokuapp.com//', // use your actual domain name (or localhost), using * is not recommended
@@ -34,7 +34,7 @@ server.use(express.json()); // JSON parsing
 server.use("/api", apiRouter);
 
 server.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "/frontend/public", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
 // connect to the server
