@@ -252,8 +252,8 @@ router.post("/checkout-session", async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: "payment",
-      success_url: `https://oilay.netlify.app/checkout-success`,
-      cancel_url: `https://oilay.netlify.app/Cart`
+      success_url: `https://oilay-8613463ee0be.herokuapp.com/checkout-success`,
+      cancel_url: `https://oilay-8613463ee0be.herokuapp.com/Cart`
     });
 
     res.send({ url: session.url })

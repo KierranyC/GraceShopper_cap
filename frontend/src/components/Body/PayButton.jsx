@@ -23,7 +23,7 @@ export const PayButton = ({ cartItems, userId }) => {
     };
 
     // Make the fetch request
-    fetch(`https://restless-butterfly-4927.fly.dev/api/cart/checkout-session`, requestOptions)
+    fetch(`https://oilay-8613463ee0be.herokuapp.com/api/cart/checkout-session`, requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
