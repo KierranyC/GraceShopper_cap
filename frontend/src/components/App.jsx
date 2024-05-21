@@ -30,18 +30,9 @@ import { fetchUserCart, fetchGuestCart, createNewGuest, fetchUserOrders, fetchUs
 import { loadStripe } from '@stripe/stripe-js'
 const stripePromise = loadStripe('pk_live_51NyLPaIBy4kJpJhvJgIFMYvcqTWfctWpXRoeozfjY2NQDn2DIPwl9MxZDLfz2UzonMyIcPr4A4EYYwu4RhJDJHJ500jNN38Zch')
 
-// This is the Mother of all components. This is what will house all of the other components to render on screen.
+// This is the Mother of all components. This is what will house
+// all of the other components to render on screen.
 export const App = () => {
-  // const categories = [
-  //   { id: 1, name: "Shampoo" },
-  //   { id: 2, name: "Conditioner" },
-  //   { id: 3, name: "Repairing" },
-  //   { id: 4, name: "Styling" },
-  //   { id: 5, name: "Color & Dye" },
-  //   { id: 6, name: "Specialty" },
-  // ];
-
-  // UseStates that are utilized by multiple components
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -162,7 +153,9 @@ export const App = () => {
   return (
     <BrowserRouter className="app-container">
       <Elements clientSecret={clientSecret} stripe={stripePromise}>
-        {/* Header for the App. This components is responsible for Navigation as well as managing user actions such as logging in/out, checking their cart or wishlist, or accessing the admin dashboard for Admins */}
+        {/* Header for the App. This components is responsible for Navigation 
+        as well as managing user actions such as logging in/out, checking their 
+        cart, or accessing the admin dashboard for Admins */}
         <Header
           productQuantities={productQuantities}
           setProductQuantities={setProductQuantities}
@@ -177,24 +170,21 @@ export const App = () => {
           category={category}
           setCategory={setCategory}
         />
-        {/* This section will change depending on url path. This will update to display products, account information, a user's cart, etc. */}
+        {/* This section will change depending on url path. This will update 
+        to display products, account information, a user's cart, etc. */}
         <Routes>
-          {/* The home screen. This should display some featured products as well as a list of available products for purchase */}
+          {/* The home screen. This should display some featured products as 
+          well as a list of available products for purchase */}
           <Route
             path="/"
             element={
 
               <div className="home-container">
-                {/* <Sidebar
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={handleCategory}
-              /> */}
+
                 <Home
                   selectedCategory={selectedCategory}
                   searchTerm={searchTerm}
                   isAdmin={isAdmin}
-                  // categories={categories}
                   storedGuestSessionId={storedGuestSessionId}
                   productId={productId}
                   isLoggedIn={isLoggedIn}
@@ -215,7 +205,9 @@ export const App = () => {
             }
           ></Route>
 
-          {/* This page displays an individual product based on it's ID, with all of its information such as Name, Price, Description, Rating, Image, and Reviews */}
+          {/* This page displays an individual product based on it's ID, 
+          with all of its information such as Name, Price, Description, Rating, 
+          Image, and Reviews */}
           <Route
             path={`/Product/:productId`}
             element={
@@ -233,9 +225,10 @@ export const App = () => {
             }
           ></Route>
 
-          {/* This page displays a user's cart. The cart page should be unique to each user, showing a list of products selected by the user for purchase */}
+          {/* This page displays a user's cart. The cart page should be unique 
+          to each user, showing a list of products selected by 
+          the user for purchase */}
           <Route
-
             path="/Cart"
             element={<Cart
               storedGuestSessionId={storedGuestSessionId}
@@ -249,10 +242,15 @@ export const App = () => {
             />}
           ></Route>
 
-          {/* This page displays a user's past orders. The orders page should be unique to each user, showing a list of previous orders, as well as their status, and dates (date ordered/date received) */}
+          {/* This page displays a user's past orders. The orders page 
+          should be unique to each user, showing a list of previous orders, 
+          as well as their status, and dates (date ordered/date received) */}
           <Route path="/Orders" element={<Orders />}></Route>
 
-          {/* This page displays a user's account. This should be unique to each user, and display a list of information linked to their account. This can include username, email address, any additional contact information, saved payment methods, and a profile pic */}
+          {/* This page displays a user's account. This should be unique 
+          to each user, and display a list of information linked to their account. 
+          This can include username, email address, any additional 
+          contact information, saved payment methods*/}
           <Route
             path="/Account"
             element={
@@ -267,10 +265,12 @@ export const App = () => {
             }
           ></Route>
 
-          {/* This page displays a user's wishlist. Much like a user's cart, this page displays a list of products for purchase */}
+          {/* This page displays a user's wishlist. Much like a user's cart, 
+          this page displays a list of products for purchase */}
           <Route path="/Wishlist" element={<Wishlist />}></Route>
 
-          {/* This page should display a user edit form. User's should be able to update their password, payment methods, username, and profile pic */}
+          {/* This page should display a user edit form. User's should be 
+          able to update their password, payment methods, username*/}
           <Route
             path="/User/Edit"
             element={
@@ -285,7 +285,9 @@ export const App = () => {
             }
           ></Route>
 
-          {/* This page displays a form for registering new users. It will include fields for a username, email, password, and password confirmation */}
+          {/* This page displays a form for registering new users. It 
+          will include fields for a username, email, password, and password 
+          confirmation */}
           <Route
             path="/Register"
             element={
@@ -306,7 +308,8 @@ export const App = () => {
             }
           ></Route>
 
-          {/* This page displays a form for Logging in users. It will include fields username, and password */}
+          {/* This page displays a form for Logging in users. It will include 
+          fields username, and password */}
           <Route
             path="/Login"
             element={

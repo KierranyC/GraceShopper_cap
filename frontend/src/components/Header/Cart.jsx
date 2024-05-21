@@ -33,7 +33,7 @@ export const Cart = ({
       JSON.stringify(isLoggedIn ? cart : guestCart)
     );
 
-    // calculate total cost based on whether the user is logged in or not
+    // calculate total cost of items
     const cost = (isLoggedIn ? cart : guestCart).reduce(
       (total, product) => {
         const productSubtotal = product.productInfo.price * product.quantity;
@@ -105,45 +105,6 @@ export const Cart = ({
     }
   };
 
-  // const handleDeleteOneItemFromCart = async (productId) => {
-  //   try {
-  //     const currentQuantity = productQuantities[productId] || 0;
-  //     let updatedCart;
-
-  //     if (currentQuantity >= 0) {
-  //       const updatedQuantity = currentQuantity - 1;
-
-  //       setProductQuantities((prevQuantities) => ({
-  //         ...prevQuantities,
-  //         [productId]: updatedQuantity,
-  //       }));
-
-  //       if (storedGuestSessionId) {
-  //         updatedCart = await updateCartItem(
-  //           null,
-  //           storedGuestSessionId,
-  //           productId,
-  //           updatedQuantity
-  //         );
-  //         setGuestCart(updatedCart);
-  //       } else if (token) {
-  //         updatedCart = await updateCartItem(
-  //           token,
-  //           null,
-  //           productId,
-  //           updatedQuantity
-  //         );
-  //         setCart(updatedCart);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error handling item quantity or removing item from cart:",
-  //       error
-  //     );
-  //   }
-  // };
-
   const handleDeleteOneItemFromCart = async (productId) => {
     try {
       const currentQuantity = productQuantities[productId] || 0;
@@ -167,7 +128,6 @@ export const Cart = ({
           setCart(updatedCart);
         }
       } else if (currentQuantity === 1) {
-        // Remove the item from the cart
         if (storedGuestSessionId) {
           updatedCart = await removeItemFromCart(null, storedGuestSessionId, productId);
           setGuestCart(updatedCart);
@@ -176,7 +136,6 @@ export const Cart = ({
           setCart(updatedCart);
         }
 
-        // Also reset the quantity in local state to 0
         setProductQuantities((prevQuantities) => {
           const newQuantities = { ...prevQuantities };
           delete newQuantities[productId];
@@ -236,7 +195,7 @@ export const Cart = ({
               </div>
             );
           } else {
-            return null; // Don't render products with quantity zero
+            return null;
           }
         })
       ) : (
@@ -271,7 +230,7 @@ export const Cart = ({
               </div>
             );
           } else {
-            return null; // Don't render products with quantity zero
+            return null;
           }
         })}
       {!isLoggedIn && guestCart.length === 0 && (
@@ -284,7 +243,6 @@ export const Cart = ({
         guestCart.length > 0 && (
           <h1>Total: ${guestTotalCost}</h1>
         )}
-      {/* <Button variant="primary" onClick={(handleCheckout)}>Checkout</Button> */}
       {isLoggedIn && cart.length > 0 && (
         <PayButton cartItems={cart} userId={userId} />
       )}
